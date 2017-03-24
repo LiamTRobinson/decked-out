@@ -1,5 +1,5 @@
 var express = require('express');
-router = express.Router();
+var router = express.Router();
 var User = require('../models/userModel.js');
 var authHelpers = require('../helpers/authHelpers.js');
 
@@ -9,8 +9,8 @@ router.get('/login', function(req, res) {
 });
 
 //login check
-router.post('/login', function(req, res){
-  
+router.post('/login', authHelpers.loginUser, function(req, res){
+  res.redirect(`/users/${req.session.currentUser._id}`);
 });
 
 //logout

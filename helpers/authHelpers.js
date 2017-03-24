@@ -15,7 +15,7 @@ function loginUser(req, res, next) {
 			next();
 		})
 		.catch(function(err) {
-			res.json({status: 500, data: err});
+			res.json({status: 500, data: err + " unauthorized at loginUser catch"});
 		});
 };
 
