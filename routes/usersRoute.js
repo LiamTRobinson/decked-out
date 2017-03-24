@@ -8,7 +8,7 @@ var Deck = require("../models/deckModel.js");
 //user show route
 
 //user new route
-router.get("/signup", function(req, res){
+router.get("/createaccount", function(req, res){
 
 });
 
