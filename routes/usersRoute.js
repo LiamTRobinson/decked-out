@@ -9,7 +9,7 @@ var Deck = require("../models/deckModel.js");
 
 //user new route
 router.get("/createaccount", function(req, res){
-
+	res.render("users/new");
 });
 
 //user post route
