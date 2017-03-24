@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require("hbs");
 var methodOverride = require("method-override");
+const mtg = require("mtgsdk");
 
 //express set
 var app = express();
