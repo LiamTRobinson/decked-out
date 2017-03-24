@@ -26,16 +26,18 @@ db.once('open', function() {
 });
 
 //require routes
-var index = require('./routes/index');
-var users = require('./routes/users');
+var indexRoute = require('./routes/indexRoute');
+var usersRoute = require('./routes/usersRoute');
+var sessionsRoute = require("./routes/sessionsRoute");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 //use routes
-app.use('/', index);
-app.use('/users', users);
+app.use('/', indexRoute);
+app.use('/users', usersRoute);
+app.use("/sessions", sessionsRoute);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
