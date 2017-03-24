@@ -7,6 +7,14 @@ var Deck = require("../models/deckModel.js");
 
 //user show route
 
-//
+//user new route
+router.get("/signup", function(req, res){
+
+});
+
+//user post route
+router.get("/", function(req, res) {
+
+});
 
 module.exports = router;
