@@ -29,7 +29,10 @@ router.post("/", function(req, res) {
 		.exec(function(err, user) {
 			if (err) { console.log(err); }
 			user.decks.push(deck);
-			console.log(`${deck}, ${user}`);
+			user.save(function(err, user) {
+				if (err) { console.log(err); }
+				console.log(`${deck}, ${user}`);
+			});
 			res.redirect(`/users/${user.id}`);
 		});
 });
