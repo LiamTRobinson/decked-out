@@ -37,6 +37,17 @@ router.post("/", function(req, res) {
 		});
 });
 
+//DECKS SHOW ROUTE
+router.get("/:id", function(req, res) {
+	Deck.findById(req.params.id)
+		.exec(function(err, deck) {
+			if (err) { console.log(err); }
+			res.render("decks/show", {
+				deck: deck
+			});
+		});
+});
+
 
 
 
