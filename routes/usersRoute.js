@@ -15,7 +15,7 @@ router.get("/:id", function(req, res) {
 		});
 });
 
-//user new route
+//user new get route
 router.get("/createaccount", function(req, res){
 	res.render("users/new");
 });

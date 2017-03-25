@@ -1,0 +1,16 @@
+<h1>{{user.userName}}</h1>
+<h2>Decks</h2>
+<a href="#"><p>New Deck</p></a>
+<ul>
+	{{#each user.decks}}
+		<li>{{this.name}}</li>
+	{{/each}}
+</ul>
+<hr>
+<h2>Cards</h2>
+<a href="#"><p>Add Card</p></a>
+<ul>
+	{{#each user.cards}}
+		<li>{{this.name}}</li>
+	{{/each}}
+</ul>
