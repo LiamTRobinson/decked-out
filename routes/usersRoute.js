@@ -5,6 +5,11 @@ var User = require("../models/userModel.js");
 var Card = require("../models/cardModel.js");
 var Deck = require("../models/deckModel.js");
 
+//user new get route
+router.get("/createaccount", function(req, res){
+	res.render("users/new");
+});
+
 //user show route
 router.get("/:id", function(req, res) {
 	User.findById(req.params.id)
@@ -13,11 +18,6 @@ router.get("/:id", function(req, res) {
 				user: user
 			});
 		});
-});
-
-//user new get route
-router.get("/createaccount", function(req, res){
-	res.render("users/new");
 });
 
 //user new post route
