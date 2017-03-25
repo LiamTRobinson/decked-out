@@ -5,7 +5,7 @@ var User = require("../models/userModel.js");
 var Deck = require("../models/deckModel.js");
 var Card = require("../models/cardModel.js");
 
-//decks new get route
+//DECKS NEW GET ROUTE
 router.get("/new", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
@@ -15,7 +15,7 @@ router.get("/new", function(req, res) {
 		});
 });
 
-//decks new post route
+//DECKS NEW POST ROUTE
 router.post("/", function(req, res) {
 	var deck = new Deck({
 		name: req.body.name,

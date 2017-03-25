@@ -5,22 +5,12 @@ var User = require("../models/userModel.js");
 var Card = require("../models/cardModel.js");
 var Deck = require("../models/deckModel.js");
 
-//user new get route
+//USER NEW GET ROUTE
 router.get("/createaccount", function(req, res){
 	res.render("users/new");
 });
 
-//user show route
-router.get("/:id", function(req, res) {
-	User.findById(req.params.id)
-		.exec(function(err, user) {
-			res.render("users/show", {
-				user: user
-			});
-		});
-});
-
-//user new post route
+//USER NEW POST ROUTE
 router.post("/", function(req, res) {
 	console.log(req.body);
 	var user = new User ({
@@ -35,6 +25,16 @@ router.post("/", function(req, res) {
 		console.log(user);
 		res.redirect("/sessions/login");
 	});
+});
+
+//USER SHOW ROUTE
+router.get("/:id", function(req, res) {
+	User.findById(req.params.id)
+		.exec(function(err, user) {
+			res.render("users/show", {
+				user: user
+			});
+		});
 });
 
 module.exports = router;

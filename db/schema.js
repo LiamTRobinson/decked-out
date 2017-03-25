@@ -1,10 +1,10 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-//use native promises
+//USE NATIVE PROMISES
 mongoose.Promise = global.Promise;
 
-//schemas
+//SCHEMAS
 var CardSchema = new Schema({
 	name: String,
 	names: [String],
@@ -31,12 +31,12 @@ var UserSchema = new Schema({
 	decks: [Number]
 });
 
-//set models for export
+//SET MODELS FOR EXPORT
 var CardModel = mongoose.model("Card", CardSchema);
 var DeckModel = mongoose.model("Deck", DeckSchema);
 var UserModel = mongoose.model("User", UserSchema);
 
-//export models
+//EXPORT MODELS
 module.exports = {
 	Card: CardModel,
 	Deck: DeckModel,
