@@ -7,7 +7,6 @@ mongoose.Promise = global.Promise;
 //SCHEMAS
 var CardSchema = new Schema({
 	name: String,
-	names: [],
 	manaCost: String,
 	cmc: Number,
 	type: String,
