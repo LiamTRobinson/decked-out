@@ -30,6 +30,7 @@ router.post("/", function(req, res) {
 			if (err) { console.log(err); }
 			user.decks.push(deck.id);
 			console.log(`${deck.id}, ${user}`);
+			res.redirect(`/users/${user.id}`);
 		});
 });
 

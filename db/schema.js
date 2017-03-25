@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 //SCHEMAS
 var CardSchema = new Schema({
 	name: String,
-	names: [String],
+	names: [],
 	manaCost: String,
 	cmc: Number,
 	type: String,
@@ -17,7 +17,7 @@ var CardSchema = new Schema({
 
 var DeckSchema = new Schema({
 	name: { type: String, required: true },
-	mainDeck: [Number],
+	mainDeck: [],
 	format: { type: String, required: true }
 });
 
@@ -27,8 +27,8 @@ var UserSchema = new Schema({
 	email: { type: String, required: true, unique: true },
 	firstName: String,
 	lastName: String,
-	cards: [Number],
-	decks: [Number]
+	cards: [],
+	decks: []
 });
 
 //SET MODELS FOR EXPORT
