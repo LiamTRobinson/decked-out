@@ -1,6 +1,7 @@
 <h1>{{deck.name}}</h1>
 <p><a href="/{{user}}/decks/{{deck.id}}/edit">Edit Deck</a></p>
 <p><a href="#">Sample Hand</a></p>
+<p><a href="/users/{{user}}">Back</a></p>
 <ul>
 	{{#each deck.cards}}
 		<li>{{this.name}}</li>
