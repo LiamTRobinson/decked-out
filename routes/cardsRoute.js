@@ -17,12 +17,9 @@ router.post("/new", function(req, res) {
 	var cardToFind = '"'+req.body.name+'"';
 	mtg.card.all({ name: cardToFind })
 		.on("data", card => {
-			res.send(card);
+			res.send(hello);
 		});
-			
 });
-
-
 
 
 module.exports = router;
