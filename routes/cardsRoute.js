@@ -14,36 +14,12 @@ router.get("/new", function(req, res) {
 
 //NEW CARD POST ROUTE
 router.post("/new", function(req, res) {
-	var cardToFind = `"`+`${req.body.name}`+`"`;
-	mtg.card.all({ name: cardToFind})
-		.on("data", function(err, card) {
-			if (err) { console.log(err); }
-			console.log(card);
-			var foundCard = new Card({
-				name: card.name,
-				manaCost: card.manaCost,
-				cmc: card.cmc,
-				type: card.type,
-				imageUrl: card.imageUrl,
-				cardSet: card.set,
-				quantity: 0
-			});
-			foundCard.save(function(err, foundCard) {
-				if (err) { console.log(err); }
-				User.findById(req.params.userId)
-					.exec(function(err, user) {
-						if (err) { console.log(err); }
-						else {
-							user.cards.push(foundCard);
-							user.save(function(err, user){
-								if (err) { console.log(err); }
-								console.log(user);
-								res.redirect(`/users/${req.params.userId}`);
-							});
-						}
-					});
-			});
+	var cardToFind = '"'+req.body.name+'"';
+	mtg.card.all({ name: cardToFind })
+		.on("data", card => {
+			res.send(card);
 		});
+			
 });
 
 

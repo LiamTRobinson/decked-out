@@ -11,7 +11,6 @@ var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 var hbs = require("hbs");
 var methodOverride = require("method-override");
-const mtg = require("mtgsdk");
 
 //USE PACKAGES
 app.use(logger('dev'));
