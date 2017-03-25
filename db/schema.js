@@ -12,7 +12,8 @@ var CardSchema = new Schema({
 	cmc: Number,
 	type: String,
 	imageUrl: String,
-	cardSet: String
+	cardSet: String,
+	quantity: Number
 });
 
 var DeckSchema = new Schema({

@@ -1,0 +1,17 @@
+<h1>Edit Deck</h1>
+<form>
+	<div>
+		<label for="name">Name: </label>
+		<input type="text" name="name" value="{{deck.name}}">
+	</div>
+	<div>
+		<label for="format">Format: </label>
+		<input type="text" name="format" value="{{deck.format}}">
+	</div>
+	{{#each deck.mainDeck}}
+		<div>
+			<label>{{this.name}}</label>
+			<input type="number" name="" value="{{this.quantity}}">
+		</div>
+	{{/each}}
+</form>
