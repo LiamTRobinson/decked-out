@@ -61,6 +61,30 @@ router.get("/:id/edit", function(req, res) {
 		});
 });
 
+//DECKS EDIT PATCH ROUTE
+router.patch("/:id/edit", function(req, res) {
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			var deckToEdit = User.decks.id(req.params.id);
+			deckToEdit.name = req.body.name;
+			deckToEdit.format = req.body.format;
+			user.save(function(err, user) {
+				if (err) { console.log(err); }
+				console.log(user);
+			});
+		});
+	Deck.findByIdAndUpdate(req.params.id, {
+		$set: {
+			name: req.body.name,
+			format: req.body.format
+		}
+	}, { new: true}, function(err, deck) {
+		if (err) { console.log(err); }
+		console.log(deck);
+		res.redirect(`${req.params.userId}/decks/${req.params.id}`);
+	});
+});
 
 
 module.exports = router;

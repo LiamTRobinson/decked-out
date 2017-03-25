@@ -1,5 +1,6 @@
 <h1>Edit Deck</h1>
-<form>
+<p><a href="#">Add Card</a></p>
+<form action="/{{user}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
 	<div>
 		<label for="name">Name: </label>
 		<input type="text" name="name" value="{{deck.name}}">
@@ -8,10 +9,7 @@
 		<label for="format">Format: </label>
 		<input type="text" name="format" value="{{deck.format}}">
 	</div>
-	{{#each deck.mainDeck}}
-		<div>
-			<label>{{this.name}}</label>
-			<input type="number" name="" value="{{this.quantity}}">
-		</div>
-	{{/each}}
+	<div>
+		<input type="submit" value="Submit Changes">
+	</div>
 </form>
