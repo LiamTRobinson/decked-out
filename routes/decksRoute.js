@@ -66,7 +66,7 @@ router.patch("/:id/edit", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			if (err) { console.log(err); }
-			var deckToEdit = User.decks.id(req.params.id);
+			var deckToEdit = user.decks.id(req.params.id);
 			deckToEdit.name = req.body.name;
 			deckToEdit.format = req.body.format;
 			user.save(function(err, user) {
@@ -79,10 +79,10 @@ router.patch("/:id/edit", function(req, res) {
 			name: req.body.name,
 			format: req.body.format
 		}
-	}, { new: true}, function(err, deck) {
+	}, { new: true }, function(err, deck) {
 		if (err) { console.log(err); }
-		console.log(deck);
-		res.redirect(`${req.params.userId}/decks/${req.params.id}`);
+		console.log(`${req.params.userId}, ${req.params.id}`);
+		res.redirect(`/${req.params.userId}/decks/${req.params.id}`);
 	});
 });
 
