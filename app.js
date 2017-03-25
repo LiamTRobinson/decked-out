@@ -46,6 +46,7 @@ var indexRoute = require('./routes/indexRoute');
 var usersRoute = require('./routes/usersRoute');
 var sessionsRoute = require("./routes/sessionsRoute");
 var decksRoute = require("./routes/decksRoute");
+var cardsRoute = require("./routes/cardsRoute");
 
 //VIEW ENGINE SETUP
 app.set('views', path.join(__dirname, 'views'));
@@ -56,6 +57,7 @@ app.use('/', indexRoute);
 app.use('/users', usersRoute);
 app.use("/sessions", sessionsRoute);
 app.use("/:userId/decks", decksRoute);
+app.use("/:userId/cards", cardsRoute);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
