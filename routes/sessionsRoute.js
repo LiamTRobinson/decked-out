@@ -15,7 +15,9 @@ router.post('/login', authHelpers.loginUser, function(req, res){
 
 //logout
 router.delete('/', function(req, res){
-  
+  req.session.destroy(function(){
+  	res.redirect("/");
+  });
 });
 
 module.exports = router;
