@@ -7,8 +7,13 @@ var Deck = require("../models/deckModel.js");
 
 //user show route
 router.get("/:id", function(req, res) {
-
-})
+	User.findById(req.params.id)
+		.exec(function(err, user) {
+			res.render("users/show", {
+				user: user
+			});
+		});
+});
 
 //user new route
 router.get("/createaccount", function(req, res){
@@ -16,7 +21,7 @@ router.get("/createaccount", function(req, res){
 });
 
 //user new post route
-router.get("/", function(req, res) {
+router.post("/", function(req, res) {
 	var user = new User ({
 		email: req.body.email,
 		firstName: req.body.firstName,
