@@ -28,8 +28,8 @@ router.post("/", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			if (err) { console.log(err); }
-			user.decks.push(deck.id);
-			console.log(`${deck.id}, ${user}`);
+			user.decks.push(deck);
+			console.log(`${deck}, ${user}`);
 			res.redirect(`/users/${user.id}`);
 		});
 });

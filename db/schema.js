@@ -17,7 +17,7 @@ var CardSchema = new Schema({
 
 var DeckSchema = new Schema({
 	name: { type: String, required: true },
-	mainDeck: [],
+	mainDeck: [CardSchema],
 	format: { type: String, required: true }
 });
 
@@ -27,8 +27,8 @@ var UserSchema = new Schema({
 	email: { type: String, required: true, unique: true },
 	firstName: String,
 	lastName: String,
-	cards: [],
-	decks: []
+	cards: [CardSchema],
+	decks: [DeckSchema]
 });
 
 //SET MODELS FOR EXPORT
