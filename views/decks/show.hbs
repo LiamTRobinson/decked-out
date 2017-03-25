@@ -1,0 +1,8 @@
+<h1>{{deck.name}}</h1>
+<p><a href="#">Edit Deck</a></p>
+<p><a href="#">Sample Hand</a></p>
+<ul>
+	{{#each deck.cards}}
+		<li>{{this.name}}</li>
+	{{/each}}
+</ul>

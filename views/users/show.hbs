@@ -6,7 +6,7 @@
 <a href="/{{user.id}}/decks/new"><p>New Deck</p></a>
 <ul>
 	{{#each user.decks}}
-		<li>{{this.name}}</li>
+		<li><a href="/{{../user.id}}/decks/{{this.id}}">{{this.name}}</a></li>
 	{{/each}}
 </ul>
 <hr>
