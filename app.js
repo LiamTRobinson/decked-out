@@ -1,17 +1,25 @@
 //packages
 var express = require('express');
+var app = express();
 require('dotenv').config()
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require("express-session");
+var MongoStore = require("connect-mongo")(session);
 var hbs = require("hbs");
 var methodOverride = require("method-override");
 const mtg = require("mtgsdk");
 
-//express set
-var app = express();
+//use packages
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 //mongoose stuff
 var mongoose = require("mongoose");
@@ -24,6 +32,14 @@ db.on('error', function(err){
 db.once('open', function() {
   console.log("database has been connected!");
 });
+
+//session stuff
+app.use(session({
+	secret: "dogzroolcatzdrule",
+	store: new MongoStore({ mongooseConnection: db}),
+	resave: false,
+	saveUninitialized: false
+}))
 
 //require routes
 var indexRoute = require('./routes/indexRoute');
@@ -41,12 +57,7 @@ app.use("/sessions", sessionsRoute);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(methodOverride("_method"));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

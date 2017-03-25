@@ -22,6 +22,7 @@ router.get("/:id", function(req, res) {
 
 //user new post route
 router.post("/", function(req, res) {
+	console.log(req.body);
 	var user = new User ({
 		email: req.body.email,
 		firstName: req.body.firstName,
