@@ -43,11 +43,23 @@ router.get("/:id", function(req, res) {
 		.exec(function(err, deck) {
 			if (err) { console.log(err); }
 			res.render("decks/show", {
-				deck: deck
+				deck: deck,
+				user: req.params.userId
 			});
 		});
 });
 
+//DECKS EDIT GET ROUTE
+router.get("/:id/edit", function(req, res) {
+	Deck.findById(req.params.id)
+		.exec(function(err, deck) {
+			if (err) { console.log(err); }
+			res.render("decks/edit", {
+				deck: deck,
+				user: req.params.userId
+			});
+		});
+});
 
 
 
