@@ -1,0 +1,14 @@
+<h1>New Deck</h1>
+<form action="/{{user.id}}/decks/" method="POST">
+	<div>
+		<label for="name">Name: </label>
+		<input type="text" name="name">
+	</div>
+	<div>
+		<label for="format">Format: </label>
+		<input type="text" name="format">
+	</div>
+	<div>
+		<input type="submit" value="Create Deck">
+	</div>
+</form>
