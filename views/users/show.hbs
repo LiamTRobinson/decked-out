@@ -1,6 +1,9 @@
 <h1>{{user.userName}}</h1>
+<form action="/sessions?_method=DELETE" method="POST">
+	<input type="submit" value="Log Out">
+</form>
 <h2>Decks</h2>
-<a href="#"><p>New Deck</p></a>
+<a href="/{{user.id}}/decks/new"><p>New Deck</p></a>
 <ul>
 	{{#each user.decks}}
 		<li>{{this.name}}</li>
