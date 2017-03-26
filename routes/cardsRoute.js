@@ -14,7 +14,9 @@ router.get("/new", function(req, res) {
 
 //NEW CARD POST ROUTE
 router.post("/new", function(req, res) {
+	var check = null;
 	var userToFind = null;
+	var newCard = null;
 	var cardToFind = req.body.name.toUpperCase();
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
@@ -25,9 +27,10 @@ router.post("/new", function(req, res) {
 				.exec(function(err, result){	
 					if (result === null){
 						var cardToSeach = '"'+cardToFind+'"';
-						mtg.card.all({ name: cardToSeach })
+						mtg.card.all({ name: cardToSeach, pageSize: 1 })
 							.on("data", stuff => {
-								var newCard = new Card({
+								var promise = new Promise(function(resolve, reject) {
+									newCard = new Card({
 									name: stuff.name.toUpperCase(),
 									manaCost: stuff.manaCost,
 									cmc: stuff.cmc,
@@ -36,13 +39,24 @@ router.post("/new", function(req, res) {
 									cardSet: stuff.set,
 									quantity: 0
 								});
-								newCard.save(function(err, card) {
+								if (check === null) {
+										resolve();
+									}
+									else {
+										reject();
+									}
+								});
+								promise.then(function() {
 									User.findById(req.params.userId)
-										.exec(function(err, user) {
-											user.cards.push(newCard);
-											user.save();
-											res.redirect(`/users/${req.params.userId}`);
-										});
+									.exec(function(err, user) {
+										user.cards.push(newCard);
+										user.save();
+										newCard.save();
+										check = 1;
+									return res.redirect(`/users/${req.params.userId}`);
+									});
+									
+									
 								});
 							});
 					}
