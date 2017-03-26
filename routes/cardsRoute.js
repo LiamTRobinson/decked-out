@@ -22,49 +22,47 @@ router.post("/new", function(req, res) {
 			console.log(userToFind);
 		})
 		.then(function(err) {
-
-
-	Card.findOne({ "name": cardToFind })
-		.exec(function(err, result){
-			console.log(result);
-			if (result === null){
-				var cardToSeach = '"'+cardToFind+'"';
-				mtg.card.all({ name: cardToSeach })
-					.on("data", stuff => {
-						var newCard = new Card({
-							name: stuff.name.toUpperCase(),
-							manaCost: stuff.manaCost,
-							cmc: stuff.cmc,
-							type: stuff.type,
-							imageUrl: stuff.imageUrl,
-							cardSet: stuff.set,
-							quantity: 0
-						});
-						newCard.save(function(err, card) {
-							User.findById(req.params.userId)
-								.exec(function(err, user) {
-									user.cards.push(newCard);
-									user.save();
+			Card.findOne({ "name": cardToFind })
+				.exec(function(err, result){
+					console.log(result);
+					if (result === null){
+						var cardToSeach = '"'+cardToFind+'"';
+						mtg.card.all({ name: cardToSeach })
+							.on("data", stuff => {
+								var newCard = new Card({
+									name: stuff.name.toUpperCase(),
+									manaCost: stuff.manaCost,
+									cmc: stuff.cmc,
+									type: stuff.type,
+									imageUrl: stuff.imageUrl,
+									cardSet: stuff.set,
+									quantity: 0
+								});
+								newCard.save(function(err, card) {
+									User.findById(req.params.userId)
+										.exec(function(err, user) {
+											user.cards.push(newCard);
+											user.save();
+											res.redirect(`/users/${req.params.userId}`);
+										});
+								});
+							});
+					}
+					else if (userToFind.cards.id(result.id).id === result.id){
+						res.redirect(`/users/${req.params.userId}`);
+					}
+					else {
+						console.log(result.id);
+						User.findById(req.params.userId)
+							.exec(function(err, user) {
+								user.cards.push(result);
+								user.save(function(err, user) {
+									if (err) { console.log(err); }
 									res.redirect(`/users/${req.params.userId}`);
 								});
-						});
-					});
-			}
-			else if (userToFind.cards.id(result.id).id === result.id){
-				res.redirect(`/users/${req.params.userId}`);
-			}
-			else {
-				console.log(result.id);
-				User.findById(req.params.userId)
-					.exec(function(err, user) {
-						user.cards.push(result);
-						user.save(function(err, user) {
-							if (err) { console.log(err); }
-							res.redirect(`/users/${req.params.userId}`);
-						});
-					});
-			}
-	});
+							});
+					}
+				});
 		});
 });
 
