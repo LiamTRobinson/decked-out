@@ -1,6 +1,7 @@
 <h1>Add a card</h1>
-<ul>
+<br>
 	{{#each cards}}
-		<li><a href="/{{user}}/decks/{{deck}}/edit/addcard/{{this.id}}">{{this.name}}</a></li>
+		<form action="/{{../user}}/decks/{{../deck}}/edit/addcard/{{this.id}}?_method=PATCH" method="POST">
+			<input type="submit" value="{{this.name}}">
+		</form>
 	{{/each}}
-</ul>
