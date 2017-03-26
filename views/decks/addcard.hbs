@@ -1,0 +1,6 @@
+<h1>Add a card</h1>
+<ul>
+	{{#each cards}}
+		<li><a href="/{{user}}/decks/{{deck}}/edit/addcard/{{this.id}}">{{this.name}}</a></li>
+	{{/each}}
+</ul>
