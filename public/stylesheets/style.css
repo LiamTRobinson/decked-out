@@ -13,6 +13,11 @@ h4  {
   max-width: 200px;
 }
 
+.mtg-card-paragraph {
+  width: 70%;
+  max-width: 200px;
+}
+
 .navroute {
   text-align: center;
 }
@@ -45,3 +50,8 @@ footer {
   background-repeat: no-repeat;
   margin-top: 5%;
 }
+
+
+
+
+

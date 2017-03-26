@@ -1,9 +1,38 @@
-<h1>{{deck.name}}</h1>
-<p><a href="/{{user}}/decks/{{deck.id}}/edit">Edit Deck</a></p>
-<p><a href="#">Sample Hand</a></p>
-<p><a href="/users/{{user}}">Back</a></p>
+<main>
+	<div id="header-wrap" class="row valign-wrapper">
+		<div class="col s4 m5 l5 pull-s1">
+			<h1><a href="/users/{{user.userId}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
+		</div>
+		<div class="col s4 pull-s1 push-m1 push-l1">
+			<form action="/sessions?_method=DELETE" method="POST">
+				<input type="submit" value="Log Out" class="btn grey darken-3">
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<h1>{{deck.name}}</h1>
+	</div>
+	<div class="row">
+		<a href="/{{user.id}}/decks/{{deck.id}}/edit" class="col s5 center btn">Edit Deck</a>
+		<a href="#" class="col s5 offset-s2 center btn disabled">Sample Hand</a>
+	</div>
+	<div class="row" id="decks-row">
+		{{#each deck.mainDeck}}
+			{{#if this.imageUrl}}
+				<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+				</div>
+			{{else}}
+				<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url('/images/cardBack.jpg'); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+					<h4 class="white-text">{{this.name}}</h4>
+					<h4 class="white-text">{{this.manaCost}}</h4>
+					<p class="white-text mtg-card-paragraph">{{this.text}}</p>
+				</div>
+			{{/if}}
+		{{/each}}
+	</div>		
+</main>
+
+
 <ul>
-	{{#each deck.cards}}
-		<li>{{this.name}}</li>
-	{{/each}}
+	
 </ul>

@@ -37,7 +37,8 @@ router.post("/new", function(req, res) {
 										type: stuff.type,
 										imageUrl: stuff.imageUrl,
 										cardSet: stuff.set,
-										quantity: 0
+										quantity: 0,
+										text: stuff.text
 									});
 									if (check === null) {
 										resolve();

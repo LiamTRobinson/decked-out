@@ -58,12 +58,16 @@ router.post("/", function(req, res) {
 
 //DECKS SHOW ROUTE
 router.get("/:id", function(req, res) {
-	Deck.findById(req.params.id)
-		.exec(function(err, deck) {
-			if (err) { console.log(err); }
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			var deckToShow = user.decks.id(req.params.id);
 			res.render("decks/show", {
-				deck: deck,
-				user: req.params.userId
+				deck: deckToShow,
+				user: user,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${user.id}/decks/`,
+				menuTwohref: ""
 			});
 		});
 });
