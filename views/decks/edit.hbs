@@ -1,15 +1,48 @@
-<h1>Edit Deck</h1>
-<p><a href="/{{user}}/decks/{{deck.id}}/edit/addcard">Add Card</a></p>
-<form action="/{{user}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
-	<div>
-		<label for="name">Name: </label>
-		<input type="text" name="name" value="{{deck.name}}">
+<main>
+	<div id="header-wrap" class="row valign-wrapper">
+		<div class="col s4 m5 l5 pull-s1">
+			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
+		</div>
+		<div class="col s4 pull-s1 push-m1 push-l1">
+			<form action="/sessions?_method=DELETE" method="POST">
+				<input type="submit" value="Log Out" class="btn grey darken-3">
+			</form>
+		</div>
 	</div>
-	<div>
-		<label for="format">Format: </label>
-		<input type="text" name="format" value="{{deck.format}}">
+	<div class="row">
+		<h1 class="col s12">Edit Deck</h1>
 	</div>
-	<div>
-		<input type="submit" value="Submit Changes">
+	<div class="row">
+		<h5><a href="/{{user.id}}/decks/{{deck.id}}/edit/addcard" class="col s6 offset-s3 btn">Add Card</a></h5>
 	</div>
-</form>
+	<div class="row">
+		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
+			<div class="col s12 input-field">
+				<label for="name">Name: </label>
+				<input type="text" name="name" value="{{deck.name}}" class="grey-text text-darken-3">
+			</div>
+			<div class="col s12 input-field">
+				<label for="format">Format: </label>
+				<input class="grey-text text-darken-3" type="text" name="format" value="{{deck.format}}">
+			</div>
+			<div>
+				<input type="submit" value="Submit Changes" class="btn grey darken-3">
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/delete?_method=DELETE" method="POST">
+			<input type="submit" value="DELETE DECK" class="btn grey darken-3">
+		</form>
+	</div>
+</main>
+
+
+
+
+
+
+
+	
+	
+	

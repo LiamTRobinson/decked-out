@@ -74,12 +74,17 @@ router.get("/:id", function(req, res) {
 
 //DECKS EDIT GET ROUTE
 router.get("/:id/edit", function(req, res) {
-	Deck.findById(req.params.id)
-		.exec(function(err, deck) {
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
 			if (err) { console.log(err); }
+			var deckToEdit = user.decks.id(req.params.id);
 			res.render("decks/edit", {
-				deck: deck,
-				user: req.params.userId
+				deck: deckToEdit,
+				user: user,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${user.id}/decks/`,
+				menuTwohref: ""
 			});
 		});
 });
