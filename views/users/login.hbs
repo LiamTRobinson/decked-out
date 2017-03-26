@@ -1,14 +1,21 @@
-<form action="/sessions/login" method="POST">
-	<div>
-		<label for="email">Email: </label>
-		<input type="text" name="email">
-	</div>
-	<div>
-		<label for="password">Password: </label>
-		<input type="text" name="password">
-	</div>
-	<div>
-		<input type="submit" value="Log In">
-	</div>
-</form>
+<div class="row">
+	<form action="/sessions/login" method="POST" class="col s10 offset-s2">
+		<div class="row">
+			<div class="input-field col s12">
+				<label for="email">Email: </label>
+				<input type="text" name="email">
+			</div>
+			<div class="input-field col s12">
+				<label for="password">Password: </label>
+				<input type="text" name="password">
+			</div>
+			<div>
+				<input type="submit" value="Log In" class="btn grey darken-3">
+			</div>
+		</div>
+	</form>
+</div>
+
+	
+
 

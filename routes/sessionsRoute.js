@@ -5,7 +5,10 @@ var authHelpers = require('../helpers/authHelpers.js');
 
 //LOGIN PAGE RENDER
 router.get('/login', function(req, res) {
-  res.render("users/login");
+  res.render("users/login", {
+  	menuOne: "Back",
+  	menuOnehref: "/"
+  });
 });
 
 //LOGIN CHECK
