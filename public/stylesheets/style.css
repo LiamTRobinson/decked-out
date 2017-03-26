@@ -1,33 +1,46 @@
- body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
-  main {
-    flex: 1 0 auto;
-  }
+main {
+  flex: 1 0 auto;
+}
 
-  .navroute {
-  	text-align: center;
-  }
+h4  {
+  width: 70%;
+  max-width: 200px;
+}
 
- #logo-wrapper {
+.navroute {
+  text-align: center;
+}
+
+#logo-wrapper {
  	display: flex;
  	justify-content: center;
  	align-items: center;
  	padding: 10px;
- }
+}
 
- .footer-copyright {
+.footer-copyright {
  	text-align: center;
- }
+}
 
- footer {
+footer {
  	border-radius: 100% 100% 0 0;
- }
+}
 
- #mtg-logo {
+#mtg-logo {
  	width: 1000px;
  	height: 200px;
- }
+}
+
+.deck-container {
+  background: url("/images/cardBack.jpg");
+  background-size: cover;
+  background-size: contain;
+  height: 300px;
+  background-repeat: no-repeat;
+}

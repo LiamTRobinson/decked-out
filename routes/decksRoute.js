@@ -5,6 +5,21 @@ var User = require("../models/userModel.js");
 var Deck = require("../models/deckModel.js");
 var Card = require("../models/cardModel.js");
 
+//DECKS INDEX ROUTE
+router.get("/", function(req, res) {
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+				res.render("decks/index", {
+					user: user,
+					menuOne: "Decks",
+					menuTwo: "Cards",
+					menuOnehref: `/${user.id}/decks/`,
+					menuTwohref: ""
+				});		
+		});	
+});
+
 //DECKS NEW GET ROUTE
 router.get("/new", function(req, res) {
 	User.findById(req.params.userId)

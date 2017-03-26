@@ -13,7 +13,7 @@ router.get('/login', function(req, res) {
 
 //LOGIN CHECK
 router.post('/login', authHelpers.loginUser, function(req, res){
-  res.redirect(`/users/${req.session.currentUser._id}`);
+  res.redirect(`/${req.session.currentUser._id}/decks/`);
 });
 
 //LOGOUT

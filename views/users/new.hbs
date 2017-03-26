@@ -1,36 +1,42 @@
-<div class="row">
-	<form action="/users" method="POST" class="col s12 offset-l2 offset-m2">
-		<div class="row">
-			<div class="col s6 input-field">
-				<label for="firstName">First Name: </label>
-				<input type="text" name="firstName">
+<main class="valign-wrapper">
+	<div class="row">
+		<form action="/users" method="POST" class="col s12 offset-l2 offset-m2">
+			<div class="row">
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
+					<label for="firstName">First Name: </label>
+					<input type="text" name="firstName">
+				</div>
+				<div class="col 6 input-field">
+					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
+					<label for="lastName">Last Name: </label>
+					<input type="text" name="lastName">
+				</div>
 			</div>
-			<div class="col 6 input-field">
-				<label for="lastName">Last Name: </label>
-				<input type="text" name="lastName">
+			<div class="row">
+				<div class="col s12 input-field">
+					<i class="material-icons prefix hide-on-small-only">email</i>
+					<label for="email">Email: </label>
+					<input type="text" name="email">
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col s12 input-field">
-				<label for="email">Email: </label>
-				<input type="text" name="email">
+			<div class="row">
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">person_pin</i>
+					<label for="userName">User Name: </label>
+					<input type="text" name="userName">
+				</div>
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">lock</i>
+					<label for="password">Password: </label>
+					<input type="text" name="password">
+				</div>	
 			</div>
-		</div>
-		<div class="row">
-			<div class="col s6 input-field">
-				<label for="userName">User Name: </label>
-				<input type="text" name="userName">
+			<div>
+				<input type="submit" value="Create Account" class="btn grey darken-3">
 			</div>
-			<div class="col s6 input-field">
-				<label for="password">Password: </label>
-				<input type="text" name="password">
-			</div>	
-		</div>
-		<div>
-			<input type="submit" value="Create Account" class="btn grey darken-3">
-		</div>
-	</form>
-</div>
-	
+		</form>
+	</div>
+</main>	
 	
 

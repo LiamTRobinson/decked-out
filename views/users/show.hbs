@@ -1,8 +1,39 @@
-<h1>{{user.userName}}</h1>
-<form action="/sessions?_method=DELETE" method="POST">
-	<input type="submit" value="Log Out">
-</form>
-<h2>Decks</h2>
+<main>
+	<div id="header-wrap" class="row valign-wrapper">
+		<div class="col s4">
+			<h1><a href="" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
+		</div>
+		<div class="col s4">
+			<form action="/sessions?_method=DELETE" method="POST">
+				<input type="submit" value="Log Out" class="btn grey darken-3">
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			EDIT USER ROUTE WILL GO HERE
+		</div>
+	</div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <h2>Decks</h2>
 <a href="/{{user.id}}/decks/new"><p>New Deck</p></a>
 <ul>
 	{{#each user.decks}}
@@ -16,4 +47,4 @@
 	{{#each user.cards}}
 		<li>{{this.name}}</li>
 	{{/each}}
-</ul>
+</ul> -->
