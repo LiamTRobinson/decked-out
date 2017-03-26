@@ -1,9 +1,9 @@
 <main>
 	<div id="header-wrap" class="row valign-wrapper">
-		<div class="col s4">
+		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
 		</div>
-		<div class="col s4">
+		<div class="col s4 pull-s1 push-m1 push-l1">
 			<form action="/sessions?_method=DELETE" method="POST">
 				<input type="submit" value="Log Out" class="btn grey darken-3">
 			</form>
@@ -21,18 +21,8 @@
 		{{#each user.decks}}
 			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 deck-container">
 				<a href="/{{../user.id}}/decks/{{this.id}}"><h4 class="white-text  hoverable">{{this.name}}</h4></a>
+				<h4 class="white-text">{{this.format}}</h4>
 			</div>
 		{{/each}}
-	</div>
-
-<ul>
-	
-</ul>
-
-
-
-
-
-		
-	
+	</div>		
 </main>

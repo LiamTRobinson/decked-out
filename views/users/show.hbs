@@ -1,18 +1,51 @@
 <main>
 	<div id="header-wrap" class="row valign-wrapper">
-		<div class="col s4">
+		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
 		</div>
-		<div class="col s4">
+		<div class="col s4 pull-s1 push-m1 push-l1">
 			<form action="/sessions?_method=DELETE" method="POST">
 				<input type="submit" value="Log Out" class="btn grey darken-3">
 			</form>
 		</div>
-	</div>
+	</div>		
 	<div class="row">
-		<div>
-			EDIT USER ROUTE WILL GO HERE
-		</div>
+		<form action="/users/{{user.id}}?_method=PATCH" method="POST" class="col s12">
+			<div class="row">
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
+					<label for="firstName">First Name: </label>
+					<input type="text" name="firstName" class="grey-text text-darken-3" value="{{user.firstName}}">
+				</div>
+				<div class="col 6 input-field">
+					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
+					<label for="lastName">Last Name: </label>
+					<input type="text" name="lastName" class="grey-text text-darken-3" value="{{user.lastName}}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 input-field">
+					<i class="material-icons prefix hide-on-small-only">email</i>
+					<label for="email">Email: </label>
+					<input type="text" name="email" class="grey-text text-darken-3" value="{{user.email}}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">person_pin</i>
+					<label for="userName">User Name: </label>
+					<input type="text" name="userName" class="grey-text text-darken-3" value="{{user.userName}}">
+				</div>
+				<div class="col s6 input-field">
+					<i class="material-icons prefix hide-on-small-only">lock</i>
+					<label for="password">Password: </label>
+					<input type="text" name="password" class="grey-text text-darken-3" value="{{user.password}}">
+				</div>	
+			</div>
+			<div>
+				<input type="submit" value="Save Changes" class="btn grey darken-3">
+			</div>
+		</form>
 	</div>
 </main>
 

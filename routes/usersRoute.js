@@ -44,4 +44,25 @@ router.get("/:id", function(req, res) {
 		});
 });
 
+//USER PATCH ROUTE
+router.patch("/:id", function(req, res) {
+	User.findByIdAndUpdate(req.params.id, {
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		email: req.body.email,
+		password: req.body.password,
+		userName: req.body.userName
+	}, { new: true })
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			res.render("decks/index", {
+				user: user,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${user.id}/decks/`,
+				menuTwohref: ""
+			});
+		});
+});
+
 module.exports = router;
