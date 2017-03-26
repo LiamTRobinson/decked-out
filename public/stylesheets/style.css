@@ -11,3 +11,22 @@
   .navroute {
   	text-align: center;
   }
+
+ #logo-wrapper {
+ 	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+ }
+
+ .footer-copyright {
+ 	text-align: center;
+ }
+
+ footer {
+ 	border-radius: 100% 100% 0 0;
+ }
+
+ #mtg-logo {
+ 	width: 1000px;
+ 	height: 200px;
+ }
