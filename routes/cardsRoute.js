@@ -38,8 +38,8 @@ router.post("/new", function(req, res) {
 									imageUrl: stuff.imageUrl,
 									cardSet: stuff.set,
 									quantity: 0
-								});
-								if (check === null) {
+									});
+									if (check === null) {
 										resolve();
 									}
 									else {
@@ -53,10 +53,8 @@ router.post("/new", function(req, res) {
 										user.save();
 										newCard.save();
 										check = 1;
-									return res.redirect(`/users/${req.params.userId}`);
-									});
-									
-									
+										return res.redirect(`/users/${req.params.userId}`);
+									});	
 								});
 							});
 					}
