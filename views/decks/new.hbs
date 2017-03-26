@@ -1,14 +1,56 @@
-<h1>New Deck</h1>
-<form action="/{{user.id}}/decks" method="POST">
-	<div>
-		<label for="name">Name: </label>
-		<input type="text" name="name">
+<main>
+	<div class="row">
+		<div id="header-wrap" class="row valign-wrapper">
+			<div class="col s4 m5 l5 pull-s1">
+				<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
+			</div>
+			<div class="col s4 pull-s1 push-m1 push-l1">
+				<form action="/sessions?_method=DELETE" method="POST">
+					<input type="submit" value="Log Out" class="btn grey darken-3">
+				</form>
+			</div>
+		</div>
 	</div>
-	<div>
-		<label for="format">Format: </label>
-		<input type="text" name="format">
+	<div class="row">
+		<h1 class="col s12">New Deck</h1>
+		<form action="/{{user.id}}/decks" method="POST" class="col s12">
+			<div class="row">
+				<div class="col s12 input-field">
+					<label for="name">Name: </label>
+					<input type="text" name="name" class="grey-text text-darken-3">
+				</div>
+				<div class="col s12 input-field">
+					<label for="format">Format: </label>
+					<input type="text" name="format" class="grey-text text-darken-3">
+				</div>
+				<div>
+					<input type="submit" value="Create Deck" class="btn grey darken-3">
+				</div>
+			</div>
+		</form>
 	</div>
-	<div>
-		<input type="submit" value="Create Deck">
-	</div>
-</form>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
