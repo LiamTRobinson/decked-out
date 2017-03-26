@@ -19,12 +19,10 @@ router.post("/new", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			userToFind = user;
-			console.log(userToFind);
 		})
 		.then(function(err) {
 			Card.findOne({ "name": cardToFind })
-				.exec(function(err, result){
-					console.log(result);
+				.exec(function(err, result){	
 					if (result === null){
 						var cardToSeach = '"'+cardToFind+'"';
 						mtg.card.all({ name: cardToSeach })
@@ -52,7 +50,6 @@ router.post("/new", function(req, res) {
 						res.redirect(`/users/${req.params.userId}`);
 					}
 					else {
-						console.log(result.id);
 						User.findById(req.params.userId)
 							.exec(function(err, user) {
 								user.cards.push(result);

@@ -86,5 +86,28 @@ router.patch("/:id/edit", function(req, res) {
 	});
 });
 
+//DECKS ADD CARD GET ROUTE
+router.get("/:id/edit/addcard", function(req, res) {
+	User.getById(req.params.userId)
+		.exec(function(err, user) {
+			var cards = user.cards;
+			var deck = user.decks.id(req.params.id);
+			var cardsToShow = deck.filter(function(card) {
+				for (var i = 0; i < cards.length; i++) {
+					if (card.id === cards[i].id) {
+						return false
+					}
+				}
+				return true;
+			});
+			res.render("decks/addcard", {
+				cards: cardsToShow,
+				user: req.params.userId,
+				deck: req.params.id
+			});
+		});
+	
+});
+
 
 module.exports = router;
