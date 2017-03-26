@@ -7,7 +7,10 @@ var Deck = require("../models/deckModel.js");
 
 //USER NEW GET ROUTE
 router.get("/createaccount", function(req, res){
-	res.render("users/new");
+	res.render("users/new", {
+		menuOne: "Back",
+		menuOnehref: "/"
+	});
 });
 
 //USER NEW POST ROUTE
