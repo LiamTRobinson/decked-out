@@ -160,4 +160,23 @@ router.patch("/:id/edit/addcard/:cardId", function(req, res) {
 	
 });
 
+//DECKS DELETE ROUTE
+router.delete("/:id/delete", function(req, res) {
+	Deck.findByIdAndRemove(req.params.id, function(err, deck) {
+		if (err) { conosle.log(err); }
+		console.log(deck);
+	});
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			for (var i = 0; i < user.decks.length; i++) {
+				if (user.decks[i].id === req.params.id) {
+					user.decks.splice(i, 1);
+					user.save();
+					return
+				}
+			}
+		});
+});
+
 module.exports = router;
