@@ -31,13 +31,13 @@ router.post("/new", function(req, res) {
 							.on("data", stuff => {
 								var promise = new Promise(function(resolve, reject) {
 									newCard = new Card({
-									name: stuff.name.toUpperCase(),
-									manaCost: stuff.manaCost,
-									cmc: stuff.cmc,
-									type: stuff.type,
-									imageUrl: stuff.imageUrl,
-									cardSet: stuff.set,
-									quantity: 0
+										name: stuff.name.toUpperCase(),
+										manaCost: stuff.manaCost,
+										cmc: stuff.cmc,
+										type: stuff.type,
+										imageUrl: stuff.imageUrl,
+										cardSet: stuff.set,
+										quantity: 0
 									});
 									if (check === null) {
 										resolve();
