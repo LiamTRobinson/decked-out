@@ -43,11 +43,12 @@
 						<form action="/{{../user.id}}/decks/{{../deck.id}}/cardRemove/{{this.id}}?_method=PATCH" method="POST" class="col s12">
 							<button name="action" type="submit" class="btn-floating red">X</button>
 						</form>
-						<form class="col s5 card-quantity">
+						<form action="/{{../user.id}}/decks/{{../deck.id}}/quantity/{{this.id}}?_method=PATCH" method="POST" class="col s5 card-quantity">
 							<div class="input-field grey darken-3">
 								<label for="quantity" class="white-text grey darken-3">Quantity</label>
 								<input type="number" name="quantity" class="white-text" value="{{this.quantity}}">
 							</div>
+							<input type="submit" class="btn  col s12 card-quantity grey darken-3" value="SAVE">
 						</form>
 					</div>
 				</div>
@@ -57,11 +58,12 @@
 						<form action="/{{../user.id}}/decks/{{../deck.id}}/cardRemove/{{this.id}}?_method=PATCH" method="POST" class="col s12">
 							<button name="action" type="submit" class="btn-floating red">X</button>
 						</form>
-						<form action="" method="" class="col s5 card-quantity">
+						<form action="/{{../user.id}}/decks/{{../deck.id}}/quantity/{{this.id}}?_method=PATCH" method="POST" class="col s5 card-quantity">
 							<div class="input-field grey darken-3">
 								<label for="quantity" class="white-text grey darken-3">Quantity</label>
 								<input type="number" name="quantity" class="white-text" value="{{this.quantity}}">
 							</div>
+							<input type="submit" class="btn  col s12 card-quantity grey darken-3" value="SAVE">
 						</form>
 					</div>
 					<h4 class="white-text">{{this.name}}</h4>
