@@ -205,7 +205,8 @@ router.get("/:id/edit/addcard", function(req, res) {
 				deck: deck,
 				menuOne: "Decks",
 				menuTwo: "Cards",
-				menuOnehref: `/${req.params.userId}/decks`
+				menuOnehref: `/${req.params.userId}/decks`,
+				menuTwohref: `/${req.params.userId}/cards`
 			});
 		});
 });
