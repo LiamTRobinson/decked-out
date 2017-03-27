@@ -148,14 +148,21 @@ router.get("/:id/edit", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			if (err) { console.log(err); }
+			var totalCards = 0;
 			var deckToEdit = user.decks.id(req.params.id);
+			for (var i = 0; i < deckToEdit.mainDeck.length; i++) {
+				for (var j = 0; j < deckToEdit.mainDeck[i].quantity; j++) {
+					totalCards++
+				}
+			}
 			res.render("decks/edit", {
 				deck: deckToEdit,
 				user: user,
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: `/${user.id}/cards/`
+				menuTwohref: `/${user.id}/cards/`,
+				totalCards: totalCards
 			});
 		});
 });
