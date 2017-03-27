@@ -20,12 +20,14 @@
 	<div class="row">
 		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
 			<div class="col s12 input-field">
+				<i class="material-icons prefix hide-on-small-only">recent_actors</i>
 				<label for="name">Name: </label>
-				<input type="text" name="name" value="{{deck.name}}" class="grey-text text-darken-3">
+				<input type="text" name="name" value="{{deck.name}}" class="grey-text text-darken-3 validate" data-length="12" required>
 			</div>
 			<div class="col s12 input-field">
+				<i class="material-icons prefix hide-on-small-only">toc</i>
 				<label for="format">Format: </label>
-				<input class="grey-text text-darken-3" type="text" name="format" value="{{deck.format}}">
+				<input class="grey-text text-darken-3 validate" type="text" name="format" value="{{deck.format}}" data-length="12" required>
 			</div>
 			<div>
 				<input type="submit" value="Submit Changes" class="btn grey darken-3">

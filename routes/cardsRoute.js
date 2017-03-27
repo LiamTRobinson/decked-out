@@ -26,7 +26,11 @@ router.get("/new", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			res.render("cards/new", {
-				user: user
+				user: user,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${req.params.userId}/decks`,
+				menuTwohref: `/${req.params.userId}/cards`
 			});
 		});
 });

@@ -18,12 +18,14 @@
 		<form action="/{{user.id}}/decks" method="POST" class="col s12">
 			<div class="row">
 				<div class="col s12 input-field">
+					<i class="material-icons prefix hide-on-small-only">recent_actors</i>
 					<label for="name">Name: </label>
-					<input type="text" name="name" class="grey-text text-darken-3">
+					<input type="text" name="name" class="grey-text text-darken-3 validate" data-length="12" required>
 				</div>
 				<div class="col s12 input-field">
+					<i class="material-icons prefix hide-on-small-only">toc</i>
 					<label for="format">Format: </label>
-					<input type="text" name="format" class="grey-text text-darken-3">
+					<input type="text" name="format" class="grey-text text-darken-3 validate" data-length="12" required>
 				</div>
 				<div>
 					<input type="submit" value="Create Deck" class="btn grey darken-3">
