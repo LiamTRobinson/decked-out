@@ -47,12 +47,26 @@
 			</div>
 		</form>
 	</div>
+	<div class="row">
+		<div>
+			<a href="#delete-user" class=" btn grey darken-3">Delete Account</a>
+		</div>
+	</div>
 </main>
 
 
 
 
 
+<div id="delete-user" class="modal">
+	<div class="modal-content">
+		<h1>Are you sure you want to delete your account?</h1>
+		<h2>This is not reversible!</h2>
+	</div>
+	<div class="modal-footer row">
+		<a href="#!" class="modal-action modal-close btn col s6">No</a><form action="/users/{{user.id}}?_method=DELETE" method="POST" class="col s6"><button class="btn" type="submit" name="action">Yes</button></form>
+	</div>
+</div>
 
 
 
@@ -61,16 +75,3 @@
 
 
 
-
-
-
-
-
-<!--
-<h2>Cards</h2>
-<a href="/{{user.id}}/cards/new"><p>Add Card</p></a>
-<ul>
-	{{#each user.cards}}
-		<li>{{this.name}}</li>
-	{{/each}}
-</ul> -->

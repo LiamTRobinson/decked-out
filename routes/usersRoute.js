@@ -65,4 +65,22 @@ router.patch("/:id", function(req, res) {
 		});
 });
 
+//USER DELETE ROUTE
+router.delete("/:id", function(req, res) {
+	User.findById(req.params.id)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			user.decks.forEach(function(deck) {
+				Deck.findByIdAndRemove(deck.id)
+					.exec(function(err, deck) {
+						console.log(deck);
+					});
+			});
+		});
+	User.findByIdAndRemove(req.params.id)
+		.exec(function(err, user) {
+			res.redirect("/");
+		});
+});
+
 module.exports = router;
