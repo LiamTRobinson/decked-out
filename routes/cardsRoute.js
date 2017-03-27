@@ -36,11 +36,9 @@ router.post("/new", function(req, res) {
 										cmc: stuff.cmc,
 										type: stuff.type,
 										imageUrl: stuff.imageUrl,
-										cardSet: stuff.set,
-										quantity: 0,
-										text: stuff.text
+										quantity: 0
 									});
-									if (check === null) {
+									if (check === null && newCard.imageUrl.length > 0) {
 										resolve();
 									}
 									else {
