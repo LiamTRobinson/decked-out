@@ -1,0 +1,32 @@
+<main>
+	<div id="header-wrap" class="row valign-wrapper">
+		<div class="col s4 m5 l5 pull-s1">
+			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
+		</div>
+		<div class="col s4 pull-s1 push-m1 push-l1">
+			<form action="/sessions?_method=DELETE" method="POST">
+				<input type="submit" value="Log Out" class="btn grey darken-3">
+			</form>
+		</div>
+	</div>
+	<div class="row valign-wrapper black">
+		<div class="col s4">
+			<h5 class="white-text">Card Collection</h5>
+		</div>
+		<div class="col s6 center">
+			<a href="/{{user.id}}/cards/new"><p class="btn">Add Cards</p></a>
+		</div>
+	</div>
+	<div class="row" id="decks-row">
+		{{#each user.cards}}
+			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+				<br>
+				<br>
+				<br>
+				<form action="/{{../user.id}}/cards/{{this.id}}/delete?_method=DELETE" method="POST">
+					<button class="btn-floating btn-large hoverable center red darken-3" type="submit">delete</button>
+				</form>
+			</div>
+		{{/each}}
+	</div>	
+</main>

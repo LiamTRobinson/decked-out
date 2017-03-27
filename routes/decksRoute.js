@@ -24,7 +24,7 @@ router.get("/new", function(req, res) {
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: ""
+				menuTwohref: `/${user.id}/cards/`
 			});
 		});
 });
@@ -71,7 +71,7 @@ router.get("/", function(req, res) {
 					menuOne: "Decks",
 					menuTwo: "Cards",
 					menuOnehref: `/${user.id}/decks/`,
-					menuTwohref: ""
+					menuTwohref: `/${user.id}/cards/`
 				});		
 		});	
 });
@@ -87,7 +87,7 @@ router.get("/:id", function(req, res) {
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: ""
+				menuTwohref: `/${user.id}/cards/`
 			});
 		});
 });
@@ -143,7 +143,7 @@ router.get("/:id/edit", function(req, res) {
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: ""
+				menuTwohref: `/${user.id}/cards/`
 			});
 		});
 });
