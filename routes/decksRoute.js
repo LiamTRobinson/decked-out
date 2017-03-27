@@ -52,7 +52,7 @@ router.post("/", function(req, res) {
 				if (err) { console.log(err); }
 				console.log(`${deck}, ${user}`);
 			});
-			res.redirect(`/users/${user.id}`);
+			res.redirect(`/${user.id}/decks`);
 		});
 });
 
@@ -173,10 +173,37 @@ router.delete("/:id/delete", function(req, res) {
 				if (user.decks[i].id === req.params.id) {
 					user.decks.splice(i, 1);
 					user.save();
+					res.redirect(`/${req.params.userId}/decks`);
+				}
+			}
+		});
+});
+
+//DECKS REMOVE CARD ROUTE
+router.patch("/:id/cardRemove/:cardId", function(req, res) {
+	Deck.findById(req.params.id)
+		.exec(function(err, deck) {
+			if (err) { console.log(err); }
+			for (var i = 0; i < deck.mainDeck.length; i++) {
+				if (deck.mainDeck[i].id === req.params.cardId) {
+					deck.mainDeck.splice(i, 1);
+					deck.save();
 					return
 				}
 			}
 		});
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			deckToEdit = user.decks.id(req.params.id);
+			for (var i = 0; i < deckToEdit.mainDeck.length; i++) {
+				if (deckToEdit.mainDeck[i].id === req.params.cardId) {
+					deckToEdit.mainDeck.splice(i, 1);
+					user.save();
+					res.redirect(`/${req.params.userId}/decks/${req.params.id}/edit`);
+				}
+			}
+		})
 });
 
 module.exports = router;

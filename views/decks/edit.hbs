@@ -35,6 +35,42 @@
 			<input type="submit" value="DELETE DECK" class="btn grey darken-3">
 		</form>
 	</div>
+	<div class="row" id="decks-row">
+		{{#each deck.mainDeck}}
+			{{#if this.imageUrl}}
+				<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+					<div class="row">
+						<form action="/{{../user.id}}/decks/{{../deck.id}}/cardRemove/{{this.id}}?_method=PATCH" method="POST" class="col s12">
+							<button name="action" type="submit" class="btn-floating red">X</button>
+						</form>
+						<form class="col s5 card-quantity">
+							<div class="input-field grey darken-3">
+								<label for="quantity" class="white-text grey darken-3">Quantity</label>
+								<input type="number" name="quantity" class="white-text" value="{{this.quantity}}">
+							</div>
+						</form>
+					</div>
+				</div>
+			{{else}}
+				<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url('/images/cardBack.jpg'); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+					<div class="row">
+						<form action="/{{../user.id}}/decks/{{../deck.id}}/cardRemove/{{this.id}}?_method=PATCH" method="POST" class="col s12">
+							<button name="action" type="submit" class="btn-floating red">X</button>
+						</form>
+						<form action="" method="" class="col s5 card-quantity">
+							<div class="input-field grey darken-3">
+								<label for="quantity" class="white-text grey darken-3">Quantity</label>
+								<input type="number" name="quantity" class="white-text" value="{{this.quantity}}">
+							</div>
+						</form>
+					</div>
+					<h4 class="white-text">{{this.name}}</h4>
+					<h4 class="white-text">{{this.manaCost}}</h4>
+					<p class="white-text mtg-card-paragraph">{{this.text}}</p>
+				</div>
+			{{/if}}
+		{{/each}}
+	</div>
 </main>
 
 

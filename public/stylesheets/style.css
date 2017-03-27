@@ -51,6 +51,10 @@ footer {
   margin-top: 5%;
 }
 
+.card-quantity {
+  max-width: 75px;
+}
+
 
 
 
