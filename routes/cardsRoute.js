@@ -5,6 +5,17 @@ const mtg = require("mtgsdk");
 var Card = require("../models/cardModel.js");
 var User = require("../models/userModel.js");
 
+//CARDS INDEX ROUTE
+router.get("/", function(req, res) {
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			res.render("cards/index", {
+				user: user
+			});
+		});
+});
+
 //NEW CARD GET ROUTE
 router.get("/new", function(req, res) {
 	res.render("cards/new", {

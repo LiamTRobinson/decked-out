@@ -30,7 +30,7 @@ router.post("/", function(req, res) {
 	});
 });
 
-//USER SHOW ROUTE
+//USER SHOW/EDIT ROUTE
 router.get("/:id", function(req, res) {
 	User.findById(req.params.id)
 		.exec(function(err, user) {
@@ -39,7 +39,7 @@ router.get("/:id", function(req, res) {
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: ""
+				menuTwohref: `/${user.id}/cards/`
 			});
 		});
 });
@@ -60,7 +60,7 @@ router.patch("/:id", function(req, res) {
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: ""
+				menuTwohref: `/${user.id}/cards/`
 			});
 		});
 });
