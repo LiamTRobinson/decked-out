@@ -4,6 +4,7 @@ const mtg = require("mtgsdk");
 
 var Card = require("../models/cardModel.js");
 var User = require("../models/userModel.js");
+var Deck = require("../models/deckModel.js");
 
 //CARDS INDEX ROUTE
 router.get("/", function(req, res) {
@@ -11,16 +12,23 @@ router.get("/", function(req, res) {
 		.exec(function(err, user) {
 			if (err) { console.log(err); }
 			res.render("cards/index", {
-				user: user
+				user: user,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${req.params.userId}/decks`,
+				menuTwohref: `/${req.params.userId}/cards`
 			});
 		});
 });
 
 //NEW CARD GET ROUTE
 router.get("/new", function(req, res) {
-	res.render("cards/new", {
-		user: req.params.userId
-	});
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			res.render("cards/new", {
+				user: user
+			});
+		});
 });
 
 //NEW CARD POST ROUTE
@@ -63,13 +71,13 @@ router.post("/new", function(req, res) {
 										user.save();
 										newCard.save();
 										check = 1;
-										return res.redirect(`/users/${req.params.userId}`);
+										return res.redirect(`/${req.params.userId}/cards`);
 									});	
 								});
 							});
 					}
-					else if (userToFind.cards.id(result.id).id === result.id){
-						res.redirect(`/users/${req.params.userId}`);
+					else if (userToFind.cards.id(result.id) !== null){
+						res.redirect(`/${req.params.userId}/cards`);
 					}
 					else {
 						User.findById(req.params.userId)
@@ -77,7 +85,7 @@ router.post("/new", function(req, res) {
 								user.cards.push(result);
 								user.save(function(err, user) {
 									if (err) { console.log(err); }
-									res.redirect(`/users/${req.params.userId}`);
+									res.redirect(`/${req.params.userId}/cards`);
 								});
 							});
 					}
@@ -85,5 +93,40 @@ router.post("/new", function(req, res) {
 		});
 });
 
+//CARD DELETE ROUTE
+router.delete("/:id/delete", function(req, res) {
+	var deckToEdit = null;
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			if (err) { console.log(err); }
+			for (var i = 0; i < user.decks.length; i++) {
+				for (var j = 0; j < user.decks[i].mainDeck.length; j++) {
+					if (user.decks[i].mainDeck[j].id === req.params.id) {
+						user.decks[i].mainDeck.splice(j, 1);
+						deckToEdit = user.decks[i].id;
+						user.save(function(err, user) {
+							Deck.findById(deckToEdit)
+								.exec(function(err, deck) {
+									for (var l = 0; l < deck.mainDeck.length; l++) {
+										if (deck.mainDeck[l].id === req.params.id) {
+											deck.mainDeck.splice(l, 1);
+											deck.save();
+										}
+									}
+								});
+						});
+					}
+				}
+			}
+			for (var k = 0; k < user.cards.length; k++) {
+				if (user.cards[k].id === req.params.id) {
+					console.log(user.cards[k]);
+					user.cards.splice(k, 1);
+					user.save();
+				}
+			}
+			res.redirect(`/${req.params.userId}/cards`);
+		});
+});
 
 module.exports = router;

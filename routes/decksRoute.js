@@ -168,7 +168,6 @@ router.patch("/:id/edit", function(req, res) {
 		}
 	}, { new: true }, function(err, deck) {
 		if (err) { console.log(err); }
-		console.log(`${req.params.userId}, ${req.params.id}`);
 		res.redirect(`/${req.params.userId}/decks/${req.params.id}`);
 	});
 });
@@ -260,7 +259,6 @@ router.patch("/:id/cardRemove/:cardId", function(req, res) {
 });
 
 //DECKS UPDATE CARD QUANTITY ROUTE
-
 router.patch("/:id/quantity/:cardId", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
