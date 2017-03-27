@@ -81,11 +81,15 @@ router.get("/:id", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			var deckToShow = user.decks.id(req.params.id);
-			var array = [];			
+			var array = [];
+			var toggle = null;			
 			for (var i = 0; i < deckToShow.mainDeck.length; i++) {
 				for (var j = 0; j < deckToShow.mainDeck[i].quantity; j++) {
 					array.push(deckToShow.mainDeck[i].imageUrl);
 				}
+			}
+			if (array.length < 7) {
+				toggle = "disabled"
 			}
 			res.render("decks/show", {
 				deck: deckToShow,
@@ -94,7 +98,8 @@ router.get("/:id", function(req, res) {
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
 				menuTwohref: `/${user.id}/cards/`,
-				array: array
+				array: array,
+				toggle: toggle
 			});
 		});
 });
