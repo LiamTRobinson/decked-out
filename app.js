@@ -17,7 +17,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //MONGOOSE STUFF
@@ -38,7 +37,8 @@ app.use(session({
 	store: new MongoStore({ mongooseConnection: db}),
 	resave: false,
 	saveUninitialized: false
-}))
+}));
+app.use(cookieParser());
 
 //REQUIRE ROUTES
 var indexRoute = require('./routes/indexRoute');

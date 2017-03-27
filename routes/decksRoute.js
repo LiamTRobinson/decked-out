@@ -81,13 +81,20 @@ router.get("/:id", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			var deckToShow = user.decks.id(req.params.id);
+			var array = [];			
+			for (var i = 0; i < deckToShow.mainDeck.length; i++) {
+				for (var j = 0; j < deckToShow.mainDeck[i].quantity; j++) {
+					array.push(deckToShow.mainDeck[i].imageUrl);
+				}
+			}
 			res.render("decks/show", {
 				deck: deckToShow,
 				user: user,
 				menuOne: "Decks",
 				menuTwo: "Cards",
 				menuOnehref: `/${user.id}/decks/`,
-				menuTwohref: `/${user.id}/cards/`
+				menuTwohref: `/${user.id}/cards/`,
+				array: array
 			});
 		});
 });

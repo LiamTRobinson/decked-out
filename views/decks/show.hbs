@@ -16,7 +16,7 @@
 	</div>
 	<div class="row">
 		<a href="/{{user.id}}/decks/{{deck.id}}/edit" class="col s5 center btn">Edit Deck</a>
-		<a href="#sample-hand-modal" class="col s5 offset-s2 center btn">Sample Hand</a>
+		<a href="#sample-hand-modal" id="sample-hand-trigger" class="col s5 offset-s2 center btn" data-store={{array}}>Sample Hand</a>
 	</div>
 	<div class="row" id="decks-row">
 		{{#each deck.mainDeck}}
@@ -31,9 +31,15 @@
 </main>
 
 
-<div id="sample-hand-modal" class="modal">
+<div id="sample-hand-modal" class="modal center">
 	<div class="modal-content">
-		<h1>THIS IS A MODAL</h1>
+		<div class="carousel">
+    <a class="carousel-item" href="#one!"><img src="http://lorempixel.com/250/250/nature/1"></a>
+    <a class="carousel-item" href="#two!"><img src="http://lorempixel.com/250/250/nature/2"></a>
+    <a class="carousel-item" href="#three!"><img src="http://lorempixel.com/250/250/nature/3"></a>
+    <a class="carousel-item" href="#four!"><img src="http://lorempixel.com/250/250/nature/4"></a>
+    <a class="carousel-item" href="#five!"><img src="http://lorempixel.com/250/250/nature/5"></a>
+  </div>
 	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-action modal-close btn">Close</a>
