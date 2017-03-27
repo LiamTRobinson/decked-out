@@ -59,5 +59,8 @@ footer {
   background-color: black;
 }
 
+.quantity {
+  max-width: 100px;
+}
 
 

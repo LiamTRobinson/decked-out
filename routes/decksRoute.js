@@ -5,9 +5,15 @@ var User = require("../models/userModel.js");
 var Deck = require("../models/deckModel.js");
 var Card = require("../models/cardModel.js");
 
+
+
+
 ///////////////////////////////////
 //********NEW DECK ROUTES********//
 ///////////////////////////////////
+
+
+
 
 //DECKS NEW GET ROUTE
 router.get("/new", function(req, res) {
@@ -45,9 +51,15 @@ router.post("/", function(req, res) {
 		});
 });
 
+
+
+
 ///////////////////////////////////
 //******DECK DISPLAY ROUTES******//
 ///////////////////////////////////
+
+
+
 
 //DECKS INDEX ROUTE
 router.get("/", function(req, res) {
@@ -80,9 +92,15 @@ router.get("/:id", function(req, res) {
 		});
 });
 
+
+
+
 ///////////////////////////////////
 //******DECK DELETE ROUTES*******//
 ///////////////////////////////////
+
+
+
 
 //DECKS DELETE ROUTE
 router.delete("/:id/delete", function(req, res) {
@@ -105,9 +123,13 @@ router.delete("/:id/delete", function(req, res) {
 
 
 
+
 ///////////////////////////////////
 //*******DECK EDIT ROUTES********//
 ///////////////////////////////////
+
+
+
 
 //DECKS EDIT GET ROUTE
 router.get("/:id/edit", function(req, res) {
@@ -151,9 +173,15 @@ router.patch("/:id/edit", function(req, res) {
 	});
 });
 
+
+
+
 ///////////////////////////////////
 //***CARD RELATED EDIT ROUTES****//
 ///////////////////////////////////
+
+
+
 
 //DECKS ADD CARD GET ROUTE
 router.get("/:id/edit/addcard", function(req, res) {
