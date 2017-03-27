@@ -175,7 +175,10 @@ router.get("/:id/edit/addcard", function(req, res) {
 			res.render("decks/addcard", {
 				cards: cardsToShow,
 				user: user,
-				deck: deck
+				deck: deck,
+				menuOne: "Decks",
+				menuTwo: "Cards",
+				menuOnehref: `/${req.params.userId}/decks`
 			});
 		});
 });

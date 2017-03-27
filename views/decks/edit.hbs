@@ -9,11 +9,13 @@
 			</form>
 		</div>
 	</div>
-	<div class="row">
-		<h1 class="col s12">Edit Deck</h1>
-	</div>
-	<div class="row">
-		<h5><a href="/{{user.id}}/decks/{{deck.id}}/edit/addcard" class="col s6 offset-s3 btn">Add Card</a></h5>
+	<div class="row valign-wrapper black">
+		<div class="col s5 offset-s1">
+			<h2 class="white-text">Edit Deck</h2>
+		</div>
+		<div class="col s6 center">
+			<a href="/{{user.id}}/decks/{{deck.id}}/edit/addcard"><p class="btn">Add Card</p></a>
+		</div>
 	</div>
 	<div class="row">
 		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
