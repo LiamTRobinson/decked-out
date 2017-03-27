@@ -15,31 +15,31 @@
 				<div class="col s6 input-field">
 					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
 					<label for="firstName">First Name: </label>
-					<input type="text" name="firstName" class="grey-text text-darken-3" value="{{user.firstName}}">
+					<input type="text" name="firstName" class="grey-text text-darken-3 validate" value="{{user.firstName}}" required>
 				</div>
 				<div class="col 6 input-field">
 					<i class="material-icons prefix hide-on-small-only">perm_identity</i>
 					<label for="lastName">Last Name: </label>
-					<input type="text" name="lastName" class="grey-text text-darken-3" value="{{user.lastName}}">
+					<input type="text" name="lastName" class="grey-text text-darken-3 validate" value="{{user.lastName}}" required>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col s12 input-field">
 					<i class="material-icons prefix hide-on-small-only">email</i>
 					<label for="email">Email: </label>
-					<input type="text" name="email" class="grey-text text-darken-3" value="{{user.email}}">
+					<input type="email" name="email" class="grey-text text-darken-3 validate" value="{{user.email}}" required>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col s6 input-field">
 					<i class="material-icons prefix hide-on-small-only">person_pin</i>
 					<label for="userName">User Name: </label>
-					<input type="text" name="userName" class="grey-text text-darken-3" value="{{user.userName}}">
+					<input type="text" name="userName" class="grey-text text-darken-3 validate" value="{{user.userName}}" required>
 				</div>
 				<div class="col s6 input-field">
 					<i class="material-icons prefix hide-on-small-only">lock</i>
 					<label for="password">Password: </label>
-					<input type="text" name="password" class="grey-text text-darken-3" value="{{user.password}}">
+					<input type="text" name="password" class="grey-text text-darken-3 validate" value="{{user.password}}" required>
 				</div>	
 			</div>
 			<div>
