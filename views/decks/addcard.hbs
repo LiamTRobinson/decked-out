@@ -14,9 +14,18 @@
 			<h2 class="white-text">Add A Card</h2>
 		</div>
 	</div>
-	<div class="row">
-		
-	</div>
+	<div class="row" id="decks-row">
+		{{#each cards}}
+			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
+				<br>
+				<br>
+				<br>
+				<form action="/{{../user.id}}/decks/{{../deck.id}}/edit/addcard/{{this.id}}?_method=PATCH" method="POST">
+					<button class="btn-floating btn-large hoverable center" type="submit">+</button>
+				</form>
+			</div>
+		{{/each}}
+	</div>		
 </main>
 
 
@@ -35,7 +44,5 @@
 <h1></h1>
 <br>
 	{{#each cards}}
-		<form action="/{{../user}}/decks/{{../deck}}/edit/addcard/{{this.id}}?_method=PATCH" method="POST">
-			<input type="submit" value="{{this.name}}">
-		</form>
+		
 	{{/each}}
