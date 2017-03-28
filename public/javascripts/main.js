@@ -104,30 +104,28 @@ $(document).ready(function(){
         updateLands: function() {
             $("#lands").empty();
             for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<div class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#lands").append(`<a class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
             }
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
             for (var i = 0; i < GameData.battlefield.length; i++) {
-                $("#battlefield").append(`<div class='col s2 pt-battlefield' id='pt-battlefield-${i}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#battlefield").append(`<a class='col s2 pt-battlefield' id='pt-battlefield-${i}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-battlefield'></a>`);
             }
-            $(".pt-battlefield").on("click", function(){});
+            $(".pt-battlefield").on("click", battlefieldCardClick);
         },
         updateExile: function() {
             $("#exile").empty();
             for (var i = 0; i < GameData.exile.length; i++) {
-                $("#exile").append(`<div class='col s2 pt-exile' id='pt-exile-${i}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#exile").append(`<a class='col s2 pt-exile' id='pt-exile-${i}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
             }
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
             for (var i = 0; i < GameData.graveyard.length; i++) {
-                $("#graveyard").append(`<div class='col s2 pt-graveyard' id='pt-graveyard-${i}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
-
+                $("#graveyard").append(`<a class='col s2 pt-graveyard' id='pt-graveyard-${i}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
             }
         }
-
     };
 
     const EventHandlers = {
@@ -154,6 +152,18 @@ $(document).ready(function(){
             ViewControl.updateBattlefield();
             ViewControl.updateLands();
             ViewControl.updateHand();
+        },
+        battlefieldToHand: function(cardIndex) {
+
+        },
+        battlefieldToExile: function(cardIndex) {
+
+        },
+        battlefieldToLibrary: function(cardIndex) {
+
+        },
+        battlefieldToGraveyard: function(cardIndex) {
+
         }
     };
 
@@ -170,29 +180,45 @@ $(document).ready(function(){
         $("#pt-single-card-hand-image").attr("src", image);
     };
 
+//WHEN A CARD ON BATTLEFIELD IS CLICKED
+    var battlefieldCardClick = function() {
+        var splitArray = $(this).attr("id").split("-");
+        var index = splitArray[2];
+        var image = GameData.hand[parseInt(index)].imageUrl;
+        console.log(index, image);
+        $("#battlefield-to-graveyard").data("index", index);
+        $("#battlefield-to-exile").data("index", index);
+        $("#battlefield-to-battlefield").data("index", index);
+        $("#battlefield-to-library").data("index", index);
+        $("#pt-single-card-battlefield-image").attr("src", image);
+    };
+
 //PLAYTEST EVENT BINDINGS
+    //FROM HAND MODAL BINDINGS
     $("#hand-to-battlefield").on("click", function() {
-        console.log(this)
         var index = parseInt($(this).data("index"));
         EventHandlers.handToBattlefield(index);
     });
     $("#hand-to-library").on("click", function() {
-        console.log(this);
         var index = parseInt($(this).data("index"));
         EventHandlers.handToLibrary(index);
     });
     $("#hand-to-exile").on("click", function() {
-        console.log(this);
         var index = parseInt($(this).data("index"));
         EventHandlers.handToExile(index);
     });
     $("#hand-to-graveyard").on("click", function() {
-        console.log(this);
-        console.log($(this).data("index"));
         var index = parseInt($(this).data("index"));
-        console.log(index)
         EventHandlers.handToGraveyard(index);
     });
+    //FROM BATTLEFIELD BINDINGS
+
+
+
+
+
+
+
     $("#start-playtest").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });
