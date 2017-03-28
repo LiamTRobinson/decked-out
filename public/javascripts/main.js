@@ -97,6 +97,7 @@ $(document).ready(function(){
             GameData.lands.splice(cardIndex, 1);
         },
         fromLandsToGraveyard: function(cardIndex) {
+            console.log(GameData.lands[cardIndex]);
             GameData.graveyard.push(GameData.lands[cardIndex]);
             GameData.lands.splice(cardIndex, 1);
         },
@@ -122,8 +123,9 @@ $(document).ready(function(){
         updateLands: function() {
             $("#lands").empty();
             for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<a class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
+                $("#lands").append(`<a class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-lands'></a>`);
             }
+            $(".pt-lands").on("click", landsCardClick);
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
@@ -179,7 +181,7 @@ $(document).ready(function(){
             ViewControl.updateHand();
         },
         battlefieldToExile: function(cardIndex) {
-            PlaytestControl.fromHandToExile(cardIndex);
+            PlaytestControl.fromBattlefieldToExile(cardIndex);
             ViewControl.updateBattlefield();
             ViewControl.updateExile();
         },
@@ -193,6 +195,25 @@ $(document).ready(function(){
             ViewControl.updateGraveyard();
         },
         //FROM LANDS
+        landsToHand: function(cardIndex) {
+            PlaytestControl.fromLandsToHand(cardIndex);
+            ViewControl.updateLands();
+            ViewControl.updateHand();
+        },
+        landsToExile: function(cardIndex) {
+            PlaytestControl.fromLandsToExile(cardIndex);
+            ViewControl.updateLands();
+            ViewControl.updateExile();
+        },
+        landsToGraveyard: function(cardIndex) {
+            PlaytestControl.fromLandsToGraveyard(cardIndex);
+            ViewControl.updateGraveyard();
+            ViewControl.updateLands();
+        },
+        landsToLibrary: function(cardIndex) {
+            PlaytestControl.fromLandsToLibrary(cardIndex);
+            ViewControl.updateLands();
+        }
     };
 
 //WHEN A CARD IN HAND IS CLICKED
@@ -210,16 +231,25 @@ $(document).ready(function(){
 //WHEN A CARD ON BATTLEFIELD IS CLICKED
     var battlefieldCardClick = function() {
         var splitArray = $(this).attr("id").split("-");
-        console.log(splitArray);
         var index = splitArray[2];
-        console.log(index);
         var image = GameData.battlefield[parseInt(index)].imageUrl;
         $("#battlefield-to-graveyard").data("index", index);
         $("#battlefield-to-exile").data("index", index);
         $("#battlefield-to-hand").data("index", index);
         $("#battlefield-to-library").data("index", index);
         $("#pt-single-card-battlefield-image").attr("src", image);
-        console.log(GameData.battlefield);
+    };
+
+//WHEN A CARD IN LANDS IS CLICKED
+    var landsCardClick = function() {
+        var splitArray = $(this).attr("id").split("-");
+        var index = splitArray[2];
+        var image = GameData.lands[parseInt(index)].imageUrl;
+        $("#lands-to-graveyard").data("index", index);
+        $("#lands-to-exile").data("index", index);
+        $("#lands-to-hand").data("index", index);
+        $("#lands-to-library").data("index", index);
+        $("#pt-single-card-lands-image").attr("src", image);
     };
 
 //PLAYTEST EVENT BINDINGS
@@ -257,7 +287,23 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.battlefieldToGraveyard(index);
     });
-
+    //FROM LANDS BINDINGS
+    $("#lands-to-hand").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.landsToHand(index);
+    });
+    $("#lands-to-library").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.landsToLibrary(index);
+    });
+    $("#lands-to-exile").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.landsToExile(index);
+    });
+    $("#lands-to-graveyard").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.landsToGraveyard(index);
+    });
 
 
 
