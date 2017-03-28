@@ -90,6 +90,23 @@ $(document).ready(function(){
         fromExileToHand: function(cardIndex) {
             GameData.hand.push(GameData.exile[cardIndex]);
             GameData.exile.splice(cardIndex, 1);
+        },
+        //FROM LANDS FUNCTIONS
+        fromLandsToHand: function(cardIndex) {
+            GameData.hand.push(GameData.lands[cardIndex]);
+            GameData.lands.splice(cardIndex, 1);
+        },
+        fromLandsToGraveyard: function(cardIndex) {
+            GameData.graveyard.push(GameData.lands[cardIndex]);
+            GameData.lands.splice(cardIndex, 1);
+        },
+        fromLandsToLibrary: function(cardIndex) {
+            GameData.library.unshift(GameData.lands[cardIndex]);
+            GameData.lands.splice(cardIndex, 1);
+        },
+        fromLandsToExile: function(cardIndex) {
+            GameData.exile.push(GameData.lands[cardIndex]);
+            GameData.lands.splice(cardIndex, 1);
         }
     };
 
@@ -174,7 +191,8 @@ $(document).ready(function(){
             PlaytestControl.fromBattlefieldToGraveyard(cardIndex);
             ViewControl.updateBattlefield();
             ViewControl.updateGraveyard();
-        }
+        },
+        //FROM LANDS
     };
 
 //WHEN A CARD IN HAND IS CLICKED
