@@ -57,7 +57,7 @@ router.post("/new", function(req, res) {
 										name: stuff.name.toUpperCase(),
 										manaCost: stuff.manaCost,
 										cmc: stuff.cmc,
-										type: stuff.type,
+										types: stuff.types,
 										imageUrl: stuff.imageUrl,
 										quantity: 0
 									});

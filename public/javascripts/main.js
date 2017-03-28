@@ -18,25 +18,43 @@ $(document).ready(function(){
     const GameData = {
         deckId: null,
         userId: null,
-        playtestDeck: null,
-        currentHand: [],
+        library: null,
+        hand: [],
+        battlefield: [],
+        lands: [],
+        graveyard:[],
+        exile:[],
         startGame: function() {
             this.deckId = $("#start-playtest").data("deck");
             this.userId = $("#start-playtest").data("user");
             $.get(`/1/decks/${this.deckId}/deckToPlay`)
                 .then(function(data) {
-                    console.log(data);
-                    GameData.playtestDeck = data;
+                    GameData.library = data;
+                    console.log(data)
                 });
         } 
     };
 
     const PlaytestControl = {
         drawCard: function() {
-            GameData.currentHand.push(GameData.playtestDeck[0]);
-            GameData.playtestDeck.splice(0, 1);
-            console.log(GameData.playtestDeck);
-            console.log(GameData.currentHand);
+            GameData.hand.push(GameData.library[0]);
+            GameData.library.splice(0, 1);
+        },
+        fromHandToBattlefield: function(cardId) {
+            for (var i = 0; i < GameData.hand.length; i++) {
+                if (GameData.hand[i]._id === cardId) {
+                    var types = GameData.hand[i].types;
+                    for (var j = 0; j < types.length; j++) {
+                        if (types[j] === "Land") {
+                            GameData.lands.push(GameData.hand[i]);
+                            GameData.splice(i, 1);
+                            return;
+                        }
+                    }
+                    GameData.battlefield.push(GameData.hand[i]);
+                    GameData.splice(i, 1);
+                }
+            }
         }
 
     };

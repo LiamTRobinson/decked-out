@@ -9,9 +9,9 @@ var CardSchema = new Schema({
 	name: String,
 	manaCost: String,
 	cmc: Number,
-	type: String,
+	types: Array,
 	imageUrl: String,
-	quantity: Number,
+	quantity: Number
 });
 
 var DeckSchema = new Schema({
