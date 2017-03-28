@@ -38,7 +38,7 @@ $(document).ready(function(){
     const PlaytestControl = {
         //FROM HAND FUNCTIONS
         fromHandToBattlefield: function(cardIndex) {
-            for (var i = 0; i < GameData.hand[cardIndex].types; i++) {
+            for (var i = 0; i < GameData.hand[cardIndex].types.length; i++) {
                 if (GameData.hand[cardIndex].types[i] === "Land") {
                     GameData.lands.push(GameData.hand[cardIndex]);
                     GameData.hand.splice(cardIndex, 1);
@@ -139,23 +139,58 @@ $(document).ready(function(){
             PlaytestControl.fromHandToGraveyard(cardIndex);
             ViewControl.updateGraveyard();
             ViewControl.updateHand();
+        },
+        handToExile: function(cardIndex) {
+            PlaytestControl.fromHandToExile(cardIndex);
+            ViewControl.updateExile();
+            ViewControl.updateHand();
+        },
+        handToLibrary: function(cardIndex) {
+            PlaytestControl.fromHandToLibrary(cardIndex);
+            ViewControl.updateHand();
+        },
+        handToBattlefield: function(cardIndex) {
+            PlaytestControl.fromHandToBattlefield(cardIndex);
+            ViewControl.updateBattlefield();
+            ViewControl.updateLands();
+            ViewControl.updateHand();
         }
     };
 
-    //PLAYTEST EVENT BINDINGS
+//WHEN A CARD IN HAND IS CLICKED
     var handCardClick = function() {
         var splitArray = $(this).attr("id").split("-");
         var index = splitArray[2];
         var image = GameData.hand[parseInt(index)].imageUrl;
         console.log(index, image);
-        $("#hand-to-graveyard").attr("data-index", index);
-        $("#hand-to-exile").attr("data-index", index);
-        $("#hand-to-battlefield").attr("data-index", index);
-        $("#hand-to-library").attr("data-index", index);
+        $("#hand-to-graveyard").data("index", index);
+        $("#hand-to-exile").data("index", index);
+        $("#hand-to-battlefield").data("index", index);
+        $("#hand-to-library").data("index", index);
         $("#pt-single-card-hand-image").attr("src", image);
     };
-    $("#hand-to-graveyard").on("click", function() {
+
+//PLAYTEST EVENT BINDINGS
+    $("#hand-to-battlefield").on("click", function() {
+        console.log(this)
         var index = parseInt($(this).data("index"));
+        EventHandlers.handToBattlefield(index);
+    });
+    $("#hand-to-library").on("click", function() {
+        console.log(this);
+        var index = parseInt($(this).data("index"));
+        EventHandlers.handToLibrary(index);
+    });
+    $("#hand-to-exile").on("click", function() {
+        console.log(this);
+        var index = parseInt($(this).data("index"));
+        EventHandlers.handToExile(index);
+    });
+    $("#hand-to-graveyard").on("click", function() {
+        console.log(this);
+        console.log($(this).data("index"));
+        var index = parseInt($(this).data("index"));
+        console.log(index)
         EventHandlers.handToGraveyard(index);
     });
     $("#start-playtest").on("click", GameData.startGame);
