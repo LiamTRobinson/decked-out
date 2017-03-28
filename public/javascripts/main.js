@@ -53,10 +53,37 @@ $(document).ready(function(){
                     }
                     GameData.battlefield.push(GameData.hand[i]);
                     GameData.splice(i, 1);
+                    return;
+                }
+            }
+        },
+        fromHandToGraveyard: function(cardId) {
+            for (var i = 0; i < GameData.hand.length; i++) {
+                if (GameData.hand[i]._id === cardId) {
+                    GameData.graveyard.push(GameData.hand[i]);
+                    GameData.splice(i, 1);
+                    return;
+                }
+            }
+        },
+        fromHandToExile: function(cardId) {
+            for (var i = 0; i < GameData.hand.length; i++) {
+                if (GameData.hand[i]._id === cardId) {
+                    GameData.exile.push(GameData.hand[i]);
+                    GameData.splice(i, 1);
+                    return;
+                }
+            }
+        },
+        fromHandToLibrary: function(cardId) {
+            for (var i = 0; i < GameData.hand.length; i++) {
+                if (GameData.hand[i]._id === cardId) {
+                    GameData.library.unshift(GameData.hand[i]);
+                    GameData.splice(i, 1);
+                    return;
                 }
             }
         }
-
     };
 
     const ViewControl = {
