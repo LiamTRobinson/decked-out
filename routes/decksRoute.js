@@ -104,6 +104,29 @@ router.get("/:id", function(req, res) {
 		});
 });
 
+//DECK PLAYTEST ROUTE
+router.get("/:id/playtest", function(req, res) {
+	Deck.findById(req.params.id)
+		.exec(function(err, deck) {
+			var array = [];
+			var randomArray = [];
+			for (var i = 0; i < deck.mainDeck.length; i++) {
+				for (var j = 0; j < deck.mainDeck[i].quantity; j++) {
+					array.push(deck.mainDeck[i]);
+				}
+			}
+			for (var j = 0; j < array.length; j) {
+				var index = Math.floor(Math.random() * array.length);
+				randomArray.push(array[index]);
+				array.splice(index, 1);
+			}
+			res.send(randomArray);
+			// res.render("decks/playtest", {
+			// 	deck: randomArray
+			// });
+		})
+});
+
 
 
 
