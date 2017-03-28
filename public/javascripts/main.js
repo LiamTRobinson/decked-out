@@ -63,19 +63,20 @@ $(document).ready(function(){
         //FROM BATTLEFIELD FUNCTIONS
         fromBattlefieldToGraveyard: function(cardIndex) {
             GameData.graveyard.push(GameData.battlefield[cardIndex]);
-            GameData.batttlefield.splice(cardIndex, 1);
+            GameData.battlefield.splice(cardIndex, 1);
         },
         fromBattlefieldToExile: function(cardIndex) {
             GameData.exile.push(GameData.battlefield[cardIndex]);
-            GameData.batttlefield.splice(cardIndex, 1);
+            GameData.battlefield.splice(cardIndex, 1);
         },
         fromBattlefieldToHand: function(cardIndex) {
+            console.log(GameData.battlefield);
             GameData.hand.push(GameData.battlefield[cardIndex]);
-            GameData.batttlefield.splice(cardIndex, 1);
+            GameData.battlefield.splice(cardIndex, 1);
         },
         fromBattlefieldToLibrary: function(cardIndex) {
             GameData.library.unshift(GameData.battlefield[cardIndex]);
-            GameData.batttlefield.splice(cardIndex, 1);
+            GameData.battlefield.splice(cardIndex, 1);
         },
         //TO HAND FUNCTIONS
         drawCard: function() {
@@ -133,6 +134,7 @@ $(document).ready(function(){
             PlaytestControl.drawCard();
             ViewControl.updateHand();
         },
+        //FROM HAND
         handToGraveyard: function(cardIndex) {
             PlaytestControl.fromHandToGraveyard(cardIndex);
             ViewControl.updateGraveyard();
@@ -153,17 +155,25 @@ $(document).ready(function(){
             ViewControl.updateLands();
             ViewControl.updateHand();
         },
+        //FROM BATTLEFIELD
         battlefieldToHand: function(cardIndex) {
-
+            PlaytestControl.fromBattlefieldToHand(cardIndex);
+            ViewControl.updateBattlefield();
+            ViewControl.updateHand();
         },
         battlefieldToExile: function(cardIndex) {
-
+            PlaytestControl.fromHandToExile(cardIndex);
+            ViewControl.updateBattlefield();
+            ViewControl.updateExile();
         },
         battlefieldToLibrary: function(cardIndex) {
-
+            PlaytestControl.fromBattlefieldToLibrary(cardIndex);
+            ViewControl.updateBattlefield();
         },
         battlefieldToGraveyard: function(cardIndex) {
-
+            PlaytestControl.fromBattlefieldToGraveyard(cardIndex);
+            ViewControl.updateBattlefield();
+            ViewControl.updateGraveyard();
         }
     };
 
@@ -172,7 +182,6 @@ $(document).ready(function(){
         var splitArray = $(this).attr("id").split("-");
         var index = splitArray[2];
         var image = GameData.hand[parseInt(index)].imageUrl;
-        console.log(index, image);
         $("#hand-to-graveyard").data("index", index);
         $("#hand-to-exile").data("index", index);
         $("#hand-to-battlefield").data("index", index);
@@ -183,14 +192,16 @@ $(document).ready(function(){
 //WHEN A CARD ON BATTLEFIELD IS CLICKED
     var battlefieldCardClick = function() {
         var splitArray = $(this).attr("id").split("-");
+        console.log(splitArray);
         var index = splitArray[2];
-        var image = GameData.hand[parseInt(index)].imageUrl;
-        console.log(index, image);
+        console.log(index);
+        var image = GameData.battlefield[parseInt(index)].imageUrl;
         $("#battlefield-to-graveyard").data("index", index);
         $("#battlefield-to-exile").data("index", index);
-        $("#battlefield-to-battlefield").data("index", index);
+        $("#battlefield-to-hand").data("index", index);
         $("#battlefield-to-library").data("index", index);
         $("#pt-single-card-battlefield-image").attr("src", image);
+        console.log(GameData.battlefield);
     };
 
 //PLAYTEST EVENT BINDINGS
@@ -212,7 +223,22 @@ $(document).ready(function(){
         EventHandlers.handToGraveyard(index);
     });
     //FROM BATTLEFIELD BINDINGS
-
+    $("#battlefield-to-hand").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.battlefieldToHand(index);
+    });
+    $("#battlefield-to-library").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.battlefieldToLibrary(index);
+    });
+    $("#battlefield-to-exile").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.battlefieldToExile(index);
+    });
+    $("#battlefield-to-graveyard").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.battlefieldToGraveyard(index);
+    });
 
 
 
