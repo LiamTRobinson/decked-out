@@ -14,6 +14,7 @@ $(document).ready(function(){
     	}
     });
 
+
 //PLAYTESTING FUNCTIONS
     const GameData = {
         deckId: null,
@@ -36,109 +37,58 @@ $(document).ready(function(){
 
     const PlaytestControl = {
         //FROM HAND FUNCTIONS
-        fromHandToBattlefield: function(cardId) {
-            for (var i = 0; i < GameData.hand.length; i++) {
-                if (GameData.hand[i]._id === cardId) {
-                    var types = GameData.hand[i].types;
-                    for (var j = 0; j < types.length; j++) {
-                        if (types[j] === "Land") {
-                            GameData.lands.push(GameData.hand[i]);
-                            GameData.hand.splice(i, 1);
-                            return;
-                        }
-                    }
-                    GameData.battlefield.push(GameData.hand[i]);
-                    GameData.hand.splice(i, 1);
+        fromHandToBattlefield: function(cardIndex) {
+            for (var i = 0; i < GameData.hand[cardIndex].types; i++) {
+                if (GameData.hand[cardIndex].types[i] === "Land") {
+                    GameData.lands.push(GameData.hand[cardIndex]);
+                    GameData.hand.splice(cardIndex, 1);
                     return;
                 }
             }
+            GameData.battlefield.push(GameData.hand[cardIndex]);
+            GameData.hand.splice(cardIndex, 1);
         },
-        fromHandToGraveyard: function(cardId) {
-            for (var i = 0; i < GameData.hand.length; i++) {
-                if (GameData.hand[i]._id === cardId) {
-                    GameData.graveyard.push(GameData.hand[i]);
-                    GameData.hand.splice(i, 1);
-                    return;
-                }
-            }
+        fromHandToGraveyard: function(cardIndex) {
+            GameData.graveyard.push(GameData.hand[cardIndex]);
+            GameData.hand.splice(cardIndex, 1);
         },
-        fromHandToExile: function(cardId) {
-            for (var i = 0; i < GameData.hand.length; i++) {
-                if (GameData.hand[i]._id === cardId) {
-                    GameData.exile.push(GameData.hand[i]);
-                    GameData.hand.splice(i, 1);
-                    return;
-                }
-            }
+        fromHandToExile: function(cardIndex) {
+            GameData.exile.push(GameData.hand[cardIndex]);
+            GameData.hand.splice(cardIndex, 1);
         },
-        fromHandToLibrary: function(cardId) {
-            for (var i = 0; i < GameData.hand.length; i++) {
-                if (GameData.hand[i]._id === cardId) {
-                    GameData.library.unshift(GameData.hand[i]);
-                    GameData.hand.splice(i, 1);
-                    return;
-                }
-            }
+        fromHandToLibrary: function(cardIndex) {
+            GameData.library.unshift(GameData.hand[cardIndex]);
+            GameData.hand.splice(cardIndex, 1);
         },
         //FROM BATTLEFIELD FUNCTIONS
-        fromBattlefieldToGraveyard: function(cardId) {
-            for (var i = 0; i < GameData.battlefield.length; i++) {
-                if (GameData.battlefield[i]._id === cardId) {
-                    GameData.graveyard.push(GameData.battlefield[i]);
-                    GameData.batttlefield.splice(i, 1);
-                    return;
-                }
-            }
+        fromBattlefieldToGraveyard: function(cardIndex) {
+            GameData.graveyard.push(GameData.battlefield[cardIndex]);
+            GameData.batttlefield.splice(cardIndex, 1);
         },
-        fromBattlefieldToExile: function(cardId) {
-            for (var i = 0; i < GameData.battlefield.length; i++) {
-                if (GameData.battlefield[i]._id === cardId) {
-                    GameData.exile.push(GameData.battlefield[i]);
-                    GameData.batttlefield.splice(i, 1);
-                    return;
-                }
-            }
+        fromBattlefieldToExile: function(cardIndex) {
+            GameData.exile.push(GameData.battlefield[cardIndex]);
+            GameData.batttlefield.splice(cardIndex, 1);
         },
-        fromBattlefieldToHand: function(cardId) {
-            for (var i = 0; i < GameData.battlefield.length; i++) {
-                if (GameData.battlefield[i]._id === cardId) {
-                    GameData.hand.push(GameData.battlefield[i]);
-                    GameData.batttlefield.splice(i, 1);
-                    return;
-                }
-            }
+        fromBattlefieldToHand: function(cardIndex) {
+            GameData.hand.push(GameData.battlefield[cardIndex]);
+            GameData.batttlefield.splice(cardIndex, 1);
         },
-        fromBattlefieldToLibrary: function(cardId) {
-            for (var i = 0; i < GameData.battlefield.length; i++) {
-                if (GameData.battlefield[i]._id === cardId) {
-                    GameData.library.unshift(GameData.battlefield[i]);
-                    GameData.batttlefield.splice(i, 1);
-                    return;
-                }
-            }
+        fromBattlefieldToLibrary: function(cardIndex) {
+            GameData.library.unshift(GameData.battlefield[cardIndex]);
+            GameData.batttlefield.splice(cardIndex, 1);
         },
         //TO HAND FUNCTIONS
         drawCard: function() {
             GameData.hand.push(GameData.library[0]);
             GameData.library.splice(0, 1);
         },
-        fromGraveyardToHand: function(cardId) {
-            for (var i = 0; i < GameData.graveyard.length; i++) {
-                if (GameData.graveyard[i]._id === cardId) {
-                    GameData.hand.push(GameData.graveyard[i]);
-                    GameData.graveyard.splice(i, 1);
-                    return;
-                }
-            }
+        fromGraveyardToHand: function(cardIndex) {
+            GameData.hand.push(GameData.graveyard[cardIndex]);
+            GameData.graveyard.splice(cardIndex, 1);
         },
-        fromExileToHand: function(cardId) {
-            for (var i = 0; i < GameData.exile.length; i++) {
-                if (GameData.exile[i]._id === cardId) {
-                    GameData.hand.push(GameData.exile[i]);
-                    GameData.exile.splice(i, 1);
-                    return;
-                }
-            }
+        fromExileToHand: function(cardIndex) {
+            GameData.hand.push(GameData.exile[cardIndex]);
+            GameData.exile.splice(cardIndex, 1);
         }
     };
 
@@ -147,31 +97,34 @@ $(document).ready(function(){
         updateHand: function() {
             $("#hand").empty();
             for (var i = 0; i < GameData.hand.length; i++) {
-                $("#hand").append(`<div class='col s2' data-id='${GameData.hand[i]._id}' style='background: url(${GameData.hand[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#hand").append(`<a class='col s2 pt-hand' id='pt-hand-${i}' style='background: url(${GameData.hand[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-hand'></a>`);
             }
+            $(".pt-hand").on("click", handCardClick);
         },
         updateLands: function() {
             $("#lands").empty();
             for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<div class='col s2' data-id='${GameData.lands[i]._id}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#lands").append(`<div class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
             }
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
             for (var i = 0; i < GameData.battlefield.length; i++) {
-                $("#battlefield").append(`<div class='col s2' data-id='${GameData.battlefield[i]._id}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#battlefield").append(`<div class='col s2 pt-battlefield' id='pt-battlefield-${i}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
             }
+            $(".pt-battlefield").on("click", function(){});
         },
         updateExile: function() {
             $("#exile").empty();
             for (var i = 0; i < GameData.exile.length; i++) {
-                $("#exile").append(`<div class='col s2' data-id='${GameData.exile[i]._id}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#exile").append(`<div class='col s2 pt-exile' id='pt-exile-${i}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
             }
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
             for (var i = 0; i < GameData.graveyard.length; i++) {
-                $("#graveyard").append(`<div class='col s2' data-id='${GameData.graveyard[i]._id}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+                $("#graveyard").append(`<div class='col s2 pt-graveyard' id='pt-graveyard-${i}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+
             }
         }
 
@@ -181,10 +134,30 @@ $(document).ready(function(){
         drawCard: function() {
             PlaytestControl.drawCard();
             ViewControl.updateHand();
+        },
+        handToGraveyard: function(cardIndex) {
+            PlaytestControl.fromHandToGraveyard(cardIndex);
+            ViewControl.updateGraveyard();
+            ViewControl.updateHand();
         }
     };
 
     //PLAYTEST EVENT BINDINGS
+    var handCardClick = function() {
+        var splitArray = $(this).attr("id").split("-");
+        var index = splitArray[2];
+        var image = GameData.hand[parseInt(index)].imageUrl;
+        console.log(index, image);
+        $("#hand-to-graveyard").attr("data-index", index);
+        $("#hand-to-exile").attr("data-index", index);
+        $("#hand-to-battlefield").attr("data-index", index);
+        $("#hand-to-library").attr("data-index", index);
+        $("#pt-single-card-hand-image").attr("src", image);
+    };
+    $("#hand-to-graveyard").on("click", function() {
+        var index = parseInt($(this).data("index"));
+        EventHandlers.handToGraveyard(index);
+    });
     $("#start-playtest").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });
