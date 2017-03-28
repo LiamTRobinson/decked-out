@@ -104,8 +104,30 @@ router.get("/:id", function(req, res) {
 		});
 });
 
-//DECK PLAYTEST ROUTE
+
+
+
+///////////////////////////////////
+//*****DECK PLAYTEST ROUTES******//
+///////////////////////////////////
+
+
+
+
+//DECK PLAYTEST SHOW ROUTE
 router.get("/:id/playtest", function(req, res) {
+	User.findById(req.params.userId)
+		.exec(function(err, user) {
+			var deck = user.decks.id(req.params.id)
+			res.render("decks/playtest", {
+				deck: deck.id,
+				user: user.id
+			})
+		});
+});
+
+//DECK PLAYTEST START ROUTE
+router.get("/:id/deckToPlay", function(req, res) {
 	Deck.findById(req.params.id)
 		.exec(function(err, deck) {
 			var array = [];
@@ -121,10 +143,7 @@ router.get("/:id/playtest", function(req, res) {
 				array.splice(index, 1);
 			}
 			res.send(randomArray);
-			// res.render("decks/playtest", {
-			// 	deck: randomArray
-			// });
-		})
+		});
 });
 
 
@@ -327,3 +346,4 @@ router.patch("/:id/quantity/:cardId", function(req, res) {
 })
 
 module.exports = router;
+//STUFF FOR AJAX QUERY
