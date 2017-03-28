@@ -143,6 +143,7 @@ $(document).ready(function(){
     };
 
     const ViewControl = {
+        //UPDATE VIEWS FUNCTIONS
         updateHand: function() {
             $("#hand").empty();
             for (var i = 0; i < GameData.hand.length; i++) {
@@ -154,14 +155,36 @@ $(document).ready(function(){
             for (var i = 0; i < GameData.lands.length; i++) {
                 $("#lands").append(`<div class='col s2' data-id='${GameData.lands[i]._id}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
             }
+        },
+        updateBattlefield: function() {
+            $("#battlefield").empty();
+            for (var i = 0; i < GameData.battlefield.length; i++) {
+                $("#battlefield").append(`<div class='col s2' data-id='${GameData.battlefield[i]._id}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+            }
+        },
+        updateExile: function() {
+            $("#exile").empty();
+            for (var i = 0; i < GameData.exile.length; i++) {
+                $("#exile").append(`<div class='col s2' data-id='${GameData.exile[i]._id}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+            }
+        },
+        updateGraveyard: function() {
+            $("#graveyard").empty();
+            for (var i = 0; i < GameData.graveyard.length; i++) {
+                $("#graveyard").append(`<div class='col s2' data-id='${GameData.graveyard[i]._id}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></div>`);
+            }
         }
+
     };
 
     const EventHandlers = {
-
+        drawCard: function() {
+            PlaytestControl.drawCard();
+            ViewControl.updateHand();
+        }
     };
 
     //PLAYTEST EVENT BINDINGS
     $("#start-playtest").on("click", GameData.startGame);
-    $("#draw-card").on("click", PlaytestControl.drawCard);
+    $("#draw-card").on("click", EventHandlers.drawCard);
 });
