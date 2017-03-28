@@ -346,4 +346,3 @@ router.patch("/:id/quantity/:cardId", function(req, res) {
 })
 
 module.exports = router;
-//STUFF FOR AJAX QUERY
