@@ -2,7 +2,7 @@ $(document).ready(function(){
 //MATERIALIZE COMPONENT INITIALIZERS
     $('.modal').modal();
     $('.carousel').carousel();
-    $(".nav-extended.Start").append('<div class="nav-content" style="margin-bottom: 10px;"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total"></span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total"></span></a></li></ul></div>');
+    $(".nav-extended.Start").append('<div class="nav-content" style="margin-bottom: 10px;"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total">(0)</span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total">(0)</span></a></li></ul></div>');
     $('ul.tabs').tabs();
 //SAMPLE HAND GENERATOR
     $("#sample-hand-trigger").on("click", function() {
@@ -32,29 +32,27 @@ $(document).ready(function(){
         replay: false,
         //STARTS THE GAME
         startGame: function() {
-            var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
-            this.hand = [];
-            this.battlefield = [];
-            this.lands = [];
-            this.graveyard = [];
-            this.exile = [];
+            GameData.hand = [];
+            GameData.battlefield = [];
+            GameData.lands = [];
+            GameData.graveyard = [];
+            GameData.exile = [];
             ViewControl.updateBattlefield();
             ViewControl.updateLands();
             ViewControl.updateGraveyard();
             ViewControl.updateExile();
             ViewControl.updateHand();
-            this.deckId = splitArray[1];
-            this.userId = splitArray[0].slice(1);
-            console.log(this.deckId);
-            $.get(`/1/decks/${this.deckId}/deckToPlay`)
+            if (GameData.replay === false) {
+                var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
+                GameData.deckId = splitArray[1];
+                GameData.userId = splitArray[0].slice(1);
+            }
+            $.get(`/1/decks/${GameData.deckId}/deckToPlay`)
                 .then(function(data) {
-                    GameData.library = data;
-                    if (GameData.replay === false) {
-                        GameData.replay = true;
-                    }
-                    console.log(GameData.library);
+                    GameData.library = data; 
+                    GameData.replay = true;
+                    ViewControl.updateLibrary();      
                 });
-
         } 
     };
 
@@ -142,6 +140,9 @@ $(document).ready(function(){
                 $("#hand").append(`<a class='pt-hand' id='pt-hand-${i}' href='#pt-single-card-hand'><img style='margin-top:5%' class='col s3 m3 l2 modal-action modal-close' src=${GameData.hand[i].imageUrl}></a>`);
             }
             $(".pt-hand").on("click", handCardClick);
+            if (GameData.hand.length > 0) {
+                $("#hand-total").html(`(${GameData.hand.length})`);
+            }
         },
         updateLands: function() {
             $("#lands").empty();
@@ -149,6 +150,9 @@ $(document).ready(function(){
                 $("#lands").append(`<a class='pt-lands' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-lands'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
             }
             $(".pt-lands").on("click", landsCardClick);
+            if (GameData.lands.length > 0) {
+                $("#lands-total").html(`(${GameData.lands.lenth})`);
+            }
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
@@ -163,6 +167,9 @@ $(document).ready(function(){
                 $("#exile").append(`<a class='pt-exile' id='pt-exile-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.exile[i].imageUrl}></a>`);
             }
             $(".pt-exile").on("click", exileCardClicked);
+            if (GameData.exile.length > 0) {
+                $("#exile-total").html(`(${GameData.exile.lenth})`);
+            }
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
@@ -170,6 +177,14 @@ $(document).ready(function(){
                 $("#graveyard").append(`<a class='pt-graveyard' id='pt-graveyard-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.graveyard[i].imageUrl}></a>`);
             }
             $(".pt-graveyard").on("click", graveyardCardClicked);
+            if (GameData.graveyard.length > 0) {
+                $("#graveyard-total").html(`(${GameData.graveyard.lenth})`);
+            }
+        },
+        updateLibrary: function() {
+            if (GameData.library.length > 0) {
+                $("#library-total").html(`(${GameData.library.length})`);
+            }
         }
     };
 
@@ -177,7 +192,7 @@ $(document).ready(function(){
         drawCard: function() {
             PlaytestControl.drawCard();
             ViewControl.updateHand();
-            console.log(GameData.hand);
+            ViewControl.updateLibrary();
         },
         //FROM HAND
         handToGraveyard: function(cardIndex) {
@@ -193,6 +208,7 @@ $(document).ready(function(){
         handToLibrary: function(cardIndex) {
             PlaytestControl.fromHandToLibrary(cardIndex);
             ViewControl.updateHand();
+            ViewControl.updateLibrary();
         },
         handToBattlefield: function(cardIndex) {
             PlaytestControl.fromHandToBattlefield(cardIndex);
@@ -214,6 +230,7 @@ $(document).ready(function(){
         battlefieldToLibrary: function(cardIndex) {
             PlaytestControl.fromBattlefieldToLibrary(cardIndex);
             ViewControl.updateBattlefield();
+            ViewControl.updateLibrary();
         },
         battlefieldToGraveyard: function(cardIndex) {
             PlaytestControl.fromBattlefieldToGraveyard(cardIndex);
@@ -239,6 +256,7 @@ $(document).ready(function(){
         landsToLibrary: function(cardIndex) {
             PlaytestControl.fromLandsToLibrary(cardIndex);
             ViewControl.updateLands();
+            ViewControl.updateLibrary();
         },
         //FROM GRAVEYARD AND EXILE
         exileToHand: function(cardIndex) {
