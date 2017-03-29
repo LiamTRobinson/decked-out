@@ -139,12 +139,14 @@ $(document).ready(function(){
             for (var i = 0; i < GameData.exile.length; i++) {
                 $("#exile").append(`<a class='col s2 pt-exile' id='pt-exile-${i}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
             }
+            $(".pt-exile").on("click", exileCardClicked);
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
             for (var i = 0; i < GameData.graveyard.length; i++) {
                 $("#graveyard").append(`<a class='col s2 pt-graveyard' id='pt-graveyard-${i}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
             }
+            $(".pt-graveyard").on("click", graveyardCardClicked);
         }
     };
 
@@ -213,6 +215,17 @@ $(document).ready(function(){
         landsToLibrary: function(cardIndex) {
             PlaytestControl.fromLandsToLibrary(cardIndex);
             ViewControl.updateLands();
+        },
+        //FROM GRAVEYARD AND EXILE
+        exileToHand: function(cardIndex) {
+            PlaytestControl.fromExileToHand(cardIndex);
+            ViewControl.updateHand();
+            ViewControl.updateExile();
+        },
+        graveyardToHand: function(cardIndex) {
+            PlaytestControl.fromGraveyardToHand(cardIndex);
+            ViewControl.updateHand();
+            ViewControl.updateGraveyard();
         }
     };
 
@@ -250,6 +263,20 @@ $(document).ready(function(){
         $("#lands-to-hand").data("index", index);
         $("#lands-to-library").data("index", index);
         $("#pt-single-card-lands-image").attr("src", image);
+    };
+
+//WHEN A CARD IN GRAVEYARD IS CLICKED
+    var graveyardCardClicked = function() {
+        var splitArray = $(this).attr("id").split("-");
+        var index = parseInt(splitArray[2]);
+        EventHandlers.graveyardToHand(index);
+    };
+
+//WHEN A CARD IN EXILE IS CLICKED
+    var exileCardClicked = function() {
+        var splitArray = $(this).attr("id").split("-");
+        var index = parseInt(splitArray[2]);
+        EventHandlers.exileToHand(index);
     };
 
 //PLAYTEST EVENT BINDINGS
