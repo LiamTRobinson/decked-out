@@ -1,5 +1,6 @@
 <main>
 
+<!-- BATTLEFIELD -->
 <div id="battlefield-tab">
 	<div class="row" id="battlefield">
 		
@@ -13,32 +14,34 @@
 	</div>
 </div>
 
+<!-- GRAVEYARD -->
 <div id="graveyard-tab">		
 	<div class="row" id="graveyard">
 		
 	</div>
 </div>
 
+<!-- EXILE -->
 <div id="exile-tab">
 	<div class="row" id="exile">
 		
 	</div>	
 </div>
 
-<div id="library-tab">	
-</div>
-
 
 </main>
+
+<!-- FOOTER -->
 <footer id="pt-footer" class="teal lighten-1 page-footer">
 	<div class="container">
 		<div class="row">
 			<a href="#pt-hand-modal" class="waves-effect waves-light btn-flat btn grey darken-3 white-text col s3">Hand <span id="hand-total">(0)</span></a>
 			<a href="#" class="waves-effect waves-light btn-flat btn grey darken-3 white-text col s3 offset-s1" id="draw-card">Draw</a>
-			<div class="fixed-action-btn click-to-toggle teal lighten-1" id="library-button">
-				<a class="waves-effect waves-light  white-text btn-flat btn disabled">Library <span id="library-total">(0)</span></a>
+			<div class="fixed-action-btn click-to-toggle" id="library-button">
+			<!-- CHANGE "BUTTON" TO "A" WHEN READY TO IMPLEMENT -->
+				<button class="waves-effect waves-light white-text btn-flat btn  teal lighten-1">Library <span id="library-total">(0)</span></button>
 				<ul>
-					<li><a class="waves-effect waves-light btn-flat grey darken-3 white-text" id="scry-button" href="#">Scry {x}</a></li>
+					<li><a class="waves-effect waves-light btn-flat grey darken-3 white-text" id="scry-button modal-trigger" href="#scry-modal">Scry {x}</a></li>
 					<li><a class="waves-effect waves-light btn-flat btn grey darken-3 white-text" id="search-button" href="#">Search</a></li>
 					<li><a class="waves-effect waves-light btn-flat btn grey darken-3 white-text" href="#" id="shuffle-button">Shuffle</a></li>
 					<li><a class="waves-effect waves-light btn-flat btn grey darken-3 white-text" id="draw-x-button" href="#">Draw {x}</a></li>
@@ -52,17 +55,14 @@
 
 <!--***********************MODALS**************************-->
 
+<!-- HAND MODAL -->
 <div id="pt-hand-modal" class="modal bottom-sheet">
 	<div class="modal-content row" id="hand">
 				
 	</div>	
 </div>
 
-
-
-
-
-
+<!-- SINGLE CARD FROM HAND MODAL -->
 <div id="pt-single-card-hand" class="modal">
 	<div class="modal-content">
 		<img id="pt-single-card-hand-image">
@@ -75,6 +75,7 @@
 	</div>
 </div>
 
+<!-- SINGLE CARD FROM BATTLEFIELD MODAL -->
 <div id="pt-single-card-battlefield" class="modal">
 	<div class="modal-content">
 		<img id="pt-single-card-battlefield-image">
@@ -87,6 +88,7 @@
 	</div>
 </div>
 
+<!-- SINGLE CARD FROM LANDS MODAL -->
 <div id="pt-single-card-lands" class="modal">
 	<div class="modal-content">
 		<img id="pt-single-card-lands-image">
@@ -96,5 +98,19 @@
 		<a href="#" class="btn modal-action modal-close" id="lands-to-exile" data-index="">To Exile</a>
 		<a href="#" class="btn modal-action modal-close" id="lands-to-hand" data-index="">To Hand</a>
 		<a href="#" class="btn modal-action modal-close" id="lands-to-library" data-index="">To Library</a>	
+	</div>
+</div>
+
+<!-- SCRY MODAL -->
+<div id="scry-modal" class="modal">
+	<div class="modal-content" id="scry">
+		
+	</div>
+	<div class="modal-content">
+		<div class="input-field" id="scry-form">
+			<label for="scry" id="scry-number">Scry #:</label>
+			<input type="number" name="scry" required class="validate">
+			<input type="submit" value="scry" id="scry-submit">
+		</div>
 	</div>
 </div>

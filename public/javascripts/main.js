@@ -30,6 +30,7 @@ $(document).ready(function(){
         graveyard:[],
         exile:[],
         replay: false,
+        scry: [],
         //STARTS THE GAME
         startGame: function() {
             GameData.hand = [];
@@ -130,6 +131,20 @@ $(document).ready(function(){
             GameData.exile.push(GameData.lands[cardIndex]);
             GameData.lands.splice(cardIndex, 1);
         }
+        // IN PROGRESS
+        // fromLibraryToScry: function(number) {
+        //     var scryCards = GameData.library.slice(0, number);
+        //     GameData.library.splice(0, number);
+        //     GameData.scry.push(scryCards);
+        // },
+        // fromScryToLibraryTop: function(cardIndex) {
+        //     GameData.library.unshift(GameData.scry[cardIndex]);
+        //     GameData.scry.splice(cardIndex, 1);
+        // },
+        // fromScryToLibraryBottom: function(cardIndex) {
+        //     GameData.library.push(GameData.scry[cardIndex]);
+        //     GameData.scry.splice(cardIndex, 1);
+        // }
     };
 
     const ViewControl = {
@@ -168,7 +183,7 @@ $(document).ready(function(){
             }
             $(".pt-exile").on("click", exileCardClicked);
             if (GameData.exile.length > 0) {
-                $("#exile-total").html(`(${GameData.exile.lenth})`);
+                $("#exile-total").html(`(${GameData.exile.length})`);
             }
         },
         updateGraveyard: function() {
@@ -178,7 +193,7 @@ $(document).ready(function(){
             }
             $(".pt-graveyard").on("click", graveyardCardClicked);
             if (GameData.graveyard.length > 0) {
-                $("#graveyard-total").html(`(${GameData.graveyard.lenth})`);
+                $("#graveyard-total").html(`(${GameData.graveyard.length})`);
             }
         },
         updateLibrary: function() {
@@ -186,6 +201,13 @@ $(document).ready(function(){
                 $("#library-total").html(`(${GameData.library.length})`);
             }
         }
+        //IN PROGRESS
+        // updateScry: function() {
+        //     $("#scry").empty();
+        //     for (var i = 0; i < GameData.scry.length; i++) {
+        //         $("#scry").append(`<a class='pt-scry' id='pt-scry-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.scry[i].imageUrl}></a>`);
+        //     }
+        // }
     };
 
     const EventHandlers = {
@@ -268,7 +290,8 @@ $(document).ready(function(){
             PlaytestControl.fromGraveyardToHand(cardIndex);
             ViewControl.updateHand();
             ViewControl.updateGraveyard();
-        }
+        },
+        //SCRY
     };
 
 //WHEN A CARD IN HAND IS CLICKED
@@ -377,7 +400,7 @@ $(document).ready(function(){
         EventHandlers.landsToGraveyard(index);
     });
 
-    //START GAME AND DRAW CARD EVENT BINDINGS
+    //OTHER BUTTON EVENT BINDINGS
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });
