@@ -123,7 +123,8 @@ router.get("/:id/playtest", function(req, res) {
 				menuTwo: "Start",
 				menuOne: "Back",
 				menuOnehref: `/${req.params.userId}/decks/${req.params.id}`,
-				menuTwohref: `#${req.params.userId},${req.params.id}`
+				menuTwohref: `#${req.params.userId},${req.params.id}`,
+				hide: "hide"
 			});
 		});
 });

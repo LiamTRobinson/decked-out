@@ -1,7 +1,8 @@
 $(document).ready(function(){ 
+//MATERIALIZE COMPONENT INITIALIZERS
     $('.modal').modal();
     $('.carousel').carousel();
-    $(".nav-extended.Start").append('<div class="nav-content"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#hand-tab">Hand <span id="hand-total"></span></a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total"></span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total"></span></a></li><li class="tab"><a href="#library-tab">Library <span id="library-total"></span></a></ul></div>');
+    $(".nav-extended.Start").append('<div class="nav-content" style="margin-bottom: 10px;"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total"></span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total"></span></a></li></ul></div>');
     $('ul.tabs').tabs();
 //SAMPLE HAND GENERATOR
     $("#sample-hand-trigger").on("click", function() {
@@ -138,35 +139,35 @@ $(document).ready(function(){
         updateHand: function() {
             $("#hand").empty();
             for (var i = 0; i < GameData.hand.length; i++) {
-                $("#hand").append(`<a class='pt-hand' id='pt-hand-${i}' href='#pt-single-card-hand'><img style='margin-top:5%' class='col s3' src=${GameData.hand[i].imageUrl}></a>`);
+                $("#hand").append(`<a class='pt-hand' id='pt-hand-${i}' href='#pt-single-card-hand'><img style='margin-top:5%' class='col s3 m3 l2 modal-action modal-close' src=${GameData.hand[i].imageUrl}></a>`);
             }
             $(".pt-hand").on("click", handCardClick);
         },
         updateLands: function() {
             $("#lands").empty();
             for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<a class='pt-lands' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-lands'><img class='col s3' src=${GameData.lands[i].imageUrl}></a>`);
+                $("#lands").append(`<a class='pt-lands' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-lands'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
             }
             $(".pt-lands").on("click", landsCardClick);
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
             for (var i = 0; i < GameData.battlefield.length; i++) {
-                $("#battlefield").append(`<a class='pt-battlefield' id='pt-battlefield-${i}' style='margin-top: 5%;' href='#pt-single-card-battlefield'><img class='col s3' src=${GameData.battlefield[i].imageUrl}></a>`);
+                $("#battlefield").append(`<a class='pt-battlefield' id='pt-battlefield-${i}' style='margin-top: 5%;' href='#pt-single-card-battlefield'><img class='col s3 m3 l2' src=${GameData.battlefield[i].imageUrl}></a>`);
             }
             $(".pt-battlefield").on("click", battlefieldCardClick);
         },
         updateExile: function() {
             $("#exile").empty();
             for (var i = 0; i < GameData.exile.length; i++) {
-                $("#exile").append(`<a class='pt-exile' id='pt-exile-${i}' style='margin-top: 5%;'><img class='col s3' src=${GameData.exile[i].imageUrl}></a>`);
+                $("#exile").append(`<a class='pt-exile' id='pt-exile-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.exile[i].imageUrl}></a>`);
             }
             $(".pt-exile").on("click", exileCardClicked);
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
             for (var i = 0; i < GameData.graveyard.length; i++) {
-                $("#graveyard").append(`<a class='pt-graveyard' id='pt-graveyard-${i}' style='margin-top: 5%;'><img class='col s3' src=${GameData.graveyard[i].imageUrl}></a>`);
+                $("#graveyard").append(`<a class='pt-graveyard' id='pt-graveyard-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.graveyard[i].imageUrl}></a>`);
             }
             $(".pt-graveyard").on("click", graveyardCardClicked);
         }
