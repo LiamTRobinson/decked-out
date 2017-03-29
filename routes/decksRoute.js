@@ -343,7 +343,7 @@ router.patch("/:id/quantity/:cardId", function(req, res) {
 			cardToEdit.quantity = req.body.quantity;
 			deck.save(function(err, user) {
 				if (err) { console.log(err); }
-				res.redirect(`/${req.params.userId}/decks/${req.params.id}/edit`);
+				res.redirect(`/${req.params.userId}/decks/${req.params.id}/edit#${req.params.cardId}`);
 			});
 		});
 })
