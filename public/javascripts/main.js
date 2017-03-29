@@ -1,7 +1,6 @@
 $(document).ready(function(){ 
     $('.modal').modal();
     $('.carousel').carousel();
-
 //SAMPLE HAND GENERATOR
     $("#sample-hand-trigger").on("click", function() {
     	var data = $(this).data("store");
@@ -12,6 +11,7 @@ $(document).ready(function(){
     		$(`#sh-card-${i}`).attr("src", card);
     		array.splice(cardIndex, 1);
     	}
+        setTimeout(function(){$("#sample-hand").click()}, 1);
     });
 
 
