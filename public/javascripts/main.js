@@ -29,7 +29,7 @@ $(document).ready(function(){
         exile:[],
         replay: false,
         startGame: function() {
-            var splitArray = $("#nav-menu-two").attr("href").split(",");
+            var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
             this.hand = [];
             this.battlefield = [];
             this.lands = [];
@@ -136,35 +136,35 @@ $(document).ready(function(){
         updateHand: function() {
             $("#hand").empty();
             for (var i = 0; i < GameData.hand.length; i++) {
-                $("#hand").append(`<a class='col s2 pt-hand' id='pt-hand-${i}' style='background: url(${GameData.hand[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-hand'></a>`);
+                $("#hand").append(`<a class='pt-hand' id='pt-hand-${i}' href='#pt-single-card-hand'><img style='margin-top:5%' class='col s3' src=${GameData.hand[i].imageUrl}></a>`);
             }
             $(".pt-hand").on("click", handCardClick);
         },
         updateLands: function() {
             $("#lands").empty();
             for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<a class='col s2 pt-lands' id='pt-lands-${i}' style='background: url(${GameData.lands[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-lands'></a>`);
+                $("#lands").append(`<a class='pt-lands' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-lands'><img class='col s3' src=${GameData.lands[i].imageUrl}></a>`);
             }
             $(".pt-lands").on("click", landsCardClick);
         },
         updateBattlefield: function() {
             $("#battlefield").empty();
             for (var i = 0; i < GameData.battlefield.length; i++) {
-                $("#battlefield").append(`<a class='col s2 pt-battlefield' id='pt-battlefield-${i}' style='background: url(${GameData.battlefield[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;' href='#pt-single-card-battlefield'></a>`);
+                $("#battlefield").append(`<a class='pt-battlefield' id='pt-battlefield-${i}' style='margin-top: 5%;' href='#pt-single-card-battlefield'><img class='col s3' src=${GameData.battlefield[i].imageUrl}></a>`);
             }
             $(".pt-battlefield").on("click", battlefieldCardClick);
         },
         updateExile: function() {
             $("#exile").empty();
             for (var i = 0; i < GameData.exile.length; i++) {
-                $("#exile").append(`<a class='col s2 pt-exile' id='pt-exile-${i}' style='background: url(${GameData.exile[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
+                $("#exile").append(`<a class='pt-exile' id='pt-exile-${i}' style='margin-top: 5%;'><img class='col s3' src=${GameData.exile[i].imageUrl}></a>`);
             }
             $(".pt-exile").on("click", exileCardClicked);
         },
         updateGraveyard: function() {
             $("#graveyard").empty();
             for (var i = 0; i < GameData.graveyard.length; i++) {
-                $("#graveyard").append(`<a class='col s2 pt-graveyard' id='pt-graveyard-${i}' style='background: url(${GameData.graveyard[i].imageUrl}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;'></a>`);
+                $("#graveyard").append(`<a class='pt-graveyard' id='pt-graveyard-${i}' style='margin-top: 5%;'><img class='col s3' src=${GameData.graveyard[i].imageUrl}></a>`);
             }
             $(".pt-graveyard").on("click", graveyardCardClicked);
         }
@@ -174,6 +174,7 @@ $(document).ready(function(){
         drawCard: function() {
             PlaytestControl.drawCard();
             ViewControl.updateHand();
+            console.log(GameData.hand);
         },
         //FROM HAND
         handToGraveyard: function(cardIndex) {
@@ -356,6 +357,6 @@ $(document).ready(function(){
 
 
 
-    $("#nav-menu-two").on("click", GameData.startGame);
+    $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });
