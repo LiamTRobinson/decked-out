@@ -120,9 +120,11 @@ router.get("/:id/playtest", function(req, res) {
 		.exec(function(err, user) {
 			var deck = user.decks.id(req.params.id)
 			res.render("decks/playtest", {
-				deck: deck.id,
-				user: user.id
-			})
+				menuTwo: "Start",
+				menuOne: "Back",
+				menuOnehref: `/${req.params.userId}/decks/${req.params.id}`,
+				menuTwohref: `#${req.params.userId},${req.params.id}`
+			});
 		});
 });
 

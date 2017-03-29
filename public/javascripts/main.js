@@ -1,6 +1,8 @@
 $(document).ready(function(){ 
     $('.modal').modal();
     $('.carousel').carousel();
+    $(".nav-extended.Start").append('<div class="nav-content"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#hand-tab">Hand <span id="hand-total"></span></a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total"></span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total"></span></a></li><li class="tab"><a href="#library-tab">Library <span id="library-total"></span></a></ul></div>');
+    $('ul.tabs').tabs();
 //SAMPLE HAND GENERATOR
     $("#sample-hand-trigger").on("click", function() {
     	var data = $(this).data("store");
@@ -25,13 +27,31 @@ $(document).ready(function(){
         lands: [],
         graveyard:[],
         exile:[],
+        replay: false,
         startGame: function() {
-            this.deckId = $("#start-playtest").data("deck");
-            this.userId = $("#start-playtest").data("user");
+            var splitArray = $("#nav-menu-two").attr("href").split(",");
+            this.hand = [];
+            this.battlefield = [];
+            this.lands = [];
+            this.graveyard = [];
+            this.exile = [];
+            ViewControl.updateBattlefield();
+            ViewControl.updateLands();
+            ViewControl.updateGraveyard();
+            ViewControl.updateExile();
+            ViewControl.updateHand();
+            this.deckId = splitArray[1];
+            this.userId = splitArray[0].slice(1);
+            console.log(this.deckId);
             $.get(`/1/decks/${this.deckId}/deckToPlay`)
                 .then(function(data) {
                     GameData.library = data;
+                    if (GameData.replay === false) {
+                        GameData.replay = true;
+                    }
+                    console.log(GameData.library);
                 });
+
         } 
     };
 
@@ -336,6 +356,6 @@ $(document).ready(function(){
 
 
 
-    $("#start-playtest").on("click", GameData.startGame);
+    $("#nav-menu-two").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });
