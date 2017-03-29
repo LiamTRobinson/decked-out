@@ -58,17 +58,6 @@ app.use("/sessions", sessionsRoute);
 app.use("/:userId/decks", decksRoute);
 app.use("/:userId/cards", cardsRoute);
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
-
-//CATCH 404 AND FORWARD TO ERROR HANDLER
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-
 //ERROR HANDLER
 app.use(function(err, req, res, next) {
   //SET LOCALS, ONLY PROVIDING ERROR IN DEVELOPMENT

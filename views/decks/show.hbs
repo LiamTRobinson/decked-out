@@ -1,4 +1,5 @@
 <main>
+	<!-- HEADER -->
 	<div id="header-wrap" class="row valign-wrapper">
 		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
@@ -9,18 +10,23 @@
 			</form>
 		</div>
 	</div>
+	<!-- SUB-HEADER -->
 	<div class="row valign-wrapper black">
 		<div class="col s12">
 			<h2 class="white-text">{{deck.name}}</h2>
 		</div>
 	</div>
+	<!-- NAV FOR THIS DECK, INCLUDING DATA STORE FOR SAMPLE HAND -->
 	<div class="row">
 		<a href="/{{user.id}}/decks/{{deck.id}}/edit" class="col s5 center btn">Edit Deck</a>
-		<a href="#sample-hand-modal" id="sample-hand-trigger" class="col s5 offset-s2 center btn {{toggle}}" data-store={{array}}>Sample Hand</a>
+		<a href="#sample-hand-modal" id="sample-hand-trigger" class="col s5 offset-s2 center btn {{toggle}}" 
+		data-store={{array}}>Sample Hand</a>
 	</div>
+	<!-- TOTAL CARDS IN DECK -->
 	<div class="row">
 		<h5 class="col s12 center black-text">Total Cards: {{array.length}}</h5>
 	</div>
+	<!-- EACH CARD IN DECK WITH A QUANTITY DISPLAY OVERLAYED -->
 	<div class="row" id="decks-row">
 		{{#each deck.mainDeck}}
 			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
@@ -31,6 +37,7 @@
 			</div>
 		{{/each}}
 	</div>
+	<!-- SAMPLE HAND MODAL -->
 	<div id="sample-hand-modal" class="modal">
 		<div class="modal-content center ">
 			<div class="carousel" id="sample-hand">
@@ -45,17 +52,3 @@
 	  	</div>
 	</div>	
 </main>
-
-
-
-
-<!-- THIS IS THE HBS HELPER FUNCTION FOR BEFORE I FIXED THE API ISSUE WITH IMAGEURLS, JUST IN CASE THE ISSUE ARRISES AGAIN IN SOME CAPACITY-->
-
-<!-- {{#if this.imageUrl}}
-			{{else}}
-				<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url('/images/cardBack.jpg'); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">
-					<h4 class="white-text">{{this.name}}</h4>
-					<h4 class="white-text">{{this.manaCost}}</h4>
-					<p class="white-text mtg-card-paragraph">{{this.text}}</p>
-				</div>
-			{{/if}} -->

@@ -1,4 +1,5 @@
 <main>
+	<!-- HEADER -->
 	<div id="header-wrap" class="row valign-wrapper">
 		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
@@ -9,6 +10,7 @@
 			</form>
 		</div>
 	</div>
+	<!-- SUB-HEADER -->
 	<div class="row valign-wrapper black">
 		<div class="col s4">
 			<h2 class="white-text">Decks</h2>
@@ -17,6 +19,7 @@
 			<a href="/{{user.id}}/decks/new"><p class="btn">New</p></a>
 		</div>
 	</div>
+	<!-- EACH DECK DISPLAYED WITH CLICKABLE NAME AND NON-CLICKABLE FORMAT -->
 	<div class="row" id="decks-row">
 		{{#each user.decks}}
 			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 deck-container">

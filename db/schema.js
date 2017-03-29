@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 //SCHEMAS
+	//CARD SCHEMA
 var CardSchema = new Schema({
 	name: String,
 	manaCost: String,
@@ -13,13 +14,15 @@ var CardSchema = new Schema({
 	imageUrl: String,
 	quantity: Number
 });
-
+	
+	//DECK SCHEMA
 var DeckSchema = new Schema({
 	name: { type: String, required: true },
 	mainDeck: [CardSchema],
 	format: { type: String, required: true }
 });
 
+	//USER SCHEMA
 var UserSchema = new Schema({
 	userName: { type: String, required: true, unique: true },
 	password: { type: String, required: true },

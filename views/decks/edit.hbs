@@ -1,4 +1,5 @@
 <main>
+	<!-- HEADER -->
 	<div id="header-wrap" class="row valign-wrapper">
 		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
@@ -9,6 +10,7 @@
 			</form>
 		</div>
 	</div>
+	<!-- SUB-HEADER -->
 	<div class="row valign-wrapper black">
 		<div class="col s5 offset-s1">
 			<h2 class="white-text">Edit Deck</h2>
@@ -17,6 +19,7 @@
 			<a href="/{{user.id}}/decks/{{deck.id}}/edit/addcard"><p class="btn">Add Card</p></a>
 		</div>
 	</div>
+	<!-- DECK EDIT FORM -->
 	<div class="row">
 		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/edit?_method=PATCH" method="POST">
 			<div class="col s12 input-field">
@@ -34,14 +37,17 @@
 			</div>
 		</form>
 	</div>
+	<!-- DELETE BUTTON -->
 	<div class="row">
 		<form class="col s12" action="/{{user.id}}/decks/{{deck.id}}/delete?_method=DELETE" method="POST">
 			<input type="submit" value="DELETE DECK" class="btn grey darken-3">
 		</form>
 	</div>
+	<!-- TOTAL CARDS IN DECK -->
 	<div class="row">
 		<h5 class="col s12 center black-text">Total Cards: {{totalCards}}</h5>
 	</div>
+	<!-- EACH CARD IN DECK DISPLAYED WITH OVERLAYING DELETE BUTTON AND QUANTITY FORM -->
 	<div class="row" id="decks-row">
 		{{#each deck.mainDeck}}
 			<div class="col l5 m5 s8 offset-l1 offset-m1 offset-s3 mtg-card-container" style="background: url({{this.imageUrl}}); background-size: cover; background-size: contain; height: 300px; background-repeat: no-repeat; margin-top: 5%;">

@@ -17,8 +17,9 @@ $(document).ready(function(){
     });
 
 
-//PLAYTESTING FUNCTIONS
+//PLAYTESTING FUNCTIONS (TO BE REFACTORED!!)
     const GameData = {
+        //THIS IS THE GAME DATA BEING MANIPULATED
         deckId: null,
         userId: null,
         library: null,
@@ -28,6 +29,7 @@ $(document).ready(function(){
         graveyard:[],
         exile:[],
         replay: false,
+        //STARTS THE GAME
         startGame: function() {
             var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
             this.hand = [];
@@ -301,6 +303,7 @@ $(document).ready(function(){
     };
 
 //PLAYTEST EVENT BINDINGS
+
     //FROM HAND MODAL BINDINGS
     $("#hand-to-battlefield").on("click", function() {
         var index = parseInt($(this).data("index"));
@@ -318,6 +321,7 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.handToGraveyard(index);
     });
+
     //FROM BATTLEFIELD BINDINGS
     $("#battlefield-to-hand").on("click", function() {
         var index = parseInt($(this).data("index"));
@@ -335,6 +339,7 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.battlefieldToGraveyard(index);
     });
+
     //FROM LANDS BINDINGS
     $("#lands-to-hand").on("click", function() {
         var index = parseInt($(this).data("index"));
@@ -353,10 +358,7 @@ $(document).ready(function(){
         EventHandlers.landsToGraveyard(index);
     });
 
-
-
-
-
+    //START GAME AND DRAW CARD EVENT BINDINGS
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
 });

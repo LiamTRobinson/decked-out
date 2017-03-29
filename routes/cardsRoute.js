@@ -46,8 +46,10 @@ router.post("/new", function(req, res) {
 			userToFind = user;
 		})
 		.then(function(err) {
+			//THIS CHECKS THE DATABASE FOR THE CARD THE USER IS TRYING TO ADD
 			Card.findOne({ "name": cardToFind })
-				.exec(function(err, result){	
+				.exec(function(err, result){
+				//IF THE CARD DNE IN DB, SEARCH THE API	
 					if (result === null){
 						var cardToSeach = '"'+cardToFind+'"';
 						mtg.card.all({ name: cardToSeach, pageSize: 1 })
@@ -80,9 +82,11 @@ router.post("/new", function(req, res) {
 								});
 							});
 					}
+					//IF THE USER ALREADY HAS THE CARD THEY SEARCHED
 					else if (userToFind.cards.id(result.id) !== null){
 						res.redirect(`/${req.params.userId}/cards`);
 					}
+					//IF THE USER DOESN'T HAVE THE CARD BUT IT'S IN DB
 					else {
 						User.findById(req.params.userId)
 							.exec(function(err, user) {

@@ -1,5 +1,6 @@
 var User = require("../models/userModel.js");
 
+//LOGIN AUTHORIZATION
 function loginUser(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;

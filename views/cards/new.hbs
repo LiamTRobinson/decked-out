@@ -1,4 +1,5 @@
 <main>
+	<!-- HEADER -->
 	<div id="header-wrap" class="row valign-wrapper">
 		<div class="col s4 m5 l5 pull-s1">
 			<h1><a href="/users/{{user.id}}" class="black-text"><i class="material-icons hide-on-small-only">settings</i>{{user.userName}}</a></h1>
@@ -8,6 +9,7 @@
 				<input type="submit" value="Log Out" class="btn grey darken-3">
 			</form>
 		</div>
+	<!-- SUB-HEADER -->
 	</div>
 	<div class="row valign-wrapper black">
 		<div class="col s12">
@@ -15,10 +17,12 @@
 		</div>
 	</div>
 	<div class="row">
+	<!-- DESCRIPTION -->
 		<div class="col s12">
 			<p>Type a card name into the field below and then click "Find Card". Make sure to type the name exactly as it appears on the card.</p>
 		</div>	
 	</div>
+	<!-- SEARCH FORM -->
 	<div class="row">
 		<form action="/{{user.id}}/cards/new" method="POST">
 			<div class="input-field">
