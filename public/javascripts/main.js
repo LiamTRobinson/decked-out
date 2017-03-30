@@ -23,7 +23,7 @@ $(document).ready(function(){
         //THIS IS THE GAME DATA BEING MANIPULATED
         deckId: null,
         userId: null,
-        library: null,
+        library: [],
         hand: [],
         battlefield: [],
         lands: [],
@@ -31,18 +31,13 @@ $(document).ready(function(){
         exile:[],
         replay: false,
         scry: [],
+        cardViewTypes: ["library", "hand", "battlefield", "graveyard", "exile", "scry"],
         //STARTS THE GAME
         startGame: function() {
-            GameData.hand = [];
-            GameData.battlefield = [];
+            GameData.cardViewTypes.forEach(function(viewType) {
+                GameData[viewType] = [];
+            });
             GameData.lands = [];
-            GameData.graveyard = [];
-            GameData.exile = [];
-            ViewControl.updateBattlefield();
-            ViewControl.updateLands();
-            ViewControl.updateGraveyard();
-            ViewControl.updateExile();
-            ViewControl.updateHand();
             if (GameData.replay === false) {
                 var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
                 GameData.deckId = splitArray[1];
@@ -52,353 +47,132 @@ $(document).ready(function(){
                 .then(function(data) {
                     GameData.library = data; 
                     GameData.replay = true;
-                    ViewControl.updateLibrary();      
+                    console.log(GameData.library)
+                    ViewControl.updateCards();    
                 });
         } 
     };
 
-    const PlaytestControl = {
-        //FROM HAND FUNCTIONS
-        fromHandToBattlefield: function(cardIndex) {
-            for (var i = 0; i < GameData.hand[cardIndex].types.length; i++) {
-                if (GameData.hand[cardIndex].types[i] === "Land") {
-                    GameData.lands.push(GameData.hand[cardIndex]);
-                    GameData.hand.splice(cardIndex, 1);
-                    return;
-                }
-            }
-            GameData.battlefield.push(GameData.hand[cardIndex]);
-            GameData.hand.splice(cardIndex, 1);
-        },
-        fromHandToGraveyard: function(cardIndex) {
-            GameData.graveyard.push(GameData.hand[cardIndex]);
-            GameData.hand.splice(cardIndex, 1);
-        },
-        fromHandToExile: function(cardIndex) {
-            GameData.exile.push(GameData.hand[cardIndex]);
-            GameData.hand.splice(cardIndex, 1);
-        },
-        fromHandToLibrary: function(cardIndex) {
-            GameData.library.unshift(GameData.hand[cardIndex]);
-            GameData.hand.splice(cardIndex, 1);
-        },
-        //FROM BATTLEFIELD FUNCTIONS
-        fromBattlefieldToGraveyard: function(cardIndex) {
-            GameData.graveyard.push(GameData.battlefield[cardIndex]);
-            GameData.battlefield.splice(cardIndex, 1);
-        },
-        fromBattlefieldToExile: function(cardIndex) {
-            GameData.exile.push(GameData.battlefield[cardIndex]);
-            GameData.battlefield.splice(cardIndex, 1);
-        },
-        fromBattlefieldToHand: function(cardIndex) {
-            console.log(GameData.battlefield);
-            GameData.hand.push(GameData.battlefield[cardIndex]);
-            GameData.battlefield.splice(cardIndex, 1);
-        },
-        fromBattlefieldToLibrary: function(cardIndex) {
-            GameData.library.unshift(GameData.battlefield[cardIndex]);
-            GameData.battlefield.splice(cardIndex, 1);
-        },
-        //TO HAND FUNCTIONS
+    const PlaytestControl = {     
         drawCard: function() {
             GameData.hand.push(GameData.library[0]);
             GameData.library.splice(0, 1);
         },
-        fromGraveyardToHand: function(cardIndex) {
-            GameData.hand.push(GameData.graveyard[cardIndex]);
-            GameData.graveyard.splice(cardIndex, 1);
-        },
-        fromExileToHand: function(cardIndex) {
-            GameData.hand.push(GameData.exile[cardIndex]);
-            GameData.exile.splice(cardIndex, 1);
-        },
-        //FROM LANDS FUNCTIONS
-        fromLandsToHand: function(cardIndex) {
-            GameData.hand.push(GameData.lands[cardIndex]);
-            GameData.lands.splice(cardIndex, 1);
-        },
-        fromLandsToGraveyard: function(cardIndex) {
-            console.log(GameData.lands[cardIndex]);
-            GameData.graveyard.push(GameData.lands[cardIndex]);
-            GameData.lands.splice(cardIndex, 1);
-        },
-        fromLandsToLibrary: function(cardIndex) {
-            GameData.library.unshift(GameData.lands[cardIndex]);
-            GameData.lands.splice(cardIndex, 1);
-        },
-        fromLandsToExile: function(cardIndex) {
-            GameData.exile.push(GameData.lands[cardIndex]);
-            GameData.lands.splice(cardIndex, 1);
+        fromTo: function(from, to, index) {
+            if (to === "battlefield") {
+                for (var i = 0; i < GameData[from][index].types.length; i++) {
+                    if (GameData[from][index].types[i] === "Land") {
+                        console.log(GameData[from][index])
+                        GameData.lands.push(GameData[from][index]);
+                        GameData[from].splice(index, 1);
+                        return;
+                    }
+                }
+                GameData.battlefield.push(GameData[from][index]);
+                GameData[from].splice(index, 1);
+            }
+            else if (to === "librarybottom") {
+                GameData.library.push(GameData[from][index]);
+                GameData[from].splice(index, 1);
+            }
+            else if (to === "library") {
+                GameData[to].unshift(GameData[from][index]);
+                GameData[from].splice(index, 1);
+            }
+            else {
+                GameData[to].push(GameData[from][index]);
+                GameData[from].splice(index, 1);
+            }
         }
-        // IN PROGRESS
-        // fromLibraryToScry: function(number) {
-        //     var scryCards = GameData.library.slice(0, number);
-        //     GameData.library.splice(0, number);
-        //     GameData.scry.push(scryCards);
-        // },
-        // fromScryToLibraryTop: function(cardIndex) {
-        //     GameData.library.unshift(GameData.scry[cardIndex]);
-        //     GameData.scry.splice(cardIndex, 1);
-        // },
-        // fromScryToLibraryBottom: function(cardIndex) {
-        //     GameData.library.push(GameData.scry[cardIndex]);
-        //     GameData.scry.splice(cardIndex, 1);
-        // }
     };
 
     const ViewControl = {
-        //UPDATE VIEWS FUNCTIONS
-        updateHand: function() {
-            $("#hand").empty();
-            for (var i = 0; i < GameData.hand.length; i++) {
-                $("#hand").append(`<a class='pt-hand' id='pt-hand-${i}' href='#pt-single-card-hand'><img style='margin-top:5%' class='col s3 m3 l2 modal-action modal-close' src=${GameData.hand[i].imageUrl}></a>`);
-            }
-            $(".pt-hand").on("click", handCardClick);
-            if (GameData.hand.length > 0) {
-                $("#hand-total").html(`(${GameData.hand.length})`);
-            }
-        },
-        updateLands: function() {
-            $("#lands").empty();
-            for (var i = 0; i < GameData.lands.length; i++) {
-                $("#lands").append(`<a class='pt-lands' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-lands'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
-            }
-            $(".pt-lands").on("click", landsCardClick);
-            if (GameData.lands.length > 0) {
-                $("#lands-total").html(`(${GameData.lands.lenth})`);
-            }
-        },
-        updateBattlefield: function() {
-            $("#battlefield").empty();
-            for (var i = 0; i < GameData.battlefield.length; i++) {
-                $("#battlefield").append(`<a class='pt-battlefield' id='pt-battlefield-${i}' style='margin-top: 5%;' href='#pt-single-card-battlefield'><img class='col s3 m3 l2' src=${GameData.battlefield[i].imageUrl}></a>`);
-            }
-            $(".pt-battlefield").on("click", battlefieldCardClick);
-        },
-        updateExile: function() {
-            $("#exile").empty();
-            for (var i = 0; i < GameData.exile.length; i++) {
-                $("#exile").append(`<a class='pt-exile' id='pt-exile-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.exile[i].imageUrl}></a>`);
-            }
-            $(".pt-exile").on("click", exileCardClicked);
-            if (GameData.exile.length > 0) {
-                $("#exile-total").html(`(${GameData.exile.length})`);
-            }
-        },
-        updateGraveyard: function() {
-            $("#graveyard").empty();
-            for (var i = 0; i < GameData.graveyard.length; i++) {
-                $("#graveyard").append(`<a class='pt-graveyard' id='pt-graveyard-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.graveyard[i].imageUrl}></a>`);
-            }
-            $(".pt-graveyard").on("click", graveyardCardClicked);
-            if (GameData.graveyard.length > 0) {
-                $("#graveyard-total").html(`(${GameData.graveyard.length})`);
-            }
-        },
-        updateLibrary: function() {
-            if (GameData.library.length > 0) {
-                $("#library-total").html(`(${GameData.library.length})`);
-            }
-        }
-        //IN PROGRESS
-        // updateScry: function() {
-        //     $("#scry").empty();
-        //     for (var i = 0; i < GameData.scry.length; i++) {
-        //         $("#scry").append(`<a class='pt-scry' id='pt-scry-${i}' style='margin-top: 5%;'><img class='col s3 m3 l2' src=${GameData.scry[i].imageUrl}></a>`);
-        //     }
-        // }
+        updateCards: function() {
+            GameData.cardViewTypes.forEach(function(type) {
+                if (type !== "library") {
+                    $(`#${type}`).empty();
+                    for(var i = 0; i < GameData[type].length; i++) {
+                            $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><img style='margin-top:5%' class='col s3 m3 l2 modal-action modal-close' src=${GameData[type][i].imageUrl}></a>`);
+                    }
+                }
+                $("#lands").empty();
+                for (var i = 0; i < GameData.lands.length; i++) {
+                    $("#lands").append(`<a class='pt-sorted-card' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-modal'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
+                }
+                if (GameData.lands.length > 0) {
+                    $("#lands-total").html(`(${GameData.lands.lenth})`);
+                }
+                else {
+                    $("#lands-total").html(`(0)`);
+                }
+                $(".pt-sorted-card").on("click", cardClicked);
+                if (type !== "battlefield" && type !== "scry") {
+                    if (GameData[type].length > 0) {
+                        $(`#${type}-total`).html(`(${GameData[type].length})`);
+                    }
+                    else {
+                        $(`#${type}-total`).html("(0)");
+                    }
+                }
+            });
+        }       
     };
 
     const EventHandlers = {
         drawCard: function() {
             PlaytestControl.drawCard();
-            ViewControl.updateHand();
-            ViewControl.updateLibrary();
+            ViewControl.updateCards();
         },
-        //FROM HAND
-        handToGraveyard: function(cardIndex) {
-            PlaytestControl.fromHandToGraveyard(cardIndex);
-            ViewControl.updateGraveyard();
-            ViewControl.updateHand();
-        },
-        handToExile: function(cardIndex) {
-            PlaytestControl.fromHandToExile(cardIndex);
-            ViewControl.updateExile();
-            ViewControl.updateHand();
-        },
-        handToLibrary: function(cardIndex) {
-            PlaytestControl.fromHandToLibrary(cardIndex);
-            ViewControl.updateHand();
-            ViewControl.updateLibrary();
-        },
-        handToBattlefield: function(cardIndex) {
-            PlaytestControl.fromHandToBattlefield(cardIndex);
-            ViewControl.updateBattlefield();
-            ViewControl.updateLands();
-            ViewControl.updateHand();
-        },
-        //FROM BATTLEFIELD
-        battlefieldToHand: function(cardIndex) {
-            PlaytestControl.fromBattlefieldToHand(cardIndex);
-            ViewControl.updateBattlefield();
-            ViewControl.updateHand();
-        },
-        battlefieldToExile: function(cardIndex) {
-            PlaytestControl.fromBattlefieldToExile(cardIndex);
-            ViewControl.updateBattlefield();
-            ViewControl.updateExile();
-        },
-        battlefieldToLibrary: function(cardIndex) {
-            PlaytestControl.fromBattlefieldToLibrary(cardIndex);
-            ViewControl.updateBattlefield();
-            ViewControl.updateLibrary();
-        },
-        battlefieldToGraveyard: function(cardIndex) {
-            PlaytestControl.fromBattlefieldToGraveyard(cardIndex);
-            ViewControl.updateBattlefield();
-            ViewControl.updateGraveyard();
-        },
-        //FROM LANDS
-        landsToHand: function(cardIndex) {
-            PlaytestControl.fromLandsToHand(cardIndex);
-            ViewControl.updateLands();
-            ViewControl.updateHand();
-        },
-        landsToExile: function(cardIndex) {
-            PlaytestControl.fromLandsToExile(cardIndex);
-            ViewControl.updateLands();
-            ViewControl.updateExile();
-        },
-        landsToGraveyard: function(cardIndex) {
-            PlaytestControl.fromLandsToGraveyard(cardIndex);
-            ViewControl.updateGraveyard();
-            ViewControl.updateLands();
-        },
-        landsToLibrary: function(cardIndex) {
-            PlaytestControl.fromLandsToLibrary(cardIndex);
-            ViewControl.updateLands();
-            ViewControl.updateLibrary();
-        },
-        //FROM GRAVEYARD AND EXILE
-        exileToHand: function(cardIndex) {
-            PlaytestControl.fromExileToHand(cardIndex);
-            ViewControl.updateHand();
-            ViewControl.updateExile();
-        },
-        graveyardToHand: function(cardIndex) {
-            PlaytestControl.fromGraveyardToHand(cardIndex);
-            ViewControl.updateHand();
-            ViewControl.updateGraveyard();
-        },
-        //SCRY
+        modalButton: function(from, to, index) {
+            PlaytestControl.fromTo(from, to, index);
+            ViewControl.updateCards();
+        }
     };
 
-//WHEN A CARD IN HAND IS CLICKED
-    var handCardClick = function() {
+
+//WHEN A CARD IS CLICKED
+    var cardClicked = function() {
         var splitArray = $(this).attr("id").split("-");
         var index = splitArray[2];
-        var image = GameData.hand[parseInt(index)].imageUrl;
-        $("#hand-to-graveyard").data("index", index);
-        $("#hand-to-exile").data("index", index);
-        $("#hand-to-battlefield").data("index", index);
-        $("#hand-to-library").data("index", index);
-        $("#pt-single-card-hand-image").attr("src", image);
-    };
-
-//WHEN A CARD ON BATTLEFIELD IS CLICKED
-    var battlefieldCardClick = function() {
-        var splitArray = $(this).attr("id").split("-");
-        var index = splitArray[2];
-        var image = GameData.battlefield[parseInt(index)].imageUrl;
-        $("#battlefield-to-graveyard").data("index", index);
-        $("#battlefield-to-exile").data("index", index);
-        $("#battlefield-to-hand").data("index", index);
-        $("#battlefield-to-library").data("index", index);
-        $("#pt-single-card-battlefield-image").attr("src", image);
-    };
-
-//WHEN A CARD IN LANDS IS CLICKED
-    var landsCardClick = function() {
-        var splitArray = $(this).attr("id").split("-");
-        var index = splitArray[2];
-        var image = GameData.lands[parseInt(index)].imageUrl;
-        $("#lands-to-graveyard").data("index", index);
-        $("#lands-to-exile").data("index", index);
-        $("#lands-to-hand").data("index", index);
-        $("#lands-to-library").data("index", index);
-        $("#pt-single-card-lands-image").attr("src", image);
-    };
-
-//WHEN A CARD IN GRAVEYARD IS CLICKED
-    var graveyardCardClicked = function() {
-        var splitArray = $(this).attr("id").split("-");
-        var index = parseInt(splitArray[2]);
-        EventHandlers.graveyardToHand(index);
-    };
-
-//WHEN A CARD IN EXILE IS CLICKED
-    var exileCardClicked = function() {
-        var splitArray = $(this).attr("id").split("-");
-        var index = parseInt(splitArray[2]);
-        EventHandlers.exileToHand(index);
-    };
+        var fromType = splitArray[1];
+        var image = GameData[fromType][parseInt(index)].imageUrl;
+        if (fromType === "scry") {
+            $("#pt-single-card-image").attr("src", image);
+            GameData.cardViewTypes.forEach(function(type) {
+                $(`#to-${type}`).removeClass("hide");
+               if (type !== "library") {
+                $(`#to-${type}`).addClass("hide");
+               }
+            });
+            $(`#to-librarybottom`).data("index", index);
+            $(`#to-librarybottom`).data("from", fromType);
+            $(`#to-library`).data("index", index);
+            $(`#to-library`).data("from", fromType);
+        }
+        else {
+            GameData.cardViewTypes.forEach(function(type) {
+                $(`#to-${type}`).removeClass("hide");
+                $(`#to-${type}`).data("index", index);
+                $(`#to-${type}`).data("from", fromType);
+                if (type === fromType) {
+                    $(`#to-${type}`).addClass("hide");
+                }
+            });
+            $(`#to-librarybottom`).data("index", index);
+            $(`#to-librarybottom`).data("from", fromType);
+            $("#pt-single-card-image").attr("src", image);
+        }
+    }
 
 //PLAYTEST EVENT BINDINGS
-
-    //FROM HAND MODAL BINDINGS
-    $("#hand-to-battlefield").on("click", function() {
+    
+    //MODAL BUTTON EVENT BINDINGS
+    $(".button-for-modal").on("click", function() {
+        var toZone = $(this).attr("id").split("-")[1];
+        var fromZone = $(this).data("from");
         var index = parseInt($(this).data("index"));
-        EventHandlers.handToBattlefield(index);
-    });
-    $("#hand-to-library").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.handToLibrary(index);
-    });
-    $("#hand-to-exile").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.handToExile(index);
-    });
-    $("#hand-to-graveyard").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.handToGraveyard(index);
-    });
-
-    //FROM BATTLEFIELD BINDINGS
-    $("#battlefield-to-hand").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.battlefieldToHand(index);
-    });
-    $("#battlefield-to-library").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.battlefieldToLibrary(index);
-    });
-    $("#battlefield-to-exile").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.battlefieldToExile(index);
-    });
-    $("#battlefield-to-graveyard").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.battlefieldToGraveyard(index);
-    });
-
-    //FROM LANDS BINDINGS
-    $("#lands-to-hand").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.landsToHand(index);
-    });
-    $("#lands-to-library").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.landsToLibrary(index);
-    });
-    $("#lands-to-exile").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.landsToExile(index);
-    });
-    $("#lands-to-graveyard").on("click", function() {
-        var index = parseInt($(this).data("index"));
-        EventHandlers.landsToGraveyard(index);
-    });
+        EventHandlers.modalButton(fromZone, toZone, index);
+    })
 
     //OTHER BUTTON EVENT BINDINGS
     $("#nav-menu-twoStart").on("click", GameData.startGame);

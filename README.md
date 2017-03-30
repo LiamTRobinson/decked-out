@@ -24,3 +24,7 @@ I used Jquery, Materialize, and magicthegathering.io when creating this project.
 <a href="https://trello.com/b/cKbQ1aau/deckedout">Trello Board</a>
 
 Thanks for reading and please enjoy my app!
+
+For more things I've done you can check out my portfolio site here
+
+<a href="https://github.com/LiamTRobinson/profile_site">Profile Site</a>
