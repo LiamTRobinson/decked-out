@@ -45,6 +45,7 @@ $(document).ready(function(){
             $.get(`/1/decks/${GameData.deckId}/deckToPlay`)
                 .then(function(data) {
                     GameData.replay = true;
+                    GameData.library = data;
                     ViewControl.updateCards(); 
                     console.log(GameData.library);   
                 });
@@ -183,6 +184,7 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.modalButton(fromZone, toZone, index);
     });
+    $("")
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
     $("#shuffle-button").on("click", PlaytestControl.shuffle);
