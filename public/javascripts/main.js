@@ -31,13 +31,12 @@ $(document).ready(function(){
         exile:[],
         replay: false,
         scry: [],
-        cardViewTypes: ["library", "hand", "battlefield", "graveyard", "exile", "scry"],
+        cardViewTypes: ["library", "hand", "battlefield", "graveyard", "exile", "scry", "lands"],
         //STARTS THE GAME
         startGame: function() {
             GameData.cardViewTypes.forEach(function(viewType) {
                 GameData[viewType] = [];
             });
-            GameData.lands = [];
             if (GameData.replay === false) {
                 var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
                 GameData.deckId = splitArray[1];
@@ -47,7 +46,6 @@ $(document).ready(function(){
                 .then(function(data) {
                     GameData.library = data; 
                     GameData.replay = true;
-                    console.log(GameData.library)
                     ViewControl.updateCards();    
                 });
         } 
@@ -99,20 +97,12 @@ $(document).ready(function(){
                 for (var i = 0; i < GameData.lands.length; i++) {
                     $("#lands").append(`<a class='pt-sorted-card' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-modal'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
                 }
-                if (GameData.lands.length > 0) {
-                    $("#lands-total").html(`(${GameData.lands.lenth})`);
+                $(".pt-sorted-card").on("click", cardClicked);
+                if (GameData[type].length > 0) {
+                    $(`#${type}-total`).html(`(${GameData[type].length})`);
                 }
                 else {
-                    $("#lands-total").html(`(0)`);
-                }
-                $(".pt-sorted-card").on("click", cardClicked);
-                if (type !== "battlefield" && type !== "scry") {
-                    if (GameData[type].length > 0) {
-                        $(`#${type}-total`).html(`(${GameData[type].length})`);
-                    }
-                    else {
-                        $(`#${type}-total`).html("(0)");
-                    }
+                    $(`#${type}-total`).html("(0)");
                 }
             });
         }       
