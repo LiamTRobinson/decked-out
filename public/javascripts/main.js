@@ -1,6 +1,7 @@
 $(document).ready(function(){ 
 //MATERIALIZE COMPONENT INITIALIZERS
     $('.modal').modal();
+    $("#pt-scry-modal").modal({dismissible: false});
     $('.carousel').carousel();
     $(".nav-extended.Start").append('<div class="nav-content" style="margin-bottom: 10px;"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total">(0)</span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total">(0)</span></a></li></ul></div>');
     $('ul.tabs').tabs();
@@ -96,22 +97,18 @@ $(document).ready(function(){
         scry: function(amount) {
             var scryCards = GameData.library.slice(0, amount);
             GameData.library.splice(0, amount);
-            GameData.scry.push(scryCards);
+            scryCards.forEach(function(card) {
+                GameData.scry.push(card);
+            });
         }
     };
 
     const ViewControl = {
         updateCards: function() {
             GameData.cardViewTypes.forEach(function(type) {
-                if (type !== "library") {
-                    $(`#${type}`).empty();
-                    for(var i = 0; i < GameData[type].length; i++) {
-                            $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><img style='margin-top:5%' class='col s3 m3 l2 modal-action modal-close' src=${GameData[type][i].imageUrl}></a>`);
-                    }
-                }
-                $("#lands").empty();
-                for (var i = 0; i < GameData.lands.length; i++) {
-                    $("#lands").append(`<a class='pt-sorted-card' id='pt-lands-${i}' style='margin-top: 5%;' href='#pt-single-card-modal'><img class='col s3 m3 l2' src=${GameData.lands[i].imageUrl}></a>`);
+                $(`#${type}`).empty();
+                for(var i = 0; i < GameData[type].length; i++) {   
+                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><img style='margin-top:5%' class='col s3 m3 l2 modal-action' src=${GameData[type][i].imageUrl}></a>`);
                 }
                 $(".pt-sorted-card").on("click", cardClicked);
                 if (GameData[type].length > 0) {
@@ -121,6 +118,9 @@ $(document).ready(function(){
                     $(`#${type}-total`).html("(0)");
                 }
             });
+            if (GameData.scry.length === 0) {
+                $("#pt-scry-modal").modal("close");
+            }
         }       
     };
 
@@ -135,10 +135,11 @@ $(document).ready(function(){
             PlaytestControl.fromTo(from, to, index);
             ViewControl.updateCards();
         },
-        scryX: function(amount) {
+        scryX: function() {
+            var amount = $("#scry-amount").val();
+            $("#scry-amount").val(0);
             PlaytestControl.scry(amount);
             ViewControl.updateCards();
-            $("#scry").children().removeClass("modal-close");
         }
     };
 
@@ -184,7 +185,7 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.modalButton(fromZone, toZone, index);
     });
-    $("")
+    $("#scry-button").on("click", EventHandlers.scryX);
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
     $("#shuffle-button").on("click", PlaytestControl.shuffle);
