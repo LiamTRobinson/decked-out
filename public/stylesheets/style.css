@@ -70,6 +70,15 @@ h4  {
 #library-button {
   bottom: 12%;
   right: 2%;
+}
+
+#library-button-inner {
   border: 2px #e0f2f1 solid;
 }
 
+#pt-footer {
+  position: fixed;
+  bottom: 0;
+  width: 70%;
+  left: 15%;
+}

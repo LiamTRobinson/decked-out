@@ -52,9 +52,9 @@ $(document).ready(function(){
     };
 
     const PlaytestControl = {     
-        drawCard: function() {
-            GameData.hand.push(GameData.library[0]);
-            GameData.library.splice(0, 1);
+        drawCard: function() {          
+                GameData.hand.push(GameData.library[0]);
+                GameData.library.splice(0, 1);
         },
         fromTo: function(from, to, index) {
             if (to === "battlefield") {
@@ -81,6 +81,16 @@ $(document).ready(function(){
                 GameData[to].push(GameData[from][index]);
                 GameData[from].splice(index, 1);
             }
+        },
+        shuffle: function() {
+            var origArray = GameData.library;
+            var newArray = [];
+            while (origArray.length > 0) {
+                var index = Math.floor(Math.random() * origArray.length);
+                newArray.push(origArray[index]);
+                origArray.splice(index, 1);
+            }
+            GameData.library = newArray;
         }
     };
 
@@ -110,8 +120,10 @@ $(document).ready(function(){
 
     const EventHandlers = {
         drawCard: function() {
-            PlaytestControl.drawCard();
-            ViewControl.updateCards();
+            if (GameData.library.length > 0) {
+                PlaytestControl.drawCard();
+                ViewControl.updateCards();
+            }
         },
         modalButton: function(from, to, index) {
             PlaytestControl.fromTo(from, to, index);
@@ -152,7 +164,7 @@ $(document).ready(function(){
             $(`#to-librarybottom`).data("from", fromType);
             $("#pt-single-card-image").attr("src", image);
         }
-    }
+    };
 
 //PLAYTEST EVENT BINDINGS
     
@@ -162,7 +174,7 @@ $(document).ready(function(){
         var fromZone = $(this).data("from");
         var index = parseInt($(this).data("index"));
         EventHandlers.modalButton(fromZone, toZone, index);
-    })
+    });
 
     //OTHER BUTTON EVENT BINDINGS
     $("#nav-menu-twoStart").on("click", GameData.startGame);
