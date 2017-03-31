@@ -53,11 +53,13 @@ $(document).ready(function(){
         } 
     };
 
-    const PlaytestControl = {     
+    const PlaytestControl = {
+        //DRAW A CARD     
         drawCard: function() {          
                 GameData.hand.push(GameData.library[0]);
                 GameData.library.splice(0, 1);
         },
+        //MOVE FROM ONE ZONE TO ANOTHER
         fromTo: function(from, to, index) {
             if (to === "battlefield") {
                 for (var i = 0; i < GameData[from][index].types.length; i++) {
@@ -84,6 +86,7 @@ $(document).ready(function(){
                 GameData[from].splice(index, 1);
             }
         },
+        //SHUFFLE LIBRARY
         shuffle: function() {
             var origArray = GameData.library;
             var newArray = [];
@@ -94,6 +97,7 @@ $(document).ready(function(){
             }
             GameData.library = newArray;
         },
+        //SCRY
         scry: function(amount) {
             var scryCards = GameData.library.slice(0, amount);
             GameData.library.splice(0, amount);
@@ -104,6 +108,7 @@ $(document).ready(function(){
     };
 
     const ViewControl = {
+        //UPDATE ALL CARD VIEWS
         updateCards: function() {
             GameData.cardViewTypes.forEach(function(type) {
                 $(`#${type}`).empty();
@@ -125,16 +130,19 @@ $(document).ready(function(){
     };
 
     const EventHandlers = {
+        //DRAW CARD BUTTON
         drawCard: function() {
             if (GameData.library.length > 0) {
                 PlaytestControl.drawCard();
                 ViewControl.updateCards();
             }
         },
+        //ALL MODAL BUTTONS
         modalButton: function(from, to, index) {
             PlaytestControl.fromTo(from, to, index);
             ViewControl.updateCards();
         },
+        //SCRY BUTTON
         scryX: function() {
             var amount = $("#scry-amount").val();
             $("#scry-amount").val(1);
@@ -146,10 +154,13 @@ $(document).ready(function(){
 
 //WHEN A CARD IS CLICKED
     var cardClicked = function() {
+        //PARSE THE TO AND FROM
         var splitArray = $(this).attr("id").split("-");
         var index = splitArray[2];
         var fromType = splitArray[1];
+        //PARSE THE IMAGE
         var image = GameData[fromType][parseInt(index)].imageUrl;
+        //IF FROM SCRY
         if (fromType === "scry") {
             $("#pt-single-card-image").attr("src", image);
             GameData.cardViewTypes.forEach(function(type) {
@@ -163,6 +174,7 @@ $(document).ready(function(){
             $(`#to-library`).data("index", index);
             $(`#to-library`).data("from", fromType);
         }
+        //IF FROM ANYWHERE ELSE
         else {
             GameData.cardViewTypes.forEach(function(type) {
                 $(`#to-${type}`).removeClass("hide");
