@@ -137,7 +137,7 @@ $(document).ready(function(){
         },
         scryX: function() {
             var amount = $("#scry-amount").val();
-            $("#scry-amount").val(0);
+            $("#scry-amount").val(1);
             PlaytestControl.scry(amount);
             ViewControl.updateCards();
         }
