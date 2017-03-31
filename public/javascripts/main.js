@@ -44,9 +44,9 @@ $(document).ready(function(){
             }
             $.get(`/1/decks/${GameData.deckId}/deckToPlay`)
                 .then(function(data) {
-                    GameData.library = data; 
                     GameData.replay = true;
-                    ViewControl.updateCards();    
+                    ViewControl.updateCards(); 
+                    console.log(GameData.library);   
                 });
         } 
     };
@@ -91,6 +91,11 @@ $(document).ready(function(){
                 origArray.splice(index, 1);
             }
             GameData.library = newArray;
+        },
+        scry: function(amount) {
+            var scryCards = GameData.library.slice(0, amount);
+            GameData.library.splice(0, amount);
+            GameData.scry.push(scryCards);
         }
     };
 
@@ -128,6 +133,11 @@ $(document).ready(function(){
         modalButton: function(from, to, index) {
             PlaytestControl.fromTo(from, to, index);
             ViewControl.updateCards();
+        },
+        scryX: function(amount) {
+            PlaytestControl.scry(amount);
+            ViewControl.updateCards();
+            $("#scry").children().removeClass("modal-close");
         }
     };
 
@@ -167,16 +177,13 @@ $(document).ready(function(){
     };
 
 //PLAYTEST EVENT BINDINGS
-    
-    //MODAL BUTTON EVENT BINDINGS
     $(".button-for-modal").on("click", function() {
         var toZone = $(this).attr("id").split("-")[1];
         var fromZone = $(this).data("from");
         var index = parseInt($(this).data("index"));
         EventHandlers.modalButton(fromZone, toZone, index);
     });
-
-    //OTHER BUTTON EVENT BINDINGS
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
+    $("#shuffle-button").on("click", PlaytestControl.shuffle);
 });
