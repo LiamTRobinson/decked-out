@@ -5,12 +5,12 @@ body {
   flex-direction: column;
 }
 
-.navroute {
-  text-align: center;
-}
-
 main {
   flex: 1 0 auto;
+}
+
+.navroute {
+  text-align: center;
 }
 
 h4  {
@@ -86,4 +86,8 @@ h4  {
 
 .tapped {
   transform: rotate(90deg);
+}
+
+.pt-bottom-spacer {
+  height: 20vw;
 }

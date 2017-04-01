@@ -175,7 +175,7 @@ $(document).ready(function(){
                     $(`#pt-lands-${index} div`).addClass("tapped");
                 }
                 else {
-                    $(`#pt-lands-${index} div`).addClass("tapped");
+                    $(`#pt-lands-${index} div`).removeClass("tapped");
                 }
             });
         }       
