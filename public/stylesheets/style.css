@@ -1,7 +1,12 @@
+/* LAYOUT STUFF */
 body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
+
+.navroute {
+  text-align: center;
 }
 
 main {
@@ -16,10 +21,6 @@ h4  {
 .mtg-card-paragraph {
   width: 70%;
   max-width: 200px;
-}
-
-.navroute {
-  text-align: center;
 }
 
 #logo-wrapper {
@@ -81,4 +82,8 @@ h4  {
   bottom: 0;
   width: 70%;
   left: 15%;
+}
+
+.tapped {
+  transform: rotate(90deg);
 }

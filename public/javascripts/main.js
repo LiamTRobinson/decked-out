@@ -19,7 +19,7 @@ $(document).ready(function(){
     });
 
 
-//PLAYTESTING FUNCTIONS (TO BE REFACTORED!!)
+//PLAYTESTING FUNCTIONS
     const GameData = {
         //THIS IS THE GAME DATA BEING MANIPULATED
         deckId: null,
@@ -32,23 +32,39 @@ $(document).ready(function(){
         exile:[],
         replay: false,
         scry: [],
+        battlefieldTapped: [],
+        landsTapped: [],
         cardViewTypes: ["library", "hand", "battlefield", "graveyard", "exile", "scry", "lands"],
         //STARTS THE GAME
         startGame: function() {
+            //EMPTY VIEW ARRAYS
             GameData.cardViewTypes.forEach(function(viewType) {
                 GameData[viewType] = [];
             });
+            GameData.landsTapped = [];
+            GameData.battlefieldTapped = [];
+            //IF THE GAME IS NOT A REPLAY
             if (GameData.replay === false) {
+                //PARSE THE USER/DECK IDS
                 var splitArray = $("#nav-menu-twoStart").attr("href").split(",");
+                //SET THE IDS
                 GameData.deckId = splitArray[1];
                 GameData.userId = splitArray[0].slice(1);
             }
+            //GET THE RANDOMIZED DECK
             $.get(`/1/decks/${GameData.deckId}/deckToPlay`)
                 .then(function(data) {
+                    //SET REPLAY TO TRUE FOR FUTURE STARTS
                     GameData.replay = true;
+                    //SET THE LIBRARY
                     GameData.library = data;
-                    ViewControl.updateCards(); 
-                    console.log(GameData.library);   
+                    //SET UP TAPPED ARRAYS
+                    for (var i = 0; i < GameData.library.length; i++) {
+                        GameData.battlefieldTapped.push(false);
+                        GameData.landsTapped.push(false);
+                    }
+                    //UPDATE VIEWS
+                    ViewControl.updateCards();    
                 });
         } 
     };
@@ -64,7 +80,6 @@ $(document).ready(function(){
             if (to === "battlefield") {
                 for (var i = 0; i < GameData[from][index].types.length; i++) {
                     if (GameData[from][index].types[i] === "Land") {
-                        console.log(GameData[from][index])
                         GameData.lands.push(GameData[from][index]);
                         GameData[from].splice(index, 1);
                         return;
@@ -104,6 +119,15 @@ $(document).ready(function(){
             scryCards.forEach(function(card) {
                 GameData.scry.push(card);
             });
+        },
+        //TAP
+        tap: function(type, index) {
+            if (GameData[type + "Tapped"][index] === true) {
+                GameData[type + "Tapped"][index] = false;
+            }
+            else {
+                GameData[type + "Tapped"][index] = true;
+            }
         }
     };
 
@@ -113,7 +137,7 @@ $(document).ready(function(){
             GameData.cardViewTypes.forEach(function(type) {
                 $(`#${type}`).empty();
                 for(var i = 0; i < GameData[type].length; i++) {   
-                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><img style='margin-top:5%' class='col s3 m3 l2 modal-action' src=${GameData[type][i].imageUrl}></a>`);
+                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative; overflow: auto;' class='col s4 m3 l2'><img style='margin-top:5%;' class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
                 }
                 $(".pt-sorted-card").on("click", cardClicked);
                 if (GameData[type].length > 0) {
@@ -126,6 +150,34 @@ $(document).ready(function(){
             if (GameData.scry.length === 0) {
                 $("#pt-scry-modal").modal("close");
             }
+            $("#hand").children().addClass("modal-close");
+            $("#library").children().addClass("modal-close");
+            $("#battlefield a div").append(`<a class='btn col s4 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
+            $("#lands a div").append(`<a class='btn col s4 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
+            $(".tap-button").on("click", function(event) {
+                event.stopPropagation();
+                var splitArray = $(this).parent().parent().attr("id").split("-");
+                var index = splitArray[2];
+                var type = splitArray[1];
+                PlaytestControl.tap(type, index);
+                ViewControl.updateCards();
+            });
+            GameData.battlefield.forEach(function(card, index) {
+                if (GameData.battlefieldTapped[index] === true) {
+                    $(`#pt-battlefield-${index} div`).addClass("tapped");
+                }
+                else {
+                    $(`#pt-battlefield-${index} div`).removeClass("tapped");
+                }
+            });
+            GameData.lands.forEach(function(card, index) {
+                if (GameData.landsTapped[index] === true) {
+                    $(`#pt-lands-${index} div`).addClass("tapped");
+                }
+                else {
+                    $(`#pt-lands-${index} div`).addClass("tapped");
+                }
+            });
         }       
     };
 
@@ -148,6 +200,10 @@ $(document).ready(function(){
             $("#scry-amount").val(1);
             PlaytestControl.scry(amount);
             ViewControl.updateCards();
+        },
+        tap: function(type, index) {
+            PlaytestControl.tap(type, index);
+            ViewControl.updateCards;
         }
     };
 
@@ -160,34 +216,24 @@ $(document).ready(function(){
         var fromType = splitArray[1];
         //PARSE THE IMAGE
         var image = GameData[fromType][parseInt(index)].imageUrl;
-        //IF FROM SCRY
-        if (fromType === "scry") {
-            $("#pt-single-card-image").attr("src", image);
-            GameData.cardViewTypes.forEach(function(type) {
-                $(`#to-${type}`).removeClass("hide");
-               if (type !== "library") {
+        //FOR EACH VIEW TYPE
+        GameData.cardViewTypes.forEach(function(type) {
+            //REMOVE THE HIDE CLASS
+            $(`#to-${type}`).removeClass("hide");
+            //SET THE INDEX DATA
+            $(`#to-${type}`).data("index", index);
+            //SET THE FROM DATA
+            $(`#to-${type}`).data("from", fromType);
+            //ADD HIDE CLASS TO BUTTON OF SAME TYPE
+            if (type === fromType) {
                 $(`#to-${type}`).addClass("hide");
-               }
-            });
-            $(`#to-librarybottom`).data("index", index);
-            $(`#to-librarybottom`).data("from", fromType);
-            $(`#to-library`).data("index", index);
-            $(`#to-library`).data("from", fromType);
-        }
-        //IF FROM ANYWHERE ELSE
-        else {
-            GameData.cardViewTypes.forEach(function(type) {
-                $(`#to-${type}`).removeClass("hide");
-                $(`#to-${type}`).data("index", index);
-                $(`#to-${type}`).data("from", fromType);
-                if (type === fromType) {
-                    $(`#to-${type}`).addClass("hide");
-                }
-            });
-            $(`#to-librarybottom`).data("index", index);
-            $(`#to-librarybottom`).data("from", fromType);
-            $("#pt-single-card-image").attr("src", image);
-        }
+            }
+        });
+        //SET THINGS FOR LIBRARY BOTTOM BUTTON
+        $(`#to-librarybottom`).data("index", index);
+        $(`#to-librarybottom`).data("from", fromType);
+        //SET THE IMAGE
+        $("#pt-single-card-image").attr("src", image);
     };
 
 //PLAYTEST EVENT BINDINGS
