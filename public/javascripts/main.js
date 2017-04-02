@@ -77,6 +77,7 @@ $(document).ready(function(){
         },
         //MOVE FROM ONE ZONE TO ANOTHER
         fromTo: function(from, to, index) {
+            //IF TO IS BATTLEFIELD, CHECK TO SEE IF IT IS A LAND OR NOT
             if (to === "battlefield") {
                 for (var i = 0; i < GameData[from][index].types.length; i++) {
                     if (GameData[from][index].types[i] === "Land") {
@@ -87,6 +88,7 @@ $(document).ready(function(){
                 }
                 GameData.battlefield.push(GameData[from][index]);
                 GameData[from].splice(index, 1);
+
             }
             else if (to === "librarybottom") {
                 GameData.library.push(GameData[from][index]);
@@ -99,6 +101,10 @@ $(document).ready(function(){
             else {
                 GameData[to].push(GameData[from][index]);
                 GameData[from].splice(index, 1);
+            }
+            if (from === "battlefield" || from === "lands") {
+                GameData[`${from}Tapped`].splice(index, 1);
+                GameData[`${from}Tapped`].push(false);
             }
         },
         //SHUFFLE LIBRARY
@@ -137,9 +143,8 @@ $(document).ready(function(){
             GameData.cardViewTypes.forEach(function(type) {
                 $(`#${type}`).empty();
                 for(var i = 0; i < GameData[type].length; i++) {   
-                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative; overflow: auto;' class='col s4 m3 l2'><img style='margin-top:5%;' class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
+                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative; margin-top: 5%;' class='col s4 m3 l2'><img class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
                 }
-                $(".pt-sorted-card").on("click", cardClicked);
                 if (GameData[type].length > 0) {
                     $(`#${type}-total`).html(`(${GameData[type].length})`);
                 }
@@ -147,13 +152,14 @@ $(document).ready(function(){
                     $(`#${type}-total`).html("(0)");
                 }
             });
+            $(".pt-sorted-card").on("click", cardClicked);
             if (GameData.scry.length === 0) {
                 $("#pt-scry-modal").modal("close");
             }
             $("#hand").children().addClass("modal-close");
             $("#library").children().addClass("modal-close");
-            $("#battlefield a div").append(`<a class='btn col s4 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
-            $("#lands a div").append(`<a class='btn col s4 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
+            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
+            $("#lands a div").append(`<a class='btn col l4 m4 s5 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
             $(".tap-button").on("click", function(event) {
                 event.stopPropagation();
                 var splitArray = $(this).parent().parent().attr("id").split("-");
@@ -178,7 +184,7 @@ $(document).ready(function(){
                     $(`#pt-lands-${index} div`).removeClass("tapped");
                 }
             });
-        }       
+        }
     };
 
     const EventHandlers = {
