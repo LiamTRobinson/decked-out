@@ -140,9 +140,23 @@ $(document).ready(function(){
     const ViewControl = {
         //UPDATE ALL CARD VIEWS
         updateCards: function() {
+                var size = 0;
+                if ($(window).width() > 992) {
+                    size = 6; 
+                }
+                else if ($(window).width() > 600) {
+                    size = 4;
+                }
+                else {
+                    size = 3;
+                }
             GameData.cardViewTypes.forEach(function(type) {
                 $(`#${type}`).empty();
-                for(var i = 0; i < GameData[type].length; i++) {   
+                for(var i = 0; i < GameData[type].length; i++) {
+                    if (i % size === 0) {
+                        console.log(i % size);
+                        $(`#${type}`).append("<div style='height: 1px; width: 100%;' class='col s12'></div>");
+                    }   
                     $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative; margin-top: 5%;' class='col s4 m3 l2'><img class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
                 }
                 if (GameData[type].length > 0) {
