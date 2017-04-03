@@ -1,4 +1,5 @@
-$(document).ready(function(){ 
+$(document).ready(function(){
+    var sampleHandCount = 0; 
 //MATERIALIZE COMPONENT INITIALIZERS
     $('.modal').modal();
     $("#pt-scry-modal").modal({dismissible: false});
@@ -15,7 +16,9 @@ $(document).ready(function(){
     		$(`#sh-card-${i}`).attr("src", card);
     		array.splice(cardIndex, 1);
     	}
+        if (sampleHandCount % 2 === 0) {
         setTimeout(function(){$("#sample-hand").click()}, 1);
+        }
     });
 
 
@@ -134,46 +137,66 @@ $(document).ready(function(){
             else {
                 GameData[type + "Tapped"][index] = true;
             }
+        },
+        untap: function() {
+            GameData.forEach(function(card, index, array) {
+                
+            });
         }
     };
 
     const ViewControl = {
         //UPDATE ALL CARD VIEWS
         updateCards: function() {
-                var size = 0;
+            //CHECK VIEWPORT SIZE AND SET COLUMN # PER ROW
+                var columnNum = 0;
                 if ($(window).width() > 992) {
-                    size = 6; 
+                    columnNum = 6; 
                 }
                 else if ($(window).width() > 600) {
-                    size = 4;
+                    columnNum = 4;
                 }
                 else {
-                    size = 3;
+                    columnNum = 3;
                 }
+            //FOR EACH VIEW TYPE
             GameData.cardViewTypes.forEach(function(type) {
+                //EMPTY THE VIEW
                 $(`#${type}`).empty();
+                //THEN FOR EACH CARD IN THAT VIEW TYPE
                 for(var i = 0; i < GameData[type].length; i++) {
-                    if (i % size === 0) {
-                        console.log(i % size);
+                    //IF THE ROW IS FULL
+                    if (i !== 0 && i % columnNum === 0) {
+                        //APPEND A DIV TO SEPARATE THE NEXT ROW
                         $(`#${type}`).append("<div style='height: 1px; width: 100%;' class='col s12'></div>");
-                    }   
-                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative; margin-top: 5%;' class='col s4 m3 l2'><img class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
+                    } 
+                    //THEN APPEND THE CARD.  
+                    $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
                 }
+                //IF THE TYPE ISN'T EMPTY
                 if (GameData[type].length > 0) {
+                    //THEN UPDATE THE DISPLAY TO THE CURRENT TOTAL OF CARDS IN THAT VIEW
                     $(`#${type}-total`).html(`(${GameData[type].length})`);
                 }
                 else {
+                    //OTHERWISE SET THE DISPLAY TO 0
                     $(`#${type}-total`).html("(0)");
                 }
             });
+            //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER
             $(".pt-sorted-card").on("click", cardClicked);
+            //IF THE SCRY VIEW IS EMPTY
             if (GameData.scry.length === 0) {
+                //CLOSE IT
                 $("#pt-scry-modal").modal("close");
             }
+            //MAKE THE HAND AND LIBRARY CARDS CLOSE THEIR RESPECTIVE MODALS WHEN CLICKED
             $("#hand").children().addClass("modal-close");
             $("#library").children().addClass("modal-close");
-            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
-            $("#lands a div").append(`<a class='btn col l4 m4 s5 grey darken-3 tap-button' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
+            //ADD THE TAP BUTTON TO BATTLEFIELD CARDS
+            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
+            $("#lands a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
+            //ADD THE EVENT LISTENER TO THE TAP BUTTON
             $(".tap-button").on("click", function(event) {
                 event.stopPropagation();
                 var splitArray = $(this).parent().parent().attr("id").split("-");
@@ -182,7 +205,9 @@ $(document).ready(function(){
                 PlaytestControl.tap(type, index);
                 ViewControl.updateCards();
             });
+            //UPDATE TAPPED AND UNTAPPED CARDS
             GameData.battlefield.forEach(function(card, index) {
+                //BY CHECKING FOR THE TAPPED VALUES OF CORRESPONDING INDICES
                 if (GameData.battlefieldTapped[index] === true) {
                     $(`#pt-battlefield-${index} div`).addClass("tapped");
                 }
