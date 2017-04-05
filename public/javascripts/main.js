@@ -165,6 +165,7 @@ $(document).ready(function(){
         updateCards: function() {
             //CHECK VIEWPORT SIZE AND SET COLUMN # PER ROW
                 var columnNum = 0;
+                var columnCount = null;
                 if ($(window).width() > 992) {
                     columnNum = 6; 
                 }
@@ -180,6 +181,11 @@ $(document).ready(function(){
                 $(`#${type}`).empty();
                 //THEN FOR EACH CARD IN THAT VIEW TYPE
                 for(var i = 0; i < GameData[type].length; i++) {
+                    //IF IT IS BATTLEFIELD
+                    if(type === "battlefield") {
+                        //INCREASE COLUMN COUNT FOR TOKENS
+                        columnCount = i;
+                    }
                     //IF THE ROW IS FULL
                     if (i !== 0 && i % columnNum === 0) {
                         //APPEND A DIV TO SEPARATE THE NEXT ROW
@@ -200,7 +206,13 @@ $(document).ready(function(){
             });
             //ADD TOKENS TO VIEW
             GameData.tokens.forEach(function(card, index) {
-                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`)
+                if (columnCount !== null) {
+                    columnCount += 1;
+                }
+                if (columnCount !== null && columnCount !== 0 && columnCount % columnNum === 0) {
+                    $(`#battlefield`).append("<div style='height: 1px; width: 100%;' class='col s12'></div>");
+                }
+                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`);
             });
             //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER FOR CARDS
             $(".pt-sorted-card").on("click", cardClicked);
@@ -216,6 +228,8 @@ $(document).ready(function(){
                 PlaytestControl.tap(type, index);
                 ViewControl.updateCards();
             });
+            //ADD DELETE BUTTON TO TOKENS
+            $(".pt-token div").append(`<a class='btn col l4 m4 s5 tap-button red white-text' style='position: absolute; bottom: 50%; right: 0%; href='#'>X</a>`);
             //IF THE SCRY VIEW IS EMPTY
             if (GameData.scry.length === 0) {
                 //CLOSE IT
