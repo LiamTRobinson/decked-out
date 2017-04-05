@@ -139,8 +139,11 @@ $(document).ready(function(){
             }
         },
         untap: function() {
-            GameData.forEach(function(card, index, array) {
-                
+            GameData.battlefieldTapped.forEach(function(card, index, array) {
+                array[index] = false;
+            });
+            GameData.landsTapped.forEach(function(card, index, array) {
+                array[index] = false;
             });
         }
     };
@@ -248,7 +251,11 @@ $(document).ready(function(){
         },
         tap: function(type, index) {
             PlaytestControl.tap(type, index);
-            ViewControl.updateCards;
+            ViewControl.updateCards();
+        },
+        untapAll: function() {
+            PlaytestControl.untap();
+            ViewControl.updateCards();
         }
     };
 
@@ -288,6 +295,7 @@ $(document).ready(function(){
         var index = parseInt($(this).data("index"));
         EventHandlers.modalButton(fromZone, toZone, index);
     });
+    $("#untap-button").on("click", EventHandlers.untapAll);
     $("#scry-button").on("click", EventHandlers.scryX);
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
