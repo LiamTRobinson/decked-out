@@ -35,7 +35,7 @@ $(document).ready(function(){
         scry: [],
         battlefield: [],
         lands: [],
-        tokens: [{}, {}, {}],
+        tokens: [],
         battlefieldTapped: [],
         landsTapped: [],
         tokensTapped: [],
