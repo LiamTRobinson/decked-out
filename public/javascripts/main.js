@@ -1,5 +1,4 @@
-$(document).ready(function(){
-    var sampleHandCount = 0; 
+$(document).ready(function(){ 
 //MATERIALIZE COMPONENT INITIALIZERS
     $('.modal').modal();
     $("#pt-scry-modal").modal({dismissible: false});
@@ -7,6 +6,7 @@ $(document).ready(function(){
     $(".nav-extended.Start").append('<div class="nav-content" style="margin-bottom: 10px;"><ul class="tabs tabs-transparent"><li class="tab"><a href="#battlefield-tab">Battlefield</a></li><li class="tab"><a href="#graveyard-tab">Graveyard <span id="graveyard-total">(0)</span></a></li><li class="tab"><a href="#exile-tab">Exile <span id="exile-total">(0)</span></a></li></ul></div>');
     $('ul.tabs').tabs();
 //SAMPLE HAND GENERATOR
+    var sampleHandCount = 0;
     $("#sample-hand-trigger").on("click", function() {
     	var data = $(this).data("store");
     	var array = data.split(",");
@@ -25,18 +25,20 @@ $(document).ready(function(){
 //PLAYTESTING FUNCTIONS
     const GameData = {
         //THIS IS THE GAME DATA BEING MANIPULATED
+        replay: false,
         deckId: null,
         userId: null,
         library: [],
         hand: [],
-        battlefield: [],
-        lands: [],
         graveyard:[],
         exile:[],
-        replay: false,
         scry: [],
+        battlefield: [],
+        lands: [],
+        tokens: [],
         battlefieldTapped: [],
         landsTapped: [],
+        tokensTapped: [],
         cardViewTypes: ["library", "hand", "battlefield", "graveyard", "exile", "scry", "lands"],
         //STARTS THE GAME
         startGame: function() {
@@ -145,6 +147,17 @@ $(document).ready(function(){
             GameData.landsTapped.forEach(function(card, index, array) {
                 array[index] = false;
             });
+        },
+        addToken: function(name, power, toughness) {
+            var token = {
+                name: name,
+                power: power,
+                toughness: toughness
+            };
+            GameData.tokens.push(token);
+        },
+        removeToken: function(index) {
+            GameData.tokens.splice(index, 1);
         }
     };
 
@@ -207,6 +220,7 @@ $(document).ready(function(){
                 var type = splitArray[1];
                 PlaytestControl.tap(type, index);
                 ViewControl.updateCards();
+                ViewControl.updateTokens();
             });
             //UPDATE TAPPED AND UNTAPPED CARDS
             GameData.battlefield.forEach(function(card, index) {
@@ -226,6 +240,11 @@ $(document).ready(function(){
                     $(`#pt-lands-${index} div`).removeClass("tapped");
                 }
             });
+        },
+        updateTokens: function() {
+            GameData.tokens.forEach(function(card, index) {
+                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`)
+            });
         }
     };
 
@@ -235,12 +254,14 @@ $(document).ready(function(){
             if (GameData.library.length > 0) {
                 PlaytestControl.drawCard();
                 ViewControl.updateCards();
+                ViewControl.updateTokens();
             }
         },
         //ALL MODAL BUTTONS
         modalButton: function(from, to, index) {
             PlaytestControl.fromTo(from, to, index);
             ViewControl.updateCards();
+            ViewControl.updateTokens();
         },
         //SCRY BUTTON
         scryX: function() {
@@ -248,14 +269,17 @@ $(document).ready(function(){
             $("#scry-amount").val(1);
             PlaytestControl.scry(amount);
             ViewControl.updateCards();
+            ViewControl.updateTokens();
         },
         tap: function(type, index) {
             PlaytestControl.tap(type, index);
             ViewControl.updateCards();
+            ViewControl.updateTokens();
         },
         untapAll: function() {
             PlaytestControl.untap();
             ViewControl.updateCards();
+            ViewControl.updateTokens();
         }
     };
 
