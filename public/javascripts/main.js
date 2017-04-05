@@ -35,7 +35,7 @@ $(document).ready(function(){
         scry: [],
         battlefield: [],
         lands: [],
-        tokens: [],
+        tokens: [{}, {}, {}],
         battlefieldTapped: [],
         landsTapped: [],
         tokensTapped: [],
@@ -93,7 +93,6 @@ $(document).ready(function(){
                 }
                 GameData.battlefield.push(GameData[from][index]);
                 GameData[from].splice(index, 1);
-
             }
             else if (to === "librarybottom") {
                 GameData.library.push(GameData[from][index]);
@@ -199,16 +198,12 @@ $(document).ready(function(){
                     $(`#${type}-total`).html("(0)");
                 }
             });
-            //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER
+            //ADD TOKENS TO VIEW
+            GameData.tokens.forEach(function(card, index) {
+                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`)
+            });
+            //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER FOR CARDS
             $(".pt-sorted-card").on("click", cardClicked);
-            //IF THE SCRY VIEW IS EMPTY
-            if (GameData.scry.length === 0) {
-                //CLOSE IT
-                $("#pt-scry-modal").modal("close");
-            }
-            //MAKE THE HAND AND LIBRARY CARDS CLOSE THEIR RESPECTIVE MODALS WHEN CLICKED
-            $("#hand").children().addClass("modal-close");
-            $("#library").children().addClass("modal-close");
             //ADD THE TAP BUTTON TO BATTLEFIELD CARDS
             $("#battlefield a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
             $("#lands a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
@@ -220,8 +215,15 @@ $(document).ready(function(){
                 var type = splitArray[1];
                 PlaytestControl.tap(type, index);
                 ViewControl.updateCards();
-                ViewControl.updateTokens();
             });
+            //IF THE SCRY VIEW IS EMPTY
+            if (GameData.scry.length === 0) {
+                //CLOSE IT
+                $("#pt-scry-modal").modal("close");
+            }
+            //MAKE THE HAND AND LIBRARY CARDS CLOSE THEIR RESPECTIVE MODALS WHEN CLICKED
+            $("#hand").children().addClass("modal-close");
+            $("#library").children().addClass("modal-close");
             //UPDATE TAPPED AND UNTAPPED CARDS
             GameData.battlefield.forEach(function(card, index) {
                 //BY CHECKING FOR THE TAPPED VALUES OF CORRESPONDING INDICES
@@ -240,10 +242,13 @@ $(document).ready(function(){
                     $(`#pt-lands-${index} div`).removeClass("tapped");
                 }
             });
-        },
-        updateTokens: function() {
             GameData.tokens.forEach(function(card, index) {
-                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`)
+                if (GameData.tokensTapped[index] === true) {
+                    $(`#pt-tokens-${index} div`).addClass("tapped");
+                }
+                else {
+                    $(`#pt-tokens-${index} div`).removeClass("tapped");
+                }
             });
         }
     };
@@ -253,33 +258,28 @@ $(document).ready(function(){
         drawCard: function() {
             if (GameData.library.length > 0) {
                 PlaytestControl.drawCard();
-                ViewControl.updateCards();
-                ViewControl.updateTokens();
+                ViewControl.updateCards();  
             }
         },
         //ALL MODAL BUTTONS
         modalButton: function(from, to, index) {
             PlaytestControl.fromTo(from, to, index);
-            ViewControl.updateCards();
-            ViewControl.updateTokens();
+            ViewControl.updateCards();           
         },
         //SCRY BUTTON
         scryX: function() {
             var amount = $("#scry-amount").val();
             $("#scry-amount").val(1);
             PlaytestControl.scry(amount);
-            ViewControl.updateCards();
-            ViewControl.updateTokens();
+            ViewControl.updateCards();       
         },
         tap: function(type, index) {
             PlaytestControl.tap(type, index);
-            ViewControl.updateCards();
-            ViewControl.updateTokens();
+            ViewControl.updateCards();     
         },
         untapAll: function() {
             PlaytestControl.untap();
-            ViewControl.updateCards();
-            ViewControl.updateTokens();
+            ViewControl.updateCards();     
         }
     };
 
