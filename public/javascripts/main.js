@@ -17,7 +17,7 @@ $(document).ready(function(){
     		array.splice(cardIndex, 1);
     	}
         if (sampleHandCount % 2 === 0) {
-        setTimeout(function(){$("#sample-hand").click()}, 1);
+            setTimeout(function(){$("#sample-hand").click()}, 1);
         }
     });
 
@@ -204,6 +204,11 @@ $(document).ready(function(){
                     $(`#${type}-total`).html("(0)");
                 }
             });
+            //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER FOR CARDS
+            $(".pt-sorted-card").on("click", cardClicked);
+            //ADD THE TAP BUTTON TO BATTLEFIELD CARDS
+            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
+            $("#lands a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
             //ADD TOKENS TO VIEW
             GameData.tokens.forEach(function(card, index) {
                 if (columnCount !== null) {
@@ -212,13 +217,11 @@ $(document).ready(function(){
                 if (columnCount !== null && columnCount !== 0 && columnCount % columnNum === 0) {
                     $(`#battlefield`).append("<div style='height: 1px; width: 100%;' class='col s12'></div>");
                 }
-                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"></div></a>`);
+                $("#battlefield").append(`<a class='pt-token' id='pt-tokens-${index}' href='#'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src="/images/cardBack.jpg"><p class='col l10 m10 s12 right-align white black-text' style='position: absolute; bottom: 0%; right: 10%;'>${card.name} : ${card.power}/${card.toughness}</p></div></a>`);
             });
-            //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER FOR CARDS
-            $(".pt-sorted-card").on("click", cardClicked);
-            //ADD THE TAP BUTTON TO BATTLEFIELD CARDS
-            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
-            $("#lands a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
+            //ADD DELETE AND TAP BUTTONS TO TOKENS
+            $(".pt-token div").append(`<a class='btn col l4 m4 s5 delete-button red white-text' style='position: absolute; top: 0%; right: 0%; href='#'>X</a>`);
+            $(".pt-token div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; top: 0%; right: 50%; href='#'>TAP</a>`);
             //ADD THE EVENT LISTENER TO THE TAP BUTTON
             $(".tap-button").on("click", function(event) {
                 event.stopPropagation();
@@ -228,8 +231,14 @@ $(document).ready(function(){
                 PlaytestControl.tap(type, index);
                 ViewControl.updateCards();
             });
-            //ADD DELETE BUTTON TO TOKENS
-            $(".pt-token div").append(`<a class='btn col l4 m4 s5 tap-button red white-text' style='position: absolute; bottom: 50%; right: 0%; href='#'>X</a>`);
+            //ADD THE EVENT LISTENER TO THE DELETE BUTTON
+            $(".delete-button").on("click", function(event) {
+                event.stopPropagation();
+                var splitArray = $(this).parent().parent().attr("id").split("-");
+                var index = splitArray[2];
+                PlaytestControl.removeToken(index);
+                ViewControl.updateCards();
+            });
             //IF THE SCRY VIEW IS EMPTY
             if (GameData.scry.length === 0) {
                 //CLOSE IT
@@ -327,6 +336,13 @@ $(document).ready(function(){
     };
 
 //PLAYTEST EVENT BINDINGS
+    $("#token-submit").on("click", function() {
+        var name = $("#name").val();
+        var power = $("#power").val();
+        var toughness = $("#toughness").val();
+        PlaytestControl.addToken(name, power, toughness);
+        ViewControl.updateCards();
+    });
     $(".button-for-modal").on("click", function() {
         var toZone = $(this).attr("id").split("-")[1];
         var fromZone = $(this).data("from");

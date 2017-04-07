@@ -8,7 +8,7 @@
 
 	<div id="battlefield-divider" class="row" style="margin-bottom: 10px;">
 		<a href="#" class="btn col s4 grey darken-3" id="untap-button">UNTAP</a>
-		<a href="#" class="btn col s4 offset-s4 grey darken-3 disabled" id="add-button">ADD</a>
+		<a href="#" class="btn col s4 offset-s4 grey darken-3 dropdown-button" id="add-button" data-activates="add-button-dropdown">ADD</a>
 	</div>
 
 	<div class="row" id="lands">
@@ -60,9 +60,35 @@
 	</div>
 </footer>
 
+<ul id="add-button-dropdown" class="dropdown-content">
+  <li><a href="#pt-token-modal">Token</a></li>
+  <li><a href="#">Counter</a></li>
+</ul>
 
+<!--*********************** MODALS **************************-->
 
-<!--***********************MODALS**************************-->
+<!-- TOKEN MODAL -->
+<div id="pt-token-modal" class="modal">
+	<div class="modal-content row">
+		<form class="col 12">
+			<div class="input-field">
+				<label for="name">Name:</label>
+				<input type="text" id="name" data-length="5">
+			</div>
+			<div class="input-field">
+				<label for="power">Power:</label>
+				<input type="number" id="power" min="0" max="99">
+			</div>
+			<div class="input-field">
+				<label for="toughness">Toughness:</label>
+				<input type="number" id="toughness" min="0" max="99">
+			</div>
+			<div>
+				<input id="token-submit" type="submit" value="Create" class="btn">
+			</div>
+		</form>
+	</div>	
+</div>
 
 <!-- HAND MODAL -->
 <div id="pt-hand-modal" class="modal bottom-sheet">
