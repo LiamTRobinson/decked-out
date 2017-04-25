@@ -46,8 +46,10 @@ $(document).ready(function(){
             GameData.cardViewTypes.forEach(function(viewType) {
                 GameData[viewType] = [];
             });
+            GameData.tokens = [];
             GameData.landsTapped = [];
             GameData.battlefieldTapped = [];
+            GameData.tokensTapped = [];
             //IF THE GAME IS NOT A REPLAY
             if (GameData.replay === false) {
                 //PARSE THE USER/DECK IDS
@@ -140,11 +142,11 @@ $(document).ready(function(){
             }
         },
         untap: function() {
-            GameData.battlefieldTapped.forEach(function(card, index, array) {
-                array[index] = false;
-            });
-            GameData.landsTapped.forEach(function(card, index, array) {
-                array[index] = false;
+            var types = ["battlefield", "lands", "tokens"];
+            types.forEach(function(type) {
+                GameData[type+"Tapped"].forEach(function(card, index, array) {
+                    array[index] = false;
+                }); 
             });
         },
         addToken: function(name, power, toughness) {
@@ -191,7 +193,7 @@ $(document).ready(function(){
                         //APPEND A DIV TO SEPARATE THE NEXT ROW
                         $(`#${type}`).append("<div style='height: 1px; width: 100%;' class='col s12'></div>");
                     } 
-                    //THEN APPEND THE CARD.  
+                    //APPEND THE CARD.  
                     $(`#${type}`).append(`<a class='pt-sorted-card' id='pt-${type}-${i}' href='#pt-single-card-modal'><div style='position: relative;' class='col s4 m3 l2'><img class='col s12 modal-action' src=${GameData[type][i].imageUrl}></div></a>`);
                 }
                 //IF THE TYPE ISN'T EMPTY
@@ -207,7 +209,7 @@ $(document).ready(function(){
             //AFTER ALL THE CARDS ARE RENDERED TO THE DOM, ATTACH THE EVENT LISTENER FOR CARDS
             $(".pt-sorted-card").on("click", cardClicked);
             //ADD THE TAP BUTTON TO BATTLEFIELD CARDS
-            $("#battlefield a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
+            $("#battlefield .pt-sorted-card div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%; href='#'>TAP</a>`);
             $("#lands a div").append(`<a class='btn col l4 m4 s5 tap-button teal black-text' style='position: absolute; bottom: 50%; right: 50%;' href='#'>TAP</a>`);
             //ADD TOKENS TO VIEW
             GameData.tokens.forEach(function(card, index) {
@@ -239,40 +241,33 @@ $(document).ready(function(){
                 PlaytestControl.removeToken(index);
                 ViewControl.updateCards();
             });
-            //IF THE SCRY VIEW IS EMPTY
+            //UPDATE MODAL STUFF
+            ViewControl.updateModals();
+            //UPDATE TAPPED AND UNTAPPED CARDS
+            ViewControl.updateTappedStatus();
+        },
+        updateTappedStatus: function() {
+            var types = ["battlefield", "lands", "tokens"];
+            types.forEach(function(type) {
+                GameData[type].forEach(function(card, index) {
+                    if (GameData[type + "Tapped"][index] === true) {
+                        $(`#pt-${type}-${index} div`).addClass("tapped");
+                    }
+                    else {
+                        $(`#pt-${type}-${index} div`).removeClass("tapped");
+                    }
+                })
+            })
+        },
+        updateModals: function() {
             if (GameData.scry.length === 0) {
-                //CLOSE IT
                 $("#pt-scry-modal").modal("close");
             }
-            //MAKE THE HAND AND LIBRARY CARDS CLOSE THEIR RESPECTIVE MODALS WHEN CLICKED
             $("#hand").children().addClass("modal-close");
             $("#library").children().addClass("modal-close");
-            //UPDATE TAPPED AND UNTAPPED CARDS
-            GameData.battlefield.forEach(function(card, index) {
-                //BY CHECKING FOR THE TAPPED VALUES OF CORRESPONDING INDICES
-                if (GameData.battlefieldTapped[index] === true) {
-                    $(`#pt-battlefield-${index} div`).addClass("tapped");
-                }
-                else {
-                    $(`#pt-battlefield-${index} div`).removeClass("tapped");
-                }
-            });
-            GameData.lands.forEach(function(card, index) {
-                if (GameData.landsTapped[index] === true) {
-                    $(`#pt-lands-${index} div`).addClass("tapped");
-                }
-                else {
-                    $(`#pt-lands-${index} div`).removeClass("tapped");
-                }
-            });
-            GameData.tokens.forEach(function(card, index) {
-                if (GameData.tokensTapped[index] === true) {
-                    $(`#pt-tokens-${index} div`).addClass("tapped");
-                }
-                else {
-                    $(`#pt-tokens-${index} div`).removeClass("tapped");
-                }
-            });
+        },
+        updateTokens: function() {
+
         }
     };
 
@@ -354,4 +349,7 @@ $(document).ready(function(){
     $("#nav-menu-twoStart").on("click", GameData.startGame);
     $("#draw-card").on("click", EventHandlers.drawCard);
     $("#shuffle-button").on("click", PlaytestControl.shuffle);
+    $(".pt-dropdown-button").on("click", function() {
+        $("#add-button").dropdown("close");
+    });
 });

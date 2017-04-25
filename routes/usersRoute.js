@@ -15,7 +15,6 @@ router.get("/createaccount", function(req, res){
 
 //USER NEW POST ROUTE
 router.post("/", function(req, res) {
-	console.log(req.body);
 	var user = new User ({
 		email: req.body.email,
 		firstName: req.body.firstName,
@@ -24,8 +23,6 @@ router.post("/", function(req, res) {
 		password: req.body.password
 	});
 	user.save(function(err, user) {
-		if (err) { console.log(err); }
-		console.log(user);
 		res.redirect("/sessions/login");
 	});
 });
@@ -54,7 +51,6 @@ router.patch("/:id", function(req, res) {
 		userName: req.body.userName
 	}, { new: true })
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			res.render("decks/index", {
 				user: user,
 				menuOne: "Decks",
@@ -69,11 +65,10 @@ router.patch("/:id", function(req, res) {
 router.delete("/:id", function(req, res) {
 	User.findById(req.params.id)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			user.decks.forEach(function(deck) {
 				Deck.findByIdAndRemove(deck.id)
 					.exec(function(err, deck) {
-						console.log(deck);
+						
 					});
 			});
 		});

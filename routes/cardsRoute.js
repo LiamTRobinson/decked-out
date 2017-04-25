@@ -10,7 +10,6 @@ var Deck = require("../models/deckModel.js");
 router.get("/", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			res.render("cards/index", {
 				user: user,
 				menuOne: "Decks",
@@ -92,7 +91,6 @@ router.post("/new", function(req, res) {
 							.exec(function(err, user) {
 								user.cards.push(result);
 								user.save(function(err, user) {
-									if (err) { console.log(err); }
 									res.redirect(`/${req.params.userId}/cards`);
 								});
 							});
@@ -106,7 +104,6 @@ router.delete("/:id/delete", function(req, res) {
 	var deckToEdit = null;
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			for (var i = 0; i < user.decks.length; i++) {
 				for (var j = 0; j < user.decks[i].mainDeck.length; j++) {
 					if (user.decks[i].mainDeck[j].id === req.params.id) {
@@ -128,7 +125,6 @@ router.delete("/:id/delete", function(req, res) {
 			}
 			for (var k = 0; k < user.cards.length; k++) {
 				if (user.cards[k].id === req.params.id) {
-					console.log(user.cards[k]);
 					user.cards.splice(k, 1);
 					user.save();
 				}

@@ -36,16 +36,11 @@ router.post("/", function(req, res) {
 		format: req.body.format
 	});
 	deck.save(function(err, deck) {
-		if (err) { console.log(err); }
-		console.log(`${deck} saved!`);
 	});
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			user.decks.push(deck);
 			user.save(function(err, user) {
-				if (err) { console.log(err); }
-				console.log(`${deck}, ${user}`);
 			});
 			res.redirect(`/${user.id}/decks`);
 		});
@@ -65,7 +60,6 @@ router.post("/", function(req, res) {
 router.get("/", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 				res.render("decks/index", {
 					user: user,
 					menuOne: "Decks",
@@ -163,11 +157,9 @@ router.get("/:id/deckToPlay", function(req, res) {
 router.delete("/:id/delete", function(req, res) {
 	Deck.findByIdAndRemove(req.params.id, function(err, deck) {
 		if (err) { conosle.log(err); }
-		console.log(deck);
 	});
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			for (var i = 0; i < user.decks.length; i++) {
 				if (user.decks[i].id === req.params.id) {
 					user.decks.splice(i, 1);
@@ -192,7 +184,6 @@ router.delete("/:id/delete", function(req, res) {
 router.get("/:id/edit", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			var totalCards = 0;
 			var deckToEdit = user.decks.id(req.params.id);
 			for (var i = 0; i < deckToEdit.mainDeck.length; i++) {
@@ -216,13 +207,10 @@ router.get("/:id/edit", function(req, res) {
 router.patch("/:id/edit", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			var deckToEdit = user.decks.id(req.params.id);
 			deckToEdit.name = req.body.name;
 			deckToEdit.format = req.body.format;
 			user.save(function(err, user) {
-				if (err) { console.log(err); }
-				console.log(user);
 			});
 		});
 	Deck.findByIdAndUpdate(req.params.id, {
@@ -231,7 +219,6 @@ router.patch("/:id/edit", function(req, res) {
 			format: req.body.format
 		}
 	}, { new: true }, function(err, deck) {
-		if (err) { console.log(err); }
 		res.redirect(`/${req.params.userId}/decks/${req.params.id}`);
 	});
 });
@@ -281,9 +268,7 @@ router.patch("/:id/edit/addcard/:cardId", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
 			var deckToEdit = user.decks.id(req.params.id);
-			console.log(deckToEdit);
 			cardToAdd = user.cards.id(req.params.cardId);
-			console.log(cardToAdd);
 			deckToEdit.mainDeck.push(cardToAdd);
 			user.save();
 		Deck.findById(req.params.id)
@@ -300,7 +285,6 @@ router.patch("/:id/edit/addcard/:cardId", function(req, res) {
 router.patch("/:id/cardRemove/:cardId", function(req, res) {
 	Deck.findById(req.params.id)
 		.exec(function(err, deck) {
-			if (err) { console.log(err); }
 			for (var i = 0; i < deck.mainDeck.length; i++) {
 				if (deck.mainDeck[i].id === req.params.cardId) {
 					deck.mainDeck.splice(i, 1);
@@ -311,7 +295,6 @@ router.patch("/:id/cardRemove/:cardId", function(req, res) {
 		});
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			deckToEdit = user.decks.id(req.params.id);
 			for (var i = 0; i < deckToEdit.mainDeck.length; i++) {
 				if (deckToEdit.mainDeck[i].id === req.params.cardId) {
@@ -327,22 +310,17 @@ router.patch("/:id/cardRemove/:cardId", function(req, res) {
 router.patch("/:id/quantity/:cardId", function(req, res) {
 	User.findById(req.params.userId)
 		.exec(function(err, user) {
-			if (err) { console.log(err); }
 			var deckToEdit = user.decks.id(req.params.id);
 			var deckCardToEdit = deckToEdit.mainDeck.id(req.params.cardId);
 			deckCardToEdit.quantity = req.body.quantity;
 			user.save(function(err, user) {
-				if (err) { conosle.log(err); }
-				console.log(user);
 			});
 		});
 	Deck.findById(req.params.id)
 		.exec(function(err, deck) {
-			if (err) { console.log(err); }
 			var cardToEdit = deck.mainDeck.id(req.params.cardId);
 			cardToEdit.quantity = req.body.quantity;
 			deck.save(function(err, user) {
-				if (err) { console.log(err); }
 				res.redirect(`/${req.params.userId}/decks/${req.params.id}/edit#${req.params.cardId}`);
 			});
 		});
